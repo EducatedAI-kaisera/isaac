@@ -17,8 +17,6 @@ import {
 	FilesIcon,
 	LucideIcon,
 	MessageSquareIcon,
-	MessagesSquareIcon,
-	ScrollTextIcon,
 	SearchIcon,
 	SettingsIcon,
 	StickyNoteIcon,
@@ -44,12 +42,11 @@ const buttons: {
 	disabled?: boolean;
 }[] = [
 	{ tab: Panel.FILE_EXPLORER, Icon: FilesIcon },
-	{ tab: Panel.CHAT, Icon: MessageSquareIcon },
+	{ tab: Panel.CHAT_SESSIONS, Icon: MessageSquareIcon, disabled: false },
 	{ tab: Panel.LITERATURE_SEARCH, Icon: SearchIcon },
 	{ tab: Panel.REFERENCES, Icon: BookmarkIcon },
 	{ tab: Panel.NOTES, Icon: StickyNoteIcon },
-	{ tab: Panel.CHAT_SESSIONS, Icon: MessagesSquareIcon, disabled: false },
-	// { tab: Panel.AI_OUTPUT_LOGS, Icon: ScrollTextIcon, disabled: false },
+
 ];
 
 const SettingsModal = dynamic(
@@ -96,12 +93,10 @@ export default function AppMenuBar() {
 
 	const panelNames = {
 		[Panel.FILE_EXPLORER]: 'File Explorer',
-		[Panel.CHAT]: 'Chat',
+		[Panel.CHAT_SESSIONS]: 'Chat',
 		[Panel.LITERATURE_SEARCH]: 'Literature Search',
 		[Panel.REFERENCES]: 'References',
 		[Panel.NOTES]: 'Notes',
-		[Panel.CHAT_SESSIONS]: 'Chat Sessions',
-		// [Panel.AI_OUTPUT_LOGS]: 'AI Output Logs',
 	};
 
 	return (
