@@ -11,41 +11,56 @@ import { useUIStore } from '@context/ui.store';
 import clsx from 'clsx';
 import { Check, Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
-const FeedbackModal = props => {
+
+interface FeedbackModalProps {
+  userEmail: string;
+}
+
+
+const FeedbackModal = (props: FeedbackModalProps) => {
 	const [loading, setLoading] = useState(false);
 	const [feedbackText, setFeedbackText] = useState('');
 	const [submitted, setSubmitted] = useState(false);
 	const setFeedbackModalOpen = useUIStore(s => s.setFeedbackModalOpen);
 	const feedbackModalOpen = useUIStore(s => s.feedbackModalOpen);
+	const { userEmail } = props;
 
 	async function submitFeedback() {
 		setLoading(true);
 
-		const response = await fetch('/api/submit-feedback', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: 'None',
-			},
-			body: JSON.stringify({
-				feedbackText: feedbackText,
-				userEmail: props.userEmail,
-			}),
-		});
+		try {
+			const response = await fetch('/api/submit-feedback', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					feedbackText: feedbackText,
+					userEmail: userEmail,
+				}),
+			});
 
-		const data = await response.json();
+			const data = await response.json();
 
-		if (data) {
+			if (data) {
+				setLoading(false);
+				setSubmitted(true);
+
+				// timeout for 2 seconds
+				setTimeout(() => {
+					setFeedbackModalOpen(false);
+					setSubmitted(false);
+				}, 1500);
+			} else {
+				throw new Error('Failed to submit feedback');
+			}
+		} catch (error) {
+			console.error(error);
+			toast.error('Failed to submit feedback.');
+		} finally {
 			setLoading(false);
-			setSubmitted(true);
-
-			// timeout for 2 seconds
-			setTimeout(() => {
-				setFeedbackModalOpen(false);
-			}, 1500);
-		} else {
-			console.log('failed to submit feedback');
 		}
 	}
 

@@ -119,7 +119,7 @@ const EditorLayout = ({ children }: Props) => {
 					<CreateNewDocumentModal />
 					<EquationModal />
 					<ProductGuideModal />
-					<FeedbackModal />
+					<FeedbackModal userEmail={user?.email} />
 
 					{/* Desktop workspace */}
 					<div
