@@ -1,6 +1,10 @@
-import withBundleAnalyzer from '@next/bundle-analyzer';
+// https://nextjs.org/docs/api-reference/next.config.js/introduction
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+	enabled: process.env.ANALYZE === 'true',
+});
 
-const nextConfig = {
+/** @type {import('next').NextConfig} */
+let nextConfig = {
 	reactStrictMode: true,
 	swcMinify: true,
 	experimental: {
@@ -15,6 +19,4 @@ const nextConfig = {
 	},
 };
 
-export default withBundleAnalyzer(nextConfig)({
-	enabled: process.env.ANALYZE === 'true',
-})
+module.exports = withBundleAnalyzer(nextConfig);
