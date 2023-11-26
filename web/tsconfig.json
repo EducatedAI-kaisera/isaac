@@ -1,0 +1,46 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": false,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"incremental": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"baseUrl": ".",
+		"paths": {
+			"@components/*": ["components/*"],
+			"@pages/*": ["pages/*"],
+			"@utils/*": ["utils/*"],
+			"@context/*": ["context/*"],
+			"@hooks/*": ["hooks/*"],
+			"@lexical/*": ["lexical/*"],
+			"@styles/*": ["styles/*"],
+			"@resources/*": ["resources/*"]
+		},
+		"plugins": [
+			{
+				"name": "next"
+			}
+		],
+		"strictNullChecks": false
+	},
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"middleware.js",
+		"pages/api/new-chat.js",
+		"pages/*.tsx",
+		"lexical/plugins/InlinePromptPlugin.jsx",
+		".next/types/**/*.ts"
+	],
+	"exclude": ["node_modules"]
+}

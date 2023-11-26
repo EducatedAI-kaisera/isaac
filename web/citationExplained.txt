@@ -1,0 +1,144 @@
+APA (American Psychological Association) citation style is commonly used in academic writing to give credit to the sources you have consulted. Here are some examples of APA citations for different types of sources:
+
+Book:
+Author(s). (Year). Title of the book. Publisher.
+Example:
+Smith, J. (2020). The Power of Habit: Why We Do What We Do in Life and Business. Random House.
+
+Journal Article:
+Author(s). (Year). Title of the article. Title of the Journal, Volume(Issue), page range. DOI or URL (if available).
+Example:
+Johnson, L., & Williams, R. (2019). The impact of exercise on mental health. Journal of Applied Psychology, 25(3), 187-200. doi:10.1080/12345678.2019.1234
+
+Website:
+Author(s) or Organization. (Year, Month Day). Title of the webpage or article. Website Name. URL
+Example:
+Smithsonian Institution. (2022, November 15). New Dinosaur Species Discovered in Patagonia. Smithsonian Magazine. https://www.smithsonianmag.com/science-nature/new-dinosaur-species-discovered-patagonia-180979432/
+
+Newspaper Article:
+Author(s). (Year, Month Day). Title of the article. Title of the Newspaper, page range. DOI or URL (if available).
+Example:
+Brown, M. (2023, July 10). Global Warming's Impact on Biodiversity. The New York Times, A1.
+
+E-book:
+Author(s). (Year). Title of the book [E-book version]. Publisher. DOI or URL (if available).
+Example:
+Adams, S. (2021). The Hitchhiker's Guide to the Galaxy [E-book version]. Random House. https://www.randomhouse.com/the-hitchhikers-guide
+
+Video (YouTube):
+Author(s) or Username. (Year, Month Day). Title of the video [Video]. YouTube. URL
+
+----------------------
+
+
+MLA (Modern Language Association) citation style is another commonly used citation style, especially in humanities and liberal arts disciplines. Here are some examples of MLA citations for different types of sources:
+
+Book:
+Author(s). Title of the Book. Publisher, Year.
+Example:
+Smith, John. The Catcher in the Rye. Little, Brown, 1951.
+
+Journal Article:
+Author(s). "Title of the Article." Title of the Journal, Volume number, Issue number, Year, page range.
+Example:
+Johnson, Mary. "The Role of Women in Shakespearean Tragedies." Shakespeare Quarterly, vol. 36, no. 3, 2020, pp. 256-271.
+
+Website:
+Author(s) or Organization. "Title of the Webpage or Article." Website Name, Publisher or Sponsor, Date of Publication or Update, URL.
+Example:
+National Geographic Society. "Climate Change and Its Impact on Wildlife." National Geographic, 15 July 2022, https://www.nationalgeographic.com/climate-change-impact-on-wildlife/
+
+Newspaper Article:
+Author(s). "Title of the Article." Title of the Newspaper, Date of Publication, page number(s).
+Example:
+Brown, Emma. "New Study Finds Link Between Sleep and Productivity." The Washington Post, 28 June 2023, p. A4.
+
+E-book:
+Author(s). Title of the Book. Publisher, Year. Database or URL (if available).
+Example:
+Adams, Sarah. The History of Art. Oxford University Press, 2019. Project MUSE, https://muse.jhu.edu/book/725789
+
+Video (YouTube):
+Username or Channel Name. "Title of the Video." YouTube, Upload date, URL.
+Example:
+Khan Academy. "Introduction to Algebra." YouTube, 3 May 2022, https://www.youtube.com/watch?v=Z3_dZG5ukkY
+
+Just like with APA style, these are some examples, and there may be slight variations based on the specific source type. Make sure to consult the latest MLA style guide for comprehensive and accurate citation guidelines.
+
+----------------------------------------------
+
+IEEE (Institute of Electrical and Electronics Engineers) citation style is commonly used in engineering, computer science, and other technical fields. Here are some examples of IEEE citations for different types of sources:
+
+Journal Article:
+Author(s). "Title of the article." Title of the Journal, Volume number, Issue number, Page range, Publication Year.
+Example:
+Smith, J., Johnson, R., & Williams, L. "An Efficient Algorithm for Image Compression." IEEE Transactions on Image Processing, vol. 30, no. 4, pp. 1001-1010, 2023.
+
+Conference Paper:
+Author(s). "Title of the paper." In Proceedings of the Conference Name, Date of Conference, Page range, Publisher, Publication Year.
+Example:
+Adams, M., Brown, P., & Lee, S. "Machine Learning Applications in Autonomous Vehicles." In Proceedings of the 2023 International Conference on Robotics and Automation, pp. 205-210, IEEE, 2023.
+
+Book:
+Author(s). Title of the Book. Publisher, Publication Year.
+Example:
+Johnson, L., & Williams, R. "Digital Signal Processing: Principles and Applications." Pearson, 2022.
+
+Website:
+Author(s) or Organization. "Title of the Webpage or Article." Website Name, URL, Access date (if applicable).
+Example:
+National Aeronautics and Space Administration. "Mars Exploration Program." NASA, https://mars.nasa.gov/, Accessed: July 15, 2023.
+
+Thesis/Dissertation:
+Author(s). "Title of the Thesis/Dissertation." Level of Thesis, Degree-Granting University, Year.
+Example:
+Brown, A. "Design and Implementation of a Wireless Sensor Network." Master's thesis, Stanford University, 2021.
+
+Patent:
+Author(s). "Title of the Patent." Patent number, Publication date.
+Example:
+Smith, J. "Method and Apparatus for Data Encryption." US Patent 9,876,543, May 1, 2022.
+
+These examples should give you a good starting point for citing various sources in IEEE style. However, please note that there are additional rules and guidelines for different types of sources and specific situations, so it's essential to refer to the official IEEE citation style guide for comprehensive and accurate citation formatting.
+
+------------------------------------------
+
+
+Chicago style is a citation style commonly used in history, literature, and some social sciences. It has two main citation systems: the notes and bibliography system (commonly used in humanities) and the author-date system (commonly used in social sciences). Here are some examples of Chicago citations in both systems:
+
+Book (Notes and Bibliography System):
+Author(s). Title of the Book. Place of Publication: Publisher, Year.
+Example:
+Smith, John. The History of the United States. New York: Random House, 2020.
+
+Book (Author-Date System):
+Author(s). Year. Title of the Book. Place of Publication: Publisher.
+Example:
+Smith, John. 2020. The History of the United States. New York: Random House.
+
+Journal Article (Notes and Bibliography System):
+Author(s). "Title of the Article." Title of the Journal volume, no. issue (Year): Page range.
+Example:
+Johnson, Mary. "The Role of Women in Shakespearean Tragedies." Shakespeare Quarterly 36, no. 3 (2020): 256-271.
+
+Journal Article (Author-Date System):
+Author(s). Year. "Title of the Article." Title of the Journal volume, no. issue: Page range.
+Example:
+Johnson, Mary. 2020. "The Role of Women in Shakespearean Tragedies." Shakespeare Quarterly 36, no. 3: 256-271.
+
+Website (Notes and Bibliography System):
+Author(s) or Organization. "Title of the Webpage or Article." Website Name. URL (Accessed Date).
+Example:
+National Geographic Society. "Climate Change and Its Impact on Wildlife." National Geographic. https://www.nationalgeographic.com/climate-change-impact-on-wildlife/ (Accessed July 15, 2023).
+
+Website (Author-Date System):
+Author(s) or Organization. Year. "Title of the Webpage or Article." Website Name. URL (Accessed Date).
+Example:
+National Geographic Society. 2022. "Climate Change and Its Impact on Wildlife." National Geographic. https://www.nationalgeographic.com/climate-change-impact-on-wildlife/ (Accessed July 15, 2023).
+
+Newspaper Article:
+Author(s). "Title of the Article." Title of the Newspaper, Date of Publication.
+Example:
+Brown, Emma. "New Study Finds Link Between Sleep and Productivity." The Washington Post, June 28, 2023.
+
+Please note that there are additional rules and guidelines for different types of sources, and Chicago style allows for some flexibility. Make sure to refer to the latest edition of the Chicago Manual of Style for comprehensive and accurate citation guidelines.

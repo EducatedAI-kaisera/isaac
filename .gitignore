@@ -1,0 +1,65 @@
+# General global ignores (applicable to all subdirectories)
+*.log
+*.env
+.DS_Store
+
+# Node.js dependencies for 'web' subdirectory
+/web/node_modules/
+
+
+/.pnp
+.pnp.js
+
+
+
+# testing
+/coverage
+
+# next.js
+/web/.next/
+/web/out/
+
+# production
+/web/build
+
+# misc
+.DS_Store
+*.pem
+note.txt
+log.json
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+
+# vercel
+/web/.vercel
+
+# typescript
+/web/*.tsbuildinfo
+/web/next-env.d.ts
+
+# Pupeteer Cache
+/web/.cache/
+/web/.cache/
+
+# Unlighthouse
+
+/.unlighthouse
+
+
+# Python specific ignores for 'api' subdirectory
+/api/app/__pycache__/
+/api/*.pyc
+/api/*.pyo
+/api/*~ 
+/api/env
+
+/web/.env.test
+/web/.env.development
+/web/.env.production

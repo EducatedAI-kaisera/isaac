@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@utils/*": ["utils/*"],
+      "@context/*": ["context/*"],
+      "@hooks/*": ["hooks/*"],
+      "@lexical/*": ["lexical/*"],
+      "@styles/*": ["styles/*"],
+      "@resources/*": ["resources/*"]
+    }
+  },
+  "include": ["src", "**/*.js", "**/*.jsx"],
+  "exclude": ["node_modules"]
+}

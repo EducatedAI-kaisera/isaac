@@ -1,0 +1,25 @@
+{
+	"files.autoSave": "off",
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"typescript.suggest.includeAutomaticOptionalChainCompletions": true,
+	"javascript.suggest.includeAutomaticOptionalChainCompletions": true,
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"eslint.alwaysShowStatus": true,
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact"
+	],
+	"files.eol": "\n",
+	"eslint.workingDirectories": ["src"],
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"cSpell.words": ["clsx", "supabase", "Zotero"],
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}
