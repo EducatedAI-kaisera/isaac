@@ -4,7 +4,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { useHover } from '@mantine/hooks';
 import clsx from 'clsx';
 import { capitalize, startCase } from 'lodash';
-import { Book, Bookmark } from 'lucide-react';
+import { Book, Bookmark, Pencil } from 'lucide-react';
 import { ReferenceType } from 'types/literatureReference.type';
 
 type LiteratureCardProps = {
@@ -14,7 +14,8 @@ type LiteratureCardProps = {
 	year: number;
 	source: 'Search' | 'Upload';
 	onAdd?: () => void;
-	onRemove: () => void;
+	onRemove?: () => void;
+	onApply?: () => void;
 	added?: boolean;
 	type: ReferenceType;
 	displayCta?: boolean;
@@ -28,6 +29,7 @@ const LiteratureCard = ({
 	source,
 	onRemove,
 	onAdd,
+	onApply,
 	type,
 	added,
 	displayCta,
@@ -53,11 +55,11 @@ const LiteratureCard = ({
 					)}
 				</div>
 				<div>
-					<p className="font-semibold text-neutral-700 dark:text-inherit text-xs">
+					<p className="my-0 font-semibold text-neutral-700 dark:text-inherit text-xs">
 						{title}
 					</p>
-					<div className="text-sm leading-7 break-words text-neutral-700 dark:text-neutral-400 line-clamp-1 text-xs">
-						<p>
+					<div className="leading-7 break-words text-neutral-700 dark:text-neutral-400 line-clamp-1 text-xs">
+						<p className="my-0">
 							{!authors.length && 'Authors Unspecified'}
 							{authors.slice(0, 2).join(' & ')}
 							{authors.length > 3 && ' et al.'}
@@ -74,10 +76,22 @@ const LiteratureCard = ({
 			</div>
 			<div
 				className={clsx(
-					'flex transition-opacity',
+					'flex transition-opacity gap-2',
 					displayCta || hovered ? 'opacity-100' : 'opacity-0',
 				)}
 			>
+				{!!onApply && (
+					<Pencil
+						className="mt-1"
+						onClick={e => {
+							e.stopPropagation();
+							onApply();
+						}}
+						size={20}
+						strokeWidth={0.6}
+					/>
+				)}
+
 				<Bookmark
 					onClick={e => {
 						e.stopPropagation();

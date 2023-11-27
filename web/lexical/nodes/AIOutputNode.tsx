@@ -11,6 +11,9 @@ import type {
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
+import AISearchSourceComponent from './AISearchSourceComponent';
+
+export type AIOutputNodeType = 'text' | 'source-output';
 
 const AIOutputComponent = dynamic(() => import('./AIOutputComponent'), {
 	ssr: false,
@@ -19,21 +22,25 @@ const AIOutputComponent = dynamic(() => import('./AIOutputComponent'), {
 export type SerializedAIOutputNode = Spread<
 	{
 		type: 'ai-output';
+		outputType: AIOutputNodeType;
 	},
 	SerializedLexicalNode
 >;
 
 export class AIOutputNode extends DecoratorNode<JSX.Element> {
+	__outputType: AIOutputNodeType;
+
 	static getType(): string {
 		return 'ai-output';
 	}
 
 	static clone(node: AIOutputNode): AIOutputNode {
-		return new AIOutputNode(node.__key);
+		return new AIOutputNode(node.__outputType, node.__key);
 	}
 
-	constructor(key?: NodeKey) {
+	constructor(outputType: AIOutputNodeType = 'text', key?: NodeKey) {
 		super(key);
+		this.__outputType = outputType;
 	}
 
 	static importJSON() {
@@ -45,6 +52,7 @@ export class AIOutputNode extends DecoratorNode<JSX.Element> {
 		return {
 			type: 'ai-output',
 			version: 1,
+			outputType: this.__outputType,
 		};
 	}
 
@@ -65,11 +73,15 @@ export class AIOutputNode extends DecoratorNode<JSX.Element> {
 
 	// Responsible for rendering component
 	decorate(): JSX.Element {
-		return <AIOutputComponent nodeKey={this.getKey()} />;
+		if (this.__outputType === 'text') {
+			return <AIOutputComponent nodeKey={this.getKey()} />;
+		} else if (this.__outputType === 'source-output') {
+			return <AISearchSourceComponent nodeKey={this.getKey()} />;
+		}
 	}
 }
-export function $createAIOutputNode() {
-	const AIOutputNode_ = new AIOutputNode();
+export function $createAIOutputNode(type: AIOutputNodeType = 'text') {
+	const AIOutputNode_ = new AIOutputNode(type);
 
 	return $applyNodeReplacement(AIOutputNode_);
 }

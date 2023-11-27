@@ -16,22 +16,7 @@ import {
 } from '@utils/manipulateTextMap';
 import { AIModelLocalStorageKey } from 'data/aiModels.data';
 import { freePlanLimits } from 'data/pricingPlans';
-import {
-	$createParagraphNode,
-	$getSelection,
-	$insertNodes,
-	$isParagraphNode,
-	$isRangeSelection,
-	$isRootOrShadowRoot,
-	$isTextNode,
-	$setSelection,
-	ElementNode,
-	FORMAT_TEXT_COMMAND,
-	INSERT_LINE_BREAK_COMMAND,
-	LexicalNode,
-	TextFormatType,
-	TextNode,
-} from 'lexical';
+import { $getSelection, $isRangeSelection } from 'lexical';
 import mixpanel from 'mixpanel-browser';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
@@ -45,25 +30,22 @@ const useManipulationText = () => {
 	const [llmModel] = useLocalStorage({ key: AIModelLocalStorageKey });
 	const editor = useLexicalEditorStore(s => s.activeEditor);
 	const systemPrompt = useIsaacSystemPrompt();
-	const { streamAIOutput, createNewAIOutput } = useAIOutput();
-	const setAIOutput = useAIAssistantStore(state => state.setAIOutput);
-	const setCachedSelection = useAIAssistantStore(
-		state => state.setCachedSelection,
+	const { createNewAIOutput } = useAIOutput();
+	const { setAITextOutput, setCachedSelection } = useAIAssistantStore(
+		state => state.actions,
 	);
 
 	const insertAIOutputComponent = useCallback(() => {
 		editor.update(() => {
 			const selection = $getSelection();
-			setCachedSelection(selection.clone());
 
 			if (!$isRangeSelection(selection)) {
 				return;
 			}
 
-			const aiOutputNode = $createAIOutputNode();
-
+			setCachedSelection(selection.clone());
+			const aiOutputNode = $createAIOutputNode('text');
 			const focusedNode = selection.focus.getNode();
-
 			focusedNode.insertAfter(aiOutputNode, true);
 		});
 	}, [editor]);
@@ -84,8 +66,6 @@ const useManipulationText = () => {
 			});
 			return;
 		}
-
-		// openPanel(Panel.AI_OUTPUT_LOGS);
 
 		insertAIOutputComponent();
 
@@ -120,9 +100,7 @@ const useManipulationText = () => {
 					const chunkText = payload.choices[0].delta.content;
 
 					if (chunkText !== undefined) {
-						// streamAIOutput(aiOutputEntry.id, chunkText);
-						setAIOutput(cumulativeChunk + chunkText);
-						// addNewStreamingMessage(chunkText, assistantMessageObj.id);
+						setAITextOutput(cumulativeChunk + chunkText);
 						cumulativeChunk = cumulativeChunk + chunkText;
 					}
 				}
@@ -140,9 +118,3 @@ const useManipulationText = () => {
 };
 
 export default useManipulationText;
-function $wrapNodeInElement(
-	imageNode: LexicalNode,
-	$createParagraphNode: () => import('lexical').ParagraphNode,
-) {
-	throw new Error('Function not implemented.');
-}

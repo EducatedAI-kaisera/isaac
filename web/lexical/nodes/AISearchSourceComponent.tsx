@@ -1,17 +1,11 @@
-import { BellIcon, CheckIcon } from '@radix-ui/react-icons';
-
 import { cn } from '@components/lib/utils';
+import LiteratureCard from '@components/literature/LiteratureCard';
 import { Button } from '@components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@components/ui/card';
+import { Card, CardContent, CardFooter } from '@components/ui/card';
 
 import useAIAssistantStore from '@context/aiAssistant.store';
+import useAddReference from '@hooks/api/useAddToReference';
+import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { $isAIOutputNode } from '@lexical/nodes/AIOutputNode';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { motion } from 'framer-motion';
@@ -21,45 +15,34 @@ import {
 	$getSelection,
 	$isRangeSelection,
 	$setSelection,
-	NodeKey,
 } from 'lexical';
 import { Check, Trash } from 'lucide-react';
 import { useCallback } from 'react';
-
-const notifications = [
-	{
-		title: 'Your call has been confirmed.',
-		description: '1 hour ago',
-	},
-	{
-		title: 'You have a new message!',
-		description: '1 hour ago',
-	},
-	{
-		title: 'Your subscription is expiring soon!',
-		description: '2 hours ago',
-	},
-];
+import { LiteratureSource } from 'types/chat';
+import { ReferenceType } from 'types/literatureReference.type';
+import { $createCitationNode } from './CitationNode';
 
 type CardProps = React.ComponentProps<typeof Card>;
 
-interface AIOutputComponentProps extends CardProps {
+interface AISearchSourceComponentProps extends CardProps {
 	nodeKey: string; // Add custom properties here
 }
 
-const AIOutputComponent = ({
+const AISearchSourceComponent = ({
 	className,
 	nodeKey,
 	...props
-}: AIOutputComponentProps) => {
-	const AIOutput = useAIAssistantStore(state => state.AITextOutput);
-	const literatureOutput = useAIAssistantStore(
+}: AISearchSourceComponentProps) => {
+	const literatures = useAIAssistantStore(
 		state => state.literatureReferenceOutput,
 	);
+	const { projectId } = useGetEditorRouter();
 	const [editor] = useLexicalComposerContext();
 	const cachedSelection = useAIAssistantStore(state => state.cachedSelection);
 	const { setAITextOutput } = useAIAssistantStore(state => state.actions);
+	const { mutateAsync: addToReference } = useAddReference();
 
+	// Instead
 	const acceptText = () => {
 		editor.focus();
 
@@ -72,9 +55,34 @@ const AIOutputComponent = ({
 				return;
 			}
 
-			const aiOutputNode = $createTextNode(AIOutput.trim());
+			// TODO: Insert citation node instead
+			// const aISearchSourceNode = $createTextNode(AISearchSource.trim());
+			// selection.insertNodes([aISearchSourceNode]);
 
-			selection.insertNodes([aiOutputNode]);
+			const node = $getNodeByKey(nodeKey);
+
+			if ($isAIOutputNode(node)) {
+				node.remove();
+				setAITextOutput('');
+			}
+		});
+	};
+
+	const handleApply = async (lit: LiteratureSource) => {
+		//
+		editor.focus();
+		const data = await addToReference({ projectId, papers: [lit] });
+		console.log({ data });
+		editor.update(() => {
+			$setSelection(cachedSelection);
+			const selection = $getSelection();
+
+			if (!$isRangeSelection(selection)) {
+				return;
+			}
+			// TODO: Insert citation node instead
+			// const citationNode = $createCitationNode({id:});
+			// selection.insertNodes([aISearchSourceNode]);
 
 			const node = $getNodeByKey(nodeKey);
 
@@ -111,22 +119,28 @@ const AIOutputComponent = ({
 				{...props}
 			>
 				<CardContent className="grid gap-4">
-					<div className="flex items-center rounded-md border-none">
-						<p>{AIOutput}</p>
+					<div className="flex flex-col gap-2 items-center rounded-md border-none">
+						<p> Sources:</p>
+						{literatures?.map((lit, idx) => (
+							<LiteratureCard
+								key={lit.doi}
+								source="Search"
+								displayCta
+								title={lit.title}
+								authors={lit.authors.map(i => i.name)}
+								year={lit.year}
+								type={ReferenceType.ARTICLE}
+								onClick={() => ''}
+								onAdd={() => addToReference({ projectId, papers: [lit] })}
+								onApply={() => handleApply(lit)}
+							/>
+						))}
 					</div>
 				</CardContent>
 				<CardFooter className="inline-flex items-center gap-2">
-					<Button
-						className="inline-flex items-center"
-						variant="outline"
-						onClick={acceptText}
-					>
-						<Check className="mr-1 h-4 w-4" size={20} strokeWidth={1.2} />
-						<span>Replace selection </span>
-					</Button>
 					<Button onClick={discard} variant="ghost">
 						<Trash className="mr-1 h-4 w-4" size={20} strokeWidth={1.2} />{' '}
-						<span> Discard</span>
+						<span> Close</span>
 					</Button>
 				</CardFooter>
 			</Card>
@@ -134,4 +148,4 @@ const AIOutputComponent = ({
 	);
 };
 
-export default AIOutputComponent;
+export default AISearchSourceComponent;

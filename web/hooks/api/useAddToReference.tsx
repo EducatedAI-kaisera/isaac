@@ -26,7 +26,6 @@ const addReference = async ({
 			projectId,
 		})),
 	);
-
 	return data;
 };
 
@@ -35,6 +34,7 @@ const useAddReference = (options?: {
 	onMutate?: () => void;
 }) => {
 	const queryClient = useQueryClient();
+
 	return useMutation(addReference, {
 		mutationKey: 'add-reference',
 		onMutate: options?.onMutate,
