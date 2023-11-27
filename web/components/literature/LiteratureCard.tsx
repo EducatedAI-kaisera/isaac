@@ -76,22 +76,10 @@ const LiteratureCard = ({
 			</div>
 			<div
 				className={clsx(
-					'flex transition-opacity gap-2',
+					'flex transition-opacity gap-3',
 					displayCta || hovered ? 'opacity-100' : 'opacity-0',
 				)}
 			>
-				{!!onApply && (
-					<Pencil
-						className="mt-1 hover:stroke-1"
-						onClick={e => {
-							e.stopPropagation();
-							onApply();
-						}}
-						size={20}
-						strokeWidth={0.6}
-					/>
-				)}
-
 				<Bookmark
 					onClick={e => {
 						e.stopPropagation();
@@ -104,6 +92,17 @@ const LiteratureCard = ({
 					size={20}
 					strokeWidth={0.6}
 				/>
+				{!!onApply && (
+					<Pencil
+						className="mt-1 hover:stroke-1"
+						onClick={e => {
+							e.stopPropagation();
+							onApply();
+						}}
+						size={18}
+						strokeWidth={0.6}
+					/>
+				)}
 			</div>
 		</div>
 	);

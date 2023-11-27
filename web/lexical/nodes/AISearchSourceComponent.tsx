@@ -10,10 +10,9 @@ import useAddReference from '@hooks/api/useAddToReference';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { $isAIOutputNode } from '@lexical/nodes/AIOutputNode';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { useDeleteReference, useGetReference } from '@resources/editor-page';
 import { motion } from 'framer-motion';
 import {
-	$createRangeSelection,
-	$createTextNode,
 	$getNodeByKey,
 	$getSelection,
 	$isRangeSelection,
@@ -52,12 +51,24 @@ const AISearchSourceComponent = ({
 	const { setLiteratureReferenceOutput } = useAIAssistantStore(
 		state => state.actions,
 	);
-	const { mutateAsync: addToReference } = useAddReference();
+	const { data: _referenceList } = useGetReference(projectId);
 
-	const handleApply = async ({ paperId, ...lit }: LiteratureSource) => {
+	const { mutateAsync: addToReference } = useAddReference();
+	const { mutateAsync: removeReference } = useDeleteReference();
+
+	const handleApply = async (
+		{ paperId, ...lit }: LiteratureSource,
+		refs?: ReferenceLiterature,
+	) => {
 		editor.focus();
-		const data = await addToReference({ projectId, papers: [lit] });
-		const savedLit = data[0] as ReferenceLiterature;
+		let savedLit: ReferenceLiterature;
+
+		if (refs) {
+			savedLit = refs;
+		} else {
+			const data = await addToReference({ projectId, papers: [lit] });
+			savedLit = data[0] as ReferenceLiterature;
+		}
 		if (!savedLit) {
 			return toast.error('Unable to create');
 		}
@@ -137,23 +148,29 @@ const AISearchSourceComponent = ({
 								<LiteratureCardSkeleton />
 							</>
 						)}
-						{literatures?.map((lit, idx) => (
-							<LiteratureCard
-								key={lit.doi}
-								source="Search"
-								displayCta
-								title={lit.title}
-								authors={lit.authors.map(i => i.name)}
-								year={lit.year}
-								type={ReferenceType.ARTICLE}
-								onClick={() => ''}
-								onAdd={() => {
-									const { paperId, ...data } = lit;
-									addToReference({ projectId, papers: [data] });
-								}}
-								onApply={() => handleApply(lit)}
-							/>
-						))}
+						{literatures?.map((lit, idx) => {
+							const savedRef = _referenceList?.find(ref => ref.doi === lit.doi);
+
+							return (
+								<LiteratureCard
+									key={lit.doi}
+									added={!!savedRef}
+									source="Search"
+									displayCta
+									title={lit.title}
+									authors={lit.authors.map(i => i.name)}
+									year={lit.year}
+									type={ReferenceType.ARTICLE}
+									onClick={() => ''}
+									onAdd={() => {
+										const { paperId, ...data } = lit;
+										addToReference({ projectId, papers: [data] });
+									}}
+									onRemove={() => removeReference(savedRef.id)}
+									onApply={() => handleApply(lit, savedRef)}
+								/>
+							);
+						})}
 					</div>
 				</CardContent>
 			</Card>
