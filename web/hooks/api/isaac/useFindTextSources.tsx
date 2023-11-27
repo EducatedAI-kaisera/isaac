@@ -1,7 +1,6 @@
 import useChatStore from '@context/chat.store';
 import { Panel, useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
-import useSaveMessageToDatabase from '@hooks/api/isaac/useSaveMessageToDatabase';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { LiteratureResponse } from '@resources/literature.api';
 import mixpanel from 'mixpanel-browser';
@@ -13,7 +12,6 @@ const useFindTextSources = () => {
 	const { user } = useUser();
 	const { projectId } = useGetEditorRouter();
 	const { addNewMessages, updateSourcesMessage } = useChatStore();
-	const { saveMessageToDatabase } = useSaveMessageToDatabase();
 
 	const findSources = async (text: string) => {
 		mixpanel.track('Searched Sources');
@@ -67,10 +65,6 @@ const useFindTextSources = () => {
 			year: lit.year,
 			doi: lit.externalIds.DOI,
 		}));
-
-		const updatedMessage = updateSourcesMessage(sources, assistantMessageId);
-		await saveMessageToDatabase(userMessageObj);
-		await saveMessageToDatabase(updatedMessage);
 	};
 
 	return { findSources };

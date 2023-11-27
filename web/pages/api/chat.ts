@@ -4,6 +4,12 @@ import { NextApiRequest } from 'next';
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
 import { ChatContext } from 'types/chat';
 
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+}
+
 type Payload = {
 	userId: string;
 	context: ChatContext;
@@ -122,6 +128,10 @@ export default async function (req: NextApiRequest, res) {
 		// @ts-expect-error
 		completion.data.on('data', data => {
 			res.write(data.toString());
+		});
+		// @ts-expect-error
+		completion.data.on('end', () => {
+			res.end();
 		});
 	} catch (error) {
 		console.error(error);
