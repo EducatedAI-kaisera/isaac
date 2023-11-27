@@ -25,98 +25,104 @@ const realtimeEndpoint = `${process.env.NEXT_PUBLIC_APP_URL}/api/search-web`;
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async function (req: NextApiRequest, res) {
-	res.setHeader('Content-Type', 'text/event-stream');
-	res.setHeader('Cache-Control', 'no-cache');
-	res.setHeader('Connection', 'keep-alive');
-	res.setHeader('Content-Encoding', 'none');
+	try {
+		res.setHeader('Content-Type', 'text/event-stream');
+		res.setHeader('Cache-Control', 'no-cache');
+		res.setHeader('Connection', 'keep-alive');
+		res.setHeader('Content-Encoding', 'none');
 
-	const {
-		userId,
-		messages,
-		max_tokens,
-		temperature,
-		projectId,
-		uploadId,
-		context,
-	} = JSON.parse(req.body) as Payload;
-	let { llmModel } = JSON.parse(req.body);
-	const user = await updateTokenUsageForFreeTier(userId);
+		const {
+			userId,
+			messages,
+			max_tokens,
+			temperature,
+			projectId,
+			uploadId,
+			context,
+		} = JSON.parse(req.body) as Payload;
+		let { llmModel } = JSON.parse(req.body);
+		const user = await updateTokenUsageForFreeTier(userId);
 
-	if (!user.is_subscribed) {
-		llmModel = AIModels.GPT_3_5;
-	}
-	console.log({ context });
-	if (context === 'references') {
-		const prompt = messages.pop().content;
-		if (uploadId) {
-			const res = await fetch(singleReferenceEndpoint, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
+		if (!user.is_subscribed) {
+			llmModel = AIModels.GPT_3_5;
+		}
+
+		let prompt = '';
+		if (context === 'references' || context === 'realtime') {
+			prompt = messages.pop().content;
+		}
+
+		if (context === 'references') {
+			const body = uploadId ? { prompt, uploadId } : { prompt, projectId };
+
+			const res = await fetch(
+				uploadId ? singleReferenceEndpoint : projectReferenceEndpoint,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(body),
 				},
-				body: JSON.stringify({ prompt, uploadId }),
-			});
+			);
+
+			if (!res.ok) {
+				throw new Error(`Failed to fetch from reference endpoint: ${res.statusText}`);
+			}
+
 			const injectedDoc = await res.json();
-			console.log({ injectedDoc });
-			messages.push({
-				role: 'user',
-				content: `${prompt}\n Document: ${injectedDoc}`,
-			});
-		} else {
-			const res = await fetch(projectReferenceEndpoint, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-				body: JSON.stringify({ prompt, projectId }),
-			});
-			const injectedDoc = await res.json();
-			console.log({ injectedDoc });
 			messages.push({
 				role: 'user',
 				content: `${prompt}\n Document: ${injectedDoc}`,
 			});
 		}
-	}
 
-	if (context === 'realtime') {
-		const prompt = messages.pop().content;
-		const currentDate = new Date();
-		const dateString = currentDate.toString();
-		const res = await fetch(realtimeEndpoint, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
+		if (context === 'realtime') {
+			const currentDate = new Date();
+			const dateString = currentDate.toString();
+
+			const res = await fetch(realtimeEndpoint, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					query: prompt,
+				}),
+			});
+
+			if (!res.ok) {
+				throw new Error(`Failed to fetch from realtime endpoint: ${res.statusText}`);
+			}
+
+			const realtimeContext = await res.json();
+			messages.push({
+				role: 'user',
+				content: `Web search results:\n\n ${JSON.stringify(
+					realtimeContext,
+				)}\nCurrent date:${dateString}\n\nInstructions:Using the provided web search results, write a comprehensive reply to the given query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject.\nQuery:${prompt} `,
+			});
+		}
+
+		const completion = await openai.createChatCompletion(
+			{
+				model: llmModel || 'gpt-3.5-turbo',
+				messages,
+				temperature,
+				max_tokens,
+				top_p: 1,
+				stream: true,
 			},
-			body: JSON.stringify({
-				query: prompt,
-			}),
+
+			{ responseType: 'stream' },
+		);
+
+		// @ts-expect-error
+		completion.data.on('data', data => {
+			res.write(data.toString());
 		});
-		const realtimeContext = await res.json();
-		console.log({ realtimeContext });
-		messages.push({
-			role: 'user',
-			content: `Web search results:\n\n ${JSON.stringify(
-				realtimeContext,
-			)}\nCurrent date:${dateString}\n\nInstructions:Using the provided web search results, write a comprehensive reply to the given query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject.\nQuery:${prompt} `,
-		});
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'An error occurred while processing your request.' });
 	}
-
-	const completion = await openai.createChatCompletion(
-		{
-			model: llmModel || 'gpt-3.5-turbo',
-			messages,
-			temperature,
-			max_tokens,
-			top_p: 1,
-			stream: true,
-		},
-
-		{ responseType: 'stream' },
-	);
-
-	// @ts-expect-error
-	completion.data.on('data', data => {
-		res.write(data.toString());
-	});
 }
