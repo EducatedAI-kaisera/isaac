@@ -1,4 +1,4 @@
-import ChatSessionCard from '@components/chatV2/ChatSessionCard';
+import ChatSessionCard from '@components/chat/ChatSessionCard';
 import useChatStoreV2 from '@context/chatSessions.store';
 import useDeleteChatSession from '@hooks/api/useChatSession.delete';
 import useGetChatSessions from '@hooks/api/useChatSession.get';

@@ -1,6 +1,5 @@
 import AIOutputLogPanel from '@components/AIOutputLogPanel';
-import Chat from '@components/chat/Chat';
-import ChatSessions from '@components/chatV2';
+import ChatSessions from '@components/chat';
 import ReferenceSearchSection from '@components/literature/LiteratureSearchSection';
 import ReferencesSection from '@components/literature/ReferencesSection';
 import NotesSection from '@components/notes/NotesSection';
@@ -21,14 +20,6 @@ export default function Sidebar() {
 				)}
 			>
 				<ProjectExplorer />
-			</div>
-			<div
-				className={clsx(
-					'flex-grow',
-					activePanel !== Panel.CHAT && 'w-0 overflow-hidden flex-grow-0',
-				)}
-			>
-				<Chat />
 			</div>
 			<div
 				className={clsx(

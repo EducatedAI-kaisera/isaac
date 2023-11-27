@@ -1,24 +1,19 @@
 import useAIAssistantStore from '@context/aiAssistant.store';
-import useChatStore from '@context/chat.store';
 import useLexicalEditorStore from '@context/lexicalEditor.store';
 import { Panel, useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
-import useSaveMessageToDatabase from '@hooks/api/isaac/useSaveMessageToDatabase';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { $createAIOutputNode } from '@lexical/nodes/AIOutputNode';
 import { LiteratureResponse } from '@resources/literature.api';
 import { $getSelection, $isRangeSelection } from 'lexical';
 import mixpanel from 'mixpanel-browser';
 import { useCallback } from 'react';
-import { ChatMessage, LiteratureSource } from 'types/chat';
-import { v4 as uuidv4 } from 'uuid';
+import { LiteratureSource } from 'types/chat';
 
 const useFindTextSources = () => {
 	const openPanel = useUIStore(s => s.openPanel);
 	const { user } = useUser();
 	const { projectId } = useGetEditorRouter();
-	const { addNewMessages, updateSourcesMessage } = useChatStore();
-	const { saveMessageToDatabase } = useSaveMessageToDatabase();
 	const editor = useLexicalEditorStore(s => s.activeEditor);
 	const {
 		setLiteratureReferenceOutput,
@@ -47,30 +42,6 @@ const useFindTextSources = () => {
 
 		// TODO: consider language
 		// const prompt = manipulateTextMap[method]?.promptBuilder(text);
-		const userMessageObj: ChatMessage = {
-			id: uuidv4(),
-			user_id: user?.id,
-			project_id: projectId,
-			content: `${text}`,
-			metadata: {
-				role: 'user',
-				type: 'manipulation',
-				manipulation_title: 'Find academic sources for the following passage:',
-			},
-		};
-		const assistantMessageId = uuidv4();
-		const assistantMessageObj: ChatMessage = {
-			id: assistantMessageId,
-			user_id: user?.id,
-			project_id: projectId,
-			content: '',
-			metadata: {
-				role: 'assistant',
-				type: 'regular',
-			},
-		};
-
-		addNewMessages([userMessageObj, assistantMessageObj]);
 
 		const response = await fetch('/api/find-sources', {
 			method: 'POST',
@@ -90,10 +61,8 @@ const useFindTextSources = () => {
 			year: lit.year,
 			doi: lit.externalIds.DOI,
 		}));
+
 		setLiteratureReferenceOutput(sources);
-		const updatedMessage = updateSourcesMessage(sources, assistantMessageId);
-		await saveMessageToDatabase(userMessageObj);
-		await saveMessageToDatabase(updatedMessage);
 	};
 
 	return { findSources };
