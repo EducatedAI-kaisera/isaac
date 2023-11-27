@@ -17,7 +17,7 @@ interface AIAssistantState {
 		setCursorPosition: (X: number, Y: number) => void;
 		setAITextOutput: (AIOutput: string) => void;
 		setCachedSelection: (cachedSelection: RangeSelection) => void;
-		setLiteratureReferenceOutput: (cachedSelection: LiteratureSource[]) => void;
+		setLiteratureReferenceOutput: (cachedSelection: any[]) => void;
 		setLiteratureReferenceOutputLoading: (bool: boolean) => void;
 	};
 }

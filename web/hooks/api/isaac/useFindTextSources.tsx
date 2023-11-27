@@ -1,6 +1,5 @@
 import useAIAssistantStore from '@context/aiAssistant.store';
 import useLexicalEditorStore from '@context/lexicalEditor.store';
-import { Panel, useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { $createAIOutputNode } from '@lexical/nodes/AIOutputNode';
@@ -11,7 +10,6 @@ import { useCallback } from 'react';
 import { LiteratureSource } from 'types/chat';
 
 const useFindTextSources = () => {
-	const openPanel = useUIStore(s => s.openPanel);
 	const { user } = useUser();
 	const { projectId } = useGetEditorRouter();
 	const editor = useLexicalEditorStore(s => s.activeEditor);
@@ -37,7 +35,6 @@ const useFindTextSources = () => {
 
 	const findSources = async (text: string) => {
 		mixpanel.track('Searched Sources');
-		openPanel(Panel.CHAT);
 		insertAIOutputComponent();
 
 		// TODO: consider language

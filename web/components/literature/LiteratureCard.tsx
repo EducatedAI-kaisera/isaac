@@ -82,7 +82,7 @@ const LiteratureCard = ({
 			>
 				{!!onApply && (
 					<Pencil
-						className="mt-1"
+						className="mt-1 hover:stroke-1"
 						onClick={e => {
 							e.stopPropagation();
 							onApply();
