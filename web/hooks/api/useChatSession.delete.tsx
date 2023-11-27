@@ -63,10 +63,13 @@ const useDeleteChatSession = (params?: {
 			>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Delete chat session</DialogTitle>
+						<DialogTitle>Delete chat session?</DialogTitle>
 					</DialogHeader>
-					<DialogDescription>{`Delete "${showConfirmDialog?.title}" sesion?`}</DialogDescription>
+					<DialogDescription><span> This will delete <strong>{showConfirmDialog?.title}</strong></span></DialogDescription>
 					<DialogFooter>
+					<Button variant="ghost" onClick={() => setShowConfirmDialog(undefined)}>
+							Cancel
+						</Button>
 						<Button
 							onClick={() =>
 								mutateAsync({ sessionId: showConfirmDialog?.sessionId })
@@ -75,9 +78,7 @@ const useDeleteChatSession = (params?: {
 						>
 							Delete
 						</Button>
-						<Button onClick={() => setShowConfirmDialog(undefined)}>
-							Cancel
-						</Button>
+
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
