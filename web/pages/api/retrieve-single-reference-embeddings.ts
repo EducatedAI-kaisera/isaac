@@ -23,7 +23,6 @@ export default async function handler(
 		uploadId: string;
 	};
 
-	console.log({ prompt, uploadId });
 	try {
 		const input = {
 			input: prompt,

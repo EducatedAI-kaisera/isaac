@@ -19,7 +19,7 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse,
 ) {
-	const { prompt, projectId } = JSON.parse(req.body) as {
+	const { prompt, projectId } = req.body as {
 		prompt: string;
 		projectId: string;
 	};

@@ -1,4 +1,3 @@
-import { AIModels } from 'data/aiModels.data';
 import { NextApiRequest } from 'next';
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
 
