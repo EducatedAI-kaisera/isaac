@@ -1,6 +1,11 @@
 import { ReferenceTypeIconsMap } from '@components/core/IconMap';
 import { Badge } from '@components/ui/badge';
 import { Skeleton } from '@components/ui/skeleton';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from '@components/ui/tooltip';
 import { useHover } from '@mantine/hooks';
 import clsx from 'clsx';
 import { capitalize, startCase } from 'lodash';
@@ -93,15 +98,22 @@ const LiteratureCard = ({
 					strokeWidth={0.6}
 				/>
 				{!!onApply && (
-					<Pencil
-						className="mt-1 hover:stroke-1"
-						onClick={e => {
-							e.stopPropagation();
-							onApply();
-						}}
-						size={18}
-						strokeWidth={0.6}
-					/>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Pencil
+								className="mt-1 hover:stroke-1"
+								onClick={e => {
+									e.stopPropagation();
+									onApply();
+								}}
+								size={18}
+								strokeWidth={0.6}
+							/>
+						</TooltipTrigger>
+						<TooltipContent>
+							<span>Cite!</span>
+						</TooltipContent>
+					</Tooltip>
 				)}
 			</div>
 		</div>
