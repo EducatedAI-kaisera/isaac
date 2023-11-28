@@ -150,7 +150,7 @@ const EditorLayout = ({ children }: Props) => {
 										'flex flex-col w-full h-full bg-white dark:bg-black',
 									)}
 								>
-									<EditorTabs />
+									{isAboveMd && <EditorTabs />}
 									<EditorBottomRightFab />
 									<div
 										id="scrollable-editor-container"

@@ -87,7 +87,7 @@ export default function ProjectNavCommand() {
 				}}
 			>
 				<PopoverTrigger asChild>
-					<button className="w-[360px] border text-sm  h-7 rounded">
+					<button className="w-[280px] sm-[300px] md:w-[360px] border text-sm  h-7 rounded">
 						{currentProjectDocuments?.title || 'Search Anything'}
 					</button>
 				</PopoverTrigger>
