@@ -1,8 +1,7 @@
 import { cn } from '@components/lib/utils';
-import LiteratureCard, {
-	LiteratureCardSkeleton,
-} from '@components/literature/LiteratureCard';
-import { Button } from '@components/ui/button';
+import FindSourcesLiteratureCard, {
+	FindSourcesLiteratureCardSkeleton,
+} from '@components/literature/FindSourcesLiteratureCard';
 import { Card, CardContent, CardFooter } from '@components/ui/card';
 
 import useAIAssistantStore from '@context/aiAssistant.store';
@@ -22,7 +21,7 @@ import {
 	$isRangeSelection,
 	$setSelection,
 } from 'lexical';
-import { Check, Trash, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { LiteratureSource } from 'types/chat';
@@ -34,7 +33,7 @@ import { $createCitationNode } from './CitationNode';
 
 type CardProps = React.ComponentProps<typeof Card>;
 
-interface AISearchSourceComponentProps extends CardProps {
+interface FindSourcesComponentProps extends CardProps {
 	nodeKey: string; // Add custom properties here
 }
 
@@ -42,7 +41,7 @@ const AISearchSourceComponent = ({
 	className,
 	nodeKey,
 	...props
-}: AISearchSourceComponentProps) => {
+}: FindSourcesComponentProps) => {
 	const literatures = useAIAssistantStore(
 		state => state.literatureReferenceOutput,
 	);
@@ -144,23 +143,23 @@ const AISearchSourceComponent = ({
 				<CardContent className="grid gap-4">
 					<div className="flex flex-col gap-2 pt-3 rounded-md border-none">
 						<div className="flex justify-between">
-							<span className="font-semibold text-xs">Found Sources:</span>
+							{!isLoading && <span className="font-semibold text-xs">Suggested sources:</span>}
 							<button className="" onClick={discard}>
 								<X strokeWidth={1} size={16} />
 							</button>
 						</div>
 						{isLoading && (
 							<>
-								<LiteratureCardSkeleton />
-								<LiteratureCardSkeleton />
-								<LiteratureCardSkeleton />
+								<FindSourcesLiteratureCardSkeleton />
+								<FindSourcesLiteratureCardSkeleton />
+								<FindSourcesLiteratureCardSkeleton />
 							</>
 						)}
 						{literatures?.map((lit, idx) => {
 							const savedRef = _referenceList?.find(ref => ref.doi === lit.doi);
 
 							return (
-								<LiteratureCard
+								<FindSourcesLiteratureCard
 									key={lit.doi}
 									added={!!savedRef}
 									source="Search"

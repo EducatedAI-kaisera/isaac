@@ -53,9 +53,6 @@ const AIOutputComponent = ({
 	...props
 }: AIOutputComponentProps) => {
 	const AIOutput = useAIAssistantStore(state => state.AITextOutput);
-	const literatureOutput = useAIAssistantStore(
-		state => state.literatureReferenceOutput,
-	);
 	const [editor] = useLexicalComposerContext();
 	const cachedSelection = useAIAssistantStore(state => state.cachedSelection);
 	const { setAITextOutput } = useAIAssistantStore(state => state.actions);

@@ -11,7 +11,7 @@ import type {
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
-import AISearchSourceComponent from './AISearchSourceComponent';
+import FindSourcesComponent from './FindSourcesComponent';
 
 export type AIOutputNodeType = 'text' | 'source-output';
 
@@ -76,7 +76,7 @@ export class AIOutputNode extends DecoratorNode<JSX.Element> {
 		if (this.__outputType === 'text') {
 			return <AIOutputComponent nodeKey={this.getKey()} />;
 		} else if (this.__outputType === 'source-output') {
-			return <AISearchSourceComponent nodeKey={this.getKey()} />;
+			return <FindSourcesComponent nodeKey={this.getKey()} />;
 		}
 	}
 }
