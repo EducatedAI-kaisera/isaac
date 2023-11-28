@@ -1,5 +1,3 @@
-// import ReferenceViewer from '@components/core/ReferenceViewer';
-import Chat from '@components/chat/Chat';
 import ChatTab from '@components/chat/ChatTab';
 import EditorEmptyState from '@components/editor/EditorEmptyState';
 import AppLayout from '@components/editor/EditorLayout';
@@ -7,7 +5,6 @@ import LiteratureSearchTab from '@components/literature/LiteratureSearchTab';
 import { Grammarly } from '@grammarly/editor-sdk-react';
 import useHandleToastQuery from '@hooks/misc/useHandleToastQuery';
 import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
-// import Editor from '@lexical/Editor';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
