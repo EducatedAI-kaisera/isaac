@@ -2,8 +2,7 @@ import { useUser } from '@context/user';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useId } from 'react';
-import Meteors from '@components/ui/meteors'
+import { useEffect, useId, useRef } from 'react';
 
 import { Container } from '@components/landing/Container';
 import { LandingButton } from '@components/ui/button-landing';
@@ -15,8 +14,6 @@ import logoYale from '@components/images/logos/yale.svg';
 
 import logoMIT from '@components/images/logos/mit.svg';
 import logoRWTH from '@components/images/logos/rwth.svg';
-
-import TypedText from './TypedText'
 
 function BackgroundIllustration(props) {
 	let id = useId();
@@ -88,30 +85,34 @@ function BackgroundIllustration(props) {
 }
 
 export function Hero() {
-	// let video = useRef();
+	let video = useRef();
 	const { user } = useUser();
 
-	// useEffect(() => {
-	// 	video.current.playbackRate = 1.5;
-	// }, []);
+	useEffect(() => {
+		video.current.playbackRate = 1.5;
+	}, []);
 	return (
 		<div className="overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36">
 			<Container>
-			<div className="flex flex-col items-center justify-center">
-			<div className="text-center max-w-2xl">
+				<div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-20">
+					<div className="relative z-10 max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6">
+						{/* <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+							Announcing our next round of funding.{' '}
+							<a href="#" className="font-semibold text-indigo-600">
+								<span className="absolute inset-0" aria-hidden="true" />
+								Read more <span aria-hidden="true">&rarr;</span>
+							</a>
+						</div> */}
 
-						<h1 className="text-5xl font-bold tracking-tight text-gray-900">
-							{/* The AI-powered workspace for <br/><TypedText /> */}
-							Research, write, edit. <br/>
-							With AI at your side.
+						<h1 className="text-4xl font-medium tracking-tight text-gray-900">
+							AI-powered academic writing.
 						</h1>
 
-
-						<p className="mt-4 text-2xl text-gray-600">
-						The AI-powered workspace for <TypedText />
+						<p className="mt-4 text-lg text-gray-600">
+							Academic writing as it should be.
 						</p>
 
-						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-4 justify-center">
+						<div className="mt-8 flex flex-wrap gap-x-6 gap-y-4">
 							{user ? (
 								<LandingButton asChild>
 									<Link href="/editor">Go to editor</Link>
@@ -131,7 +132,7 @@ export function Hero() {
 
 					<div className="relative mt-8 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6">
 						<BackgroundIllustration className="absolute left-1/2 top-4 h-[1026px] w-[1026px] -translate-x-1/3 stroke-gray-300/70 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:top-16 sm:-translate-x-1/2 lg:-top-16 lg:ml-12 xl:-top-14 xl:ml-0" />
-						{/* <div className="-mx-4 flex items-center justify-center h-[448px] px-9 [mask-image:linear-gradient(to_bottom,white_60%,transparent)] sm:mx-0 lg:absolute lg:-inset-x-10 lg:-bottom-20 lg:-top-10 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32">
+						<div className="-mx-4 flex items-center justify-center h-[448px] px-9 [mask-image:linear-gradient(to_bottom,white_60%,transparent)] sm:mx-0 lg:absolute lg:-inset-x-10 lg:-bottom-20 lg:-top-10 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32">
 							<div className="max-w-[700px] md:ml-12">
 								<video
 									ref={video}
@@ -143,16 +144,16 @@ export function Hero() {
 									<source src="/landing-video-isaac.mp4" />
 								</video>
 							</div>
-						</div> */}
+						</div>
 					</div>
-
-					<div className="mt-8 text-center">
-                <p className="text-sm font-semibold text-gray-900">
-                    Join more than +23,735 researchers & students
-                </p>
+					<div className="relative -mt-4 lg:col-span-7 lg:mt-0 xl:col-span-6">
+						<p className="text-center text-sm font-semibold text-gray-900 lg:text-left">
+							Join more than +22,527 researchers & students
+						</p>
 						<ul
 							role="list"
-							className="mx-auto mt-8 flex max-w-xl flex-wrap justify-center gap-x-10 gap-y-8"						>
+							className="mx-auto mt-8 flex max-w-xl flex-wrap justify-center gap-x-10 gap-y-8 lg:mx-0 lg:justify-start"
+						>
 							{[
 								['Harvard', logoHarvard],
 								['Stanford', logoStanford],

@@ -19,7 +19,7 @@ const TypedText = () => {
     };
   }, []);
 
-  return <span className="text-isaac" ref={el} />;
+  return <span className="text-isaac min-w-max" ref={el} />;
 };
 
 export default TypedText;
