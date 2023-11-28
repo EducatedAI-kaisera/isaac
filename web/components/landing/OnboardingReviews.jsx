@@ -265,15 +265,6 @@ export function OnboardingReviews() {
 			className="pt-20 pb-16 sm:pb-24 sm:pt-32"
 		>
 			<Container>
-				{/* <h2
-          id="reviews-title"
-          className="text-3xl font-medium tracking-tight text-gray-900 sm:text-center"
-        >
-          Isaac is changing Academia forever.
-        </h2>
-        <p className="mt-2 text-lg text-gray-600 sm:text-center">
-          Thousands of people have tried it already.
-        </p> */}
 				<ReviewGrid />
 			</Container>
 		</section>

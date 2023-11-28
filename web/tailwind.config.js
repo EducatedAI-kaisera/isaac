@@ -190,6 +190,7 @@ module.exports = {
 				'fade-in': 'fade-in 0.5s linear forwards',
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+				ripple: 'ripple 3400ms ease infinite',
 				marquee: 'marquee var(--marquee-duration) linear infinite',
 				'spin-slow': 'spin 4s linear infinite',
 				'spin-slower': 'spin 6s linear infinite',
@@ -197,12 +198,25 @@ module.exports = {
 				'spin-reverse-slow': 'spin-reverse 4s linear infinite',
 				'spin-reverse-slower': 'spin-reverse 6s linear infinite',
 				meteor: 'meteor 5s linear infinite',
+				grid: 'grid 15s linear infinite',
 			},
 			keyframes: {
 				float: {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10%)' },
 				},
+				ripple: {
+					'0%, 100%': {
+						transform: 'translate(-50%, -50%) scale(1)',
+					},
+					'50%': {
+						transform: 'translate(-50%, -50%) scale(0.9)',
+					},
+				},
+				grid: {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
+        },
 				'fade-in': {
 					from: { opacity: 0 },
 					to: { opacity: 1 },
