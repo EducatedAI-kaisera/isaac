@@ -1,3 +1,5 @@
+import { RangeSelection } from 'lexical';
+import { ChatMessage, LiteratureSource } from 'types/chat';
 import { create } from 'zustand';
 
 // Define the state shape with an interface
@@ -5,32 +7,51 @@ interface AIAssistantState {
 	open: boolean;
 	X: number;
 	Y: number;
-	openModal: () => void;
-	closeModal: () => void;
-	setCursorPosition: (X: number, Y: number) => void;
-	AIOutput: string;
-	setAIOutput: (AIOutput: string) => void;
-	cachedSelection: any;
-	setCachedSelection: (cachedSelection: any) => void;
+	cachedSelection?: RangeSelection;
+	AITextOutput: string;
+	literatureReferenceOutput?: LiteratureSource[];
+	literatureReferenceOutputLoading?: boolean;
+	actions: {
+		openModal: () => void;
+		closeModal: () => void;
+		setCursorPosition: (X: number, Y: number) => void;
+		setAITextOutput: (AIOutput: string) => void;
+		setCachedSelection: (cachedSelection: RangeSelection) => void;
+		setLiteratureReferenceOutput: (cachedSelection: any[]) => void;
+		setLiteratureReferenceOutputLoading: (bool: boolean) => void;
+	};
 }
 
 // Create the store with the defined types
 const useAIAssistantStore = create<AIAssistantState>(set => ({
 	open: false,
-	openModal: () => set({ open: true }),
-	closeModal: () => set({ open: false }),
+	cachedSelection: undefined,
+	AITextOutput: '',
+	literatureReferenceOutput: undefined,
+	literatureReferenceOutputLoading: false,
 	X: 0,
 	Y: 0,
-	setCursorPosition: (X, Y) => {
-		set({ X, Y });
-	},
-	AIOutput: '',
-	setAIOutput: (AIOutput: string) => {
-		set({ AIOutput });
-	},
-	cachedSelection: '',
-	setCachedSelection: (cachedSelection: any) => {
-		set({ cachedSelection });
+	actions: {
+		openModal: () => set({ open: true }),
+		closeModal: () => set({ open: false }),
+		setCursorPosition: (X, Y) => {
+			set({ X, Y });
+		},
+		setAITextOutput: (AITextOutput: string) => {
+			set({ AITextOutput });
+		},
+		setLiteratureReferenceOutput: literatureReferenceOutput => {
+			set({
+				literatureReferenceOutput,
+				literatureReferenceOutputLoading: false,
+			});
+		},
+		setLiteratureReferenceOutputLoading: () => {
+			set({ literatureReferenceOutputLoading: true });
+		},
+		setCachedSelection: (cachedSelection: any) => {
+			set({ cachedSelection });
+		},
 	},
 }));
 

@@ -3,7 +3,7 @@ import { Logomark } from '@components/landing/Logo';
 import useChatSessions from '@context/chatSessions.store';
 import { UniqueTabSources } from '@hooks/useDocumentTabs';
 import clsx from 'clsx';
-import { memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 // Types
 interface ChatBoxProps {
 	sessionId: string;
@@ -12,10 +12,24 @@ interface ChatBoxProps {
 
 const ChatBoxV2 = ({ sessionId, minimized }: ChatBoxProps) => {
 	const messages = useChatSessions(s => s.chatSessions[sessionId]?.messages);
+	const isStreaming = useChatSessions(
+		s => s.chatSessions[sessionId]?.isHandling,
+	);
+	const scrollRef = useRef<HTMLDivElement>(null);
 
-	// TODO: Handle empty chat
+	// Use this useEffect to scroll to the bottom when new messages arrive
+	useEffect(() => {
+		console.log({ scrollRef, isStreaming });
+		if (scrollRef && isStreaming) {
+			scrollRef.current.scrollTo({
+				top: scrollRef.current.scrollHeight,
+			});
+		}
+	}, [messages, isStreaming]);
+
 	return (
 		<div
+			ref={scrollRef}
 			className={clsx(
 				'z-0 w-full pt-2 overflow-y-scroll pb-6 scrollbar-hide flex flex-col',
 				minimized
