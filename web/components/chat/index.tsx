@@ -1,5 +1,5 @@
-import ChatPanel from '@components/chatV2/ChatPanel';
-import ChatSessionList from '@components/chatV2/ChatSessionList';
+import ChatPanel from '@components/chat/ChatPanel';
+import ChatSessionList from '@components/chat/ChatSessionList';
 import useChatStoreV2 from '@context/chatSessions.store';
 import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';

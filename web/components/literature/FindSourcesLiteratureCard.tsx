@@ -1,5 +1,6 @@
 import { ReferenceTypeIconsMap } from '@components/core/IconMap';
 import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import { Skeleton } from '@components/ui/skeleton';
 import {
 	Tooltip,
@@ -9,10 +10,10 @@ import {
 import { useHover } from '@mantine/hooks';
 import clsx from 'clsx';
 import { capitalize, startCase } from 'lodash';
-import { Book, Bookmark, Pencil } from 'lucide-react';
+import { Book, Bookmark, FileSymlink } from 'lucide-react';
 import { ReferenceType } from 'types/literatureReference.type';
 
-type LiteratureCardProps = {
+type FindSourcesLiteratureCardProps = {
 	title: string;
 	onClick: () => void;
 	authors: string[];
@@ -26,7 +27,7 @@ type LiteratureCardProps = {
 	displayCta?: boolean;
 };
 
-const LiteratureCard = ({
+const FindSourcesLiteratureCard = ({
 	title,
 	onClick,
 	year,
@@ -38,7 +39,7 @@ const LiteratureCard = ({
 	type,
 	added,
 	displayCta,
-}: LiteratureCardProps) => {
+}: FindSourcesLiteratureCardProps) => {
 	const { hovered, ref } = useHover();
 
 	const Icon = ReferenceTypeIconsMap[type] || Book;
@@ -46,7 +47,7 @@ const LiteratureCard = ({
 	return (
 		<div
 			ref={ref}
-			className="flex justify-between w-full p-3 text-sm border rounded-md border-border hover:shadow-md hover:cursor-pointer"
+			className="flex justify-between w-full p-2 text-sm rounded-md hover:cursor-pointer"
 			onClick={onClick}
 		>
 			<div className="flex gap-3">
@@ -81,48 +82,53 @@ const LiteratureCard = ({
 			</div>
 			<div
 				className={clsx(
-					'flex transition-opacity gap-3',
+					'inline-flex items-center transition-opacity gap-3',
 					displayCta || hovered ? 'opacity-100' : 'opacity-0',
 				)}
 			>
-				<Bookmark
+				{!!onApply && (
+					<Button
+						size="sm"
+						variant="ghost"
+						onClick={e => {
+							e.stopPropagation();
+							onApply();
+						}}
+					>
+						{' '}
+						<FileSymlink className="mr-1 h-4 w-4" size={20} strokeWidth={1.2} />
+						Insert citation{' '}
+					</Button>
+				)}
+				<Tooltip >
+					<TooltipTrigger>
+				<Button
+					size="icon"
+					variant="ghost"
+
 					onClick={e => {
 						e.stopPropagation();
 						!added ? onAdd() : onRemove();
 					}}
-					className={clsx(
-						'text-right mt-1 cursor-pointer hover:stroke-yellow-500 hover:stroke-1',
-						added && 'fill-yellow-400 stroke-yellow-500',
-					)}
-					size={20}
-					strokeWidth={0.6}
-				/>
-				{!!onApply && (
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Pencil
-								className="mt-1 hover:stroke-1"
-								onClick={e => {
-									e.stopPropagation();
-									onApply();
-								}}
-								size={18}
-								strokeWidth={0.6}
-							/>
-						</TooltipTrigger>
-						<TooltipContent>
-							<span>Cite!</span>
-						</TooltipContent>
-					</Tooltip>
-				)}
+				>
+					<Bookmark
+						className={clsx(' h-4 w-4', added && 'fill-isaac stroke-isaac')}
+						size={20}
+						strokeWidth={1.2}
+					/>
+
+				</Button>
+				</TooltipTrigger>
+				<TooltipContent side="right">{added ? "Remove from references"  : "Save to references"} </TooltipContent>
+				</Tooltip>
 			</div>
 		</div>
 	);
 };
 
-export default LiteratureCard;
+export default FindSourcesLiteratureCard;
 
-export const LiteratureCardSkeleton = () => {
+export const FindSourcesLiteratureCardSkeleton = () => {
 	return (
 		<div className="flex justify-between gap-10 p-4 text-sm border rounded-md border-border hover:shadow-md hover:cursor-pointer">
 			<Skeleton className="w-8 h-8 rounded-xl" />

@@ -1,4 +1,4 @@
-import ChatSessionCard from '@components/chatV2/ChatSessionCard';
+import ChatSessionCard from '@components/chat/ChatSessionCard';
 import useChatStoreV2 from '@context/chatSessions.store';
 import useDeleteChatSession from '@hooks/api/useChatSession.delete';
 import useGetChatSessions from '@hooks/api/useChatSession.get';
@@ -12,9 +12,10 @@ const ChatSessionList = () => {
 	const { projectId, openDocument } = useDocumentTabs();
 	const { setChatSidebar } = useChatStoreV2(s => s.actions);
 	const { data: chatSessions } = useGetChatSessions(projectId);
-	const { mutateAsync } = useDeleteChatSession();
+	const { deleteSession, DeleteConfirmationDialog } = useDeleteChatSession();
 	return (
 		<div className="px-3 flex flex-col gap-2 h-[calc(100vh-90px)] overflow-scroll">
+			<DeleteConfirmationDialog />
 			<ChatSessionCard
 				type="NEW"
 				onClick={() => {
@@ -49,7 +50,7 @@ const ChatSessionList = () => {
 							label: title,
 						})
 					}
-					onDeleteClick={() => mutateAsync({ sessionId: id })}
+					onDeleteClick={() => deleteSession(id, title)}
 				/>
 			))}
 		</div>

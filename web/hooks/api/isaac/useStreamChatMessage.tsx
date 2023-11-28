@@ -32,7 +32,7 @@ const useStreamChatMessage = () => {
 			uploadId,
 			context,
 		});
-		const source = new SSE(`/api/new-chat-v2`, { payload });
+		const source = new SSE(`/api/chat`, { payload });
 		let cumulativeChunk = '';
 
 		// Start Streaming

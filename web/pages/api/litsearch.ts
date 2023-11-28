@@ -1,7 +1,13 @@
 /* eslint-disable import/no-anonymous-default-export */
-export default async function (req, res) {
-	const search_query = req.body.search_query;
-	const year_range = req.body.year_range;
+import { NextApiRequest, NextApiResponse } from 'next';
+
+interface RequestBody {
+	search_query: string;
+	year_range: string;
+}
+
+export default async function (req: NextApiRequest, res: NextApiResponse) {
+	const { search_query, year_range }: RequestBody = req.body;
 	const SEMANTIC_SCHOLAR_API_KEY = process.env.SEMANTIC_SCHOLAR_API_KEY;
 
 	const response = await fetch(
@@ -15,6 +21,5 @@ export default async function (req, res) {
 	);
 
 	const data = await response.json();
-
 	res.status(200).json({ literature: data.data || [] });
 }

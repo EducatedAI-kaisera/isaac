@@ -1,6 +1,6 @@
-import ChatboxV2 from '@components/chatV2/ChatboxV2';
-import ChatInputSetting from '@components/chatV2/ChatInputSettingV2';
-import ChatInput from '@components/chatV2/ChatInputV2';
+import Chatbox from '@components/chat/Chatbox';
+import ChatInputSetting from '@components/chat/ChatInputSetting';
+import ChatInput from '@components/chat/ChatInput';
 import useChatSessions from '@context/chatSessions.store';
 import { retrieveChatMessages } from '@hooks/api/isaac/useRetrieveChatMessages';
 import useDocumentTabs, {
@@ -44,7 +44,7 @@ const ChatTab = ({ active, sessionId }: Props) => {
 				active ? 'block' : 'hidden',
 			)}
 		>
-			<ChatboxV2 sessionId={sessionId} />
+			<Chatbox sessionId={sessionId} />
 			<div className="absolute w-full bottom-0">
 				<ChatInputSetting sessionId={sessionId} />
 				<ChatInput sessionId={sessionId} />

@@ -37,7 +37,7 @@ import { appHeaderMenuTitle } from '@styles/className';
 import { discordInviteLink, twitterLink } from 'data/externalLinks';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
 const EditorSettingsMenu = memo(() => {
 	return (
@@ -68,13 +68,20 @@ const SettingsMenu = memo(() => {
 		[setCitationStyle],
 	);
 
+	const [isDarkMode, setIsDarkMode] = useState(() => {
+		const htmlElem = document.querySelector('html');
+		return htmlElem?.classList.contains('dark') ?? false;
+	});
+
 	const handleToggleTheme = useCallback(() => {
 		const htmlElem = document.querySelector('html');
 		if (htmlElem) {
 			if (htmlElem.classList.contains('dark')) {
 				htmlElem.classList.remove('dark');
+				setIsDarkMode(false);
 			} else {
 				htmlElem.classList.add('dark');
+				setIsDarkMode(true);
 			}
 		}
 	}, []);
@@ -139,7 +146,9 @@ const SettingsMenu = memo(() => {
 						handleToggleTheme();
 					}}
 				>
-					<span>{'Toggle theme'}</span>
+					<span>
+						{isDarkMode ? 'Light mode' : 'Dark mode'}
+					</span>
 					<MenubarShortcut>
 						{commandKey}
 						{hotKeys.toggleTheme.key.toUpperCase()}

@@ -10,6 +10,7 @@ export function NavLinks() {
     ['Reviews', '#reviews'],
     ['Pricing', '#pricing'],
     ['FAQs', '#faqs'],
+		['Community', 'https://discord.gg/JqjMv4yrAn']
   ].map(([label, href], index) => (
     <Link
       key={label}

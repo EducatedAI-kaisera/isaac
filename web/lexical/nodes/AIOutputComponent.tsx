@@ -52,10 +52,10 @@ const AIOutputComponent = ({
 	nodeKey,
 	...props
 }: AIOutputComponentProps) => {
-	const AIOutput = useAIAssistantStore(state => state.AIOutput);
+	const AIOutput = useAIAssistantStore(state => state.AITextOutput);
 	const [editor] = useLexicalComposerContext();
 	const cachedSelection = useAIAssistantStore(state => state.cachedSelection);
-	const setAIOutput = useAIAssistantStore(state => state.setAIOutput);
+	const { setAITextOutput } = useAIAssistantStore(state => state.actions);
 
 	const acceptText = () => {
 		editor.focus();
@@ -77,7 +77,7 @@ const AIOutputComponent = ({
 
 			if ($isAIOutputNode(node)) {
 				node.remove();
-				setAIOutput('');
+				setAITextOutput('');
 			}
 		});
 	};
@@ -88,10 +88,10 @@ const AIOutputComponent = ({
 
 			if ($isAIOutputNode(node)) {
 				node.remove();
-				setAIOutput('');
+				setAITextOutput('');
 			}
 		});
-	}, [editor, nodeKey, setAIOutput]);
+	}, [editor, nodeKey, setAITextOutput]);
 
 	return (
 		<motion.div
