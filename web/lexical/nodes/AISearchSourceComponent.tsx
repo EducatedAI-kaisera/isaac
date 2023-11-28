@@ -6,6 +6,10 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardFooter } from '@components/ui/card';
 
 import useAIAssistantStore from '@context/aiAssistant.store';
+import {
+	ReferenceSection,
+	useLiteratureReferenceStore,
+} from '@context/literatureReference.store';
 import useAddReference from '@hooks/api/useAddToReference';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { $isAIOutputNode } from '@lexical/nodes/AIOutputNode';
@@ -119,6 +123,10 @@ const AISearchSourceComponent = ({
 		});
 	}, [editor, nodeKey]);
 
+	const setLiteratureDOIPreview = useLiteratureReferenceStore(
+		s => s.setLiteratureDOIPreview,
+	);
+
 	return (
 		<motion.div
 			onClick={e => e.stopPropagation()}
@@ -161,7 +169,14 @@ const AISearchSourceComponent = ({
 									authors={lit.authors.map(i => i.name)}
 									year={lit.year}
 									type={ReferenceType.ARTICLE}
-									onClick={() => ''}
+									onClick={() => {
+										setLiteratureDOIPreview(
+											lit.doi,
+											savedRef
+												? ReferenceSection.SAVED_REFERENCES
+												: ReferenceSection.SEARCH_LITERATURE,
+										);
+									}}
 									onAdd={() => {
 										const { paperId, ...data } = lit;
 										addToReference({ projectId, papers: [data] });

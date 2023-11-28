@@ -21,6 +21,5 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 	);
 
 	const data = await response.json();
-
 	res.status(200).json({ literature: data.data || [] });
 }
