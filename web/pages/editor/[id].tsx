@@ -1,5 +1,4 @@
 // import ReferenceViewer from '@components/core/ReferenceViewer';
-import Chat from '@components/chat/Chat';
 import ChatTab from '@components/chat/ChatTab';
 import EditorEmptyState from '@components/editor/EditorEmptyState';
 import AppLayout from '@components/editor/EditorLayout';

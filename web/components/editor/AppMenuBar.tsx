@@ -46,7 +46,6 @@ const buttons: {
 	{ tab: Panel.LITERATURE_SEARCH, Icon: SearchIcon },
 	{ tab: Panel.REFERENCES, Icon: BookmarkIcon },
 	{ tab: Panel.NOTES, Icon: StickyNoteIcon },
-
 ];
 
 const SettingsModal = dynamic(
@@ -102,8 +101,8 @@ export default function AppMenuBar() {
 	return (
 		<div
 			className={clsx(
-				'p-3 flex flex-col gap-2 bg-white dark:bg-black',
-				activePanel && 'border-r',
+				'p-3 flex flex-row md:flex-col gap-2 sm:gap-4 md:gap-2 justify-center md:justify-start bg-white dark:bg-black border-t md:border-t-0',
+				activePanel && ' md:border-r',
 			)}
 		>
 			{buttons
@@ -131,7 +130,7 @@ export default function AppMenuBar() {
 					);
 				})}
 
-			<div className="div flex flex-col gap-2 mt-auto">
+			<div className="div flex xs:flex-row  md:flex-col gap-2  md:gap-2 sm:gap-4  mt-auto">
 				<TabButton active={false} onClick={openSettings}>
 					<SettingsIcon size={22} strokeWidth={1.4} />
 				</TabButton>
