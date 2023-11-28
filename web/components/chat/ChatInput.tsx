@@ -43,6 +43,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 		updateAIStreamByChunk,
 		addNewMessage,
 		setChatSidebar,
+		setIsHandling,
 	} = useChatSessions(s => s.actions);
 
 	const { streamChatMessage } = useStreamChatMessage();
@@ -59,6 +60,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 			}
 
 			// API Calls here
+			setIsHandling(sessionId, true);
 			streamChatMessage({
 				uploadId: fileReference?.fileId,
 				context: chatContext,
@@ -72,6 +74,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 						{ ...assistantMessage, content: completedText },
 					];
 					saveChatMessage(messages);
+					setIsHandling(sessionId, true);
 					generateTitle(
 						id,
 						messages.map(m => ({ role: m.role, content: m.content })),
@@ -95,6 +98,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 			// Continue on conversations
 			const { previousMessages, assistantMessage, userMessage } =
 				addNewMessage(sessionId);
+			setIsHandling(sessionId, true);
 			streamChatMessage({
 				uploadId: fileReference?.fileId || undefined,
 				context: chatContext,
@@ -108,6 +112,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 						userMessage,
 						{ ...assistantMessage, content: completedText },
 					]);
+					setIsHandling(sessionId, false);
 				},
 				onStreamChunk: chunk => {
 					updateAIStreamByChunk(sessionId, assistantMessage.id, chunk);

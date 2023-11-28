@@ -127,7 +127,19 @@ const useChatSessions = create<ChatSessionStore>((set, get) => ({
 				},
 			});
 		},
-		setIsHandling: () => '',
+		setIsHandling: (sessionId, isHandling) => {
+			const _chatSessions = get().chatSessions;
+			const targetChatSession = _chatSessions[sessionId];
+			set({
+				chatSessions: {
+					..._chatSessions,
+					[sessionId]: {
+						...targetChatSession,
+						isHandling,
+					},
+				},
+			});
+		},
 		setChatSidebar: (list: 'LIST' | 'DETAIL', detailedSection) =>
 			set({ chatSidebar: [list, detailedSection] }),
 		streamChatSidebarTitle: (cumulativeChunk: string) => {
