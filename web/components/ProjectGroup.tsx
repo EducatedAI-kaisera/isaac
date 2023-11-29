@@ -1,28 +1,21 @@
-import EditDocumentContextMenu from '@components/core/EditDocumentContextMenu';
-import EditProjectContextMenu from '@components/core/EditProjectContextMenu';
-import DocumentTableOfContent from '@components/DocumentTableOfContent';
-
-import { Button } from '@components/ui/button';
-import { ScrollArea } from '@components/ui/scroll-area';
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from '@components/ui/tooltip';
+import React, { useCallback, useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { useTour } from '@reactour/tour';
+import { AnimatePresence, motion } from 'framer-motion';
+import clsx from 'clsx';
+import { File, FileText, Folder, FolderOpen, Plus } from 'lucide-react';
+import { isDocumentEmpty } from '@utils/misc';
 import { useUIStore } from '@context/ui.store';
-// import data, { Emoji } from '@emoji-mart/data';
 import useGetProjectWithDocuments from '@hooks/api/useGetProjectWithDocuments';
 import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
-import { useTour } from '@reactour/tour';
-import { isDocumentEmpty } from '@utils/misc';
-import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
-import { File, FileText, Folder, FolderOpen, Plus } from 'lucide-react';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { Button } from '@components/ui/button';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip';
+import EditProjectContextMenu from '@components/core/EditProjectContextMenu';
+import EditDocumentContextMenu from '@components/core/EditDocumentContextMenu';
+import DocumentTableOfContent from '@components/DocumentTableOfContent';
 
-// Animation variants for the project folders
 const folderVariants = {
 	open: {
 		height: 'auto',
@@ -30,7 +23,7 @@ const folderVariants = {
 		transition: {
 			duration: 0.3,
 			ease: 'easeInOut',
-			staggerChildren: 0.1, // delay between each child animation
+			staggerChildren: 0.1,
 		},
 	},
 	closed: {
@@ -64,25 +57,22 @@ const ProjectGroup = () => {
 	const { projectId: activeProjectId } = useGetEditorRouter();
 	const { openDocument, activeDocument } = useDocumentTabs();
 	const { projectDocuments } = useGetProjectWithDocuments();
-
-	const setShowCreateDocumentModal = useUIStore(
-		s => s.setShowCreateDocumentModal,
-	);
-
-	// const [isDragging, setIsDraging] = useState(false);
+	const setShowCreateDocumentModal = useUIStore(s => s.setShowCreateDocumentModal);
 	const isDragging = false;
 
-	const openProject = (projectId: string) => {
+	const openProject = useCallback((projectId: string) => {
 		push(`/editor/${projectId}`);
-	};
+	}, [push]);
+
+	const projectDocumentsMemo = useMemo(() => projectDocuments, [projectDocuments]);
 
 	return (
 		<ScrollArea
 			id="all-projects"
 			className="flex-1 flex-grow h-[30vh] md:h-[45vh] lg:max-h-[80vh] flex flex-col gap-1"
 		>
-			{projectDocuments?.length > 0 ? (
-				projectDocuments.map(project => (
+			{projectDocumentsMemo?.length > 0 ? (
+				projectDocumentsMemo.map(project => (
 					<div key={project.id} className="w-full">
 						<EditProjectContextMenu
 							projectId={project.id}
@@ -110,35 +100,6 @@ const ProjectGroup = () => {
 									>
 										{project.title}
 									</p>
-
-									<Tooltip>
-										<TooltipTrigger asChild>
-											<Button
-												id="create-document-button"
-												variant="ghost"
-												onClick={e => {
-													e.stopPropagation();
-													setShowCreateDocumentModal(true);
-													setTimeout(
-														() => setCurrentStep(prev => prev + 1),
-														500,
-													);
-												}}
-												className={clsx(
-													activeProjectId === project.id ||
-														(tutorialMode && currentStep === 4)
-														? 'visible'
-														: 'invisible',
-													'group-hover:visible hover:bg-muted absolute right-0',
-												)}
-											>
-												<Plus size={14} strokeWidth={1.4} />
-											</Button>
-										</TooltipTrigger>
-										<TooltipContent side="right">
-											<p>Create new document</p>
-										</TooltipContent>
-									</Tooltip>
 								</div>
 							</Button>
 						</EditProjectContextMenu>
@@ -214,7 +175,7 @@ const ProjectGroup = () => {
 			) : (
 				<span className="text-xs text-muted-foreground mb-px h-8 leading-none block p-2 text-smw-full">
 					{' '}
-					No projects yet{' '}
+					Create your first project{' '}
 				</span>
 			)}
 		</ScrollArea>
