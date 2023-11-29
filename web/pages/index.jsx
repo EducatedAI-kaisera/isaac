@@ -4,7 +4,7 @@ import { CallToAction } from '@components/landing/CallToAction';
 import { Faqs } from '@components/landing/Faqs';
 import { Footer } from '@components/landing/Footer';
 import { Header } from '@components/landing/Header';
-import { Hero } from '@components/landing/Hero';
+import { Hero } from '@components/landing/Hero2';
 import { Pricing } from '@components/landing/Pricing';
 // import { PrimaryFeatures } from '@components/landing/PrimaryFeatures';
 import { Reviews } from '@components/landing/Reviews';
