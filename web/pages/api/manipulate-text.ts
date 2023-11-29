@@ -7,6 +7,12 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async function (req, res) {
 	res.setHeader('Content-Type', 'text/event-stream');
@@ -40,5 +46,10 @@ export default async function (req, res) {
 	//@ts-expect-error
 	completion.data.on('data', data => {
 		res.write(data.toString());
+	});
+
+	//@ts-expect-error
+	completion.data.on('end', () => {
+		res.end();
 	});
 }
