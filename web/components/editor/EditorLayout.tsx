@@ -133,9 +133,9 @@ const EditorLayout = ({ children }: Props) => {
 							<AppMenuBar />
 							<Allotment separator={false} className="allotment">
 								<Allotment.Pane
-									preferredSize={400}
-									minSize={250}
-									maxSize={550}
+									preferredSize={isAboveMd ? 400 : undefined}
+									minSize={isAboveMd ? 250 : undefined}
+									maxSize={isAboveMd ? 550 : undefined}
 									visible={!!uiStore.activePanel}
 									className={clsx(
 										'flex z-30 w-full border-r border-border h-full bg-white dark:bg-black ',
@@ -146,6 +146,7 @@ const EditorLayout = ({ children }: Props) => {
 
 								{/* Editor */}
 								<Allotment.Pane
+									visible={!(isBelowMd && uiStore.activePanel !== undefined)}
 									className={clsx(
 										'flex flex-col w-full h-full bg-white dark:bg-black',
 									)}

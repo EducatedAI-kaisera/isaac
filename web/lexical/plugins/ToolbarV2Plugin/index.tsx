@@ -114,7 +114,7 @@ export default function ToolbarV2Plugin() {
 	return (
 		<div
 			role="toolbar"
-			className="sticky h-min top-8 left-full -mr-10 flex flex-col gap-4 text-gray-500 dark:text-gray-400 z-10"
+			className="sticky h-min top-8 left-full  -mr-8 md:-mr-10 flex flex-col gap-4 text-gray-500 dark:text-gray-400 z-10 "
 		>
 			<BlockTypeButtons />
 			<FormatButtons />

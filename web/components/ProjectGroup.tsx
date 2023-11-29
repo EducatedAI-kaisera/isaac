@@ -12,6 +12,7 @@ import {
 import { useUIStore } from '@context/ui.store';
 // import data, { Emoji } from '@emoji-mart/data';
 import useGetProjectWithDocuments from '@hooks/api/useGetProjectWithDocuments';
+import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useTour } from '@reactour/tour';
@@ -68,6 +69,7 @@ const ProjectGroup = () => {
 	const setShowCreateDocumentModal = useUIStore(
 		s => s.setShowCreateDocumentModal,
 	);
+	const openPanel = useUIStore(s => s.openPanel);
 
 	// const [isDragging, setIsDraging] = useState(false);
 	const isDragging = false;
@@ -75,6 +77,8 @@ const ProjectGroup = () => {
 	const openProject = (projectId: string) => {
 		push(`/editor/${projectId}`);
 	};
+
+	const { isBelowMd } = useBreakpoint('md');
 
 	return (
 		<ScrollArea
@@ -119,6 +123,7 @@ const ProjectGroup = () => {
 												onClick={e => {
 													e.stopPropagation();
 													setShowCreateDocumentModal(true);
+													isBelowMd && openPanel(undefined);
 													setTimeout(
 														() => setCurrentStep(prev => prev + 1),
 														500,
@@ -178,6 +183,7 @@ const ProjectGroup = () => {
 																type: TabType.Document,
 																_projectId: project.id,
 															});
+															isBelowMd && openPanel(undefined);
 														}}
 														className={clsx(
 															`leading-none flex py-2 pr-2 pl-8 text-sm cursor-pointer rounded-md mx-3 my-0.5 hover:bg-accent hover:text-accent-foreground`,
