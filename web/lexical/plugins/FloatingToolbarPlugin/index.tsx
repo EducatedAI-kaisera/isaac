@@ -8,9 +8,7 @@ import ToolbarButton from '@lexical/plugins/FloatingToolbarPlugin/components/Flo
 import FloatingToolbarContainer from '@lexical/plugins/FloatingToolbarPlugin/components/FloatingToolbarContainer';
 import useFloatingToolbarStates from '@lexical/plugins/FloatingToolbarPlugin/hooks/useFloatingToolbarStates';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { FORMAT_TEXT_COMMAND } from 'lexical';
 import { MessageSquarePlus } from 'lucide-react';
-import { BsCode } from 'react-icons/bs';
 
 export default function FloatingToolbarPlugin() {
 	const [editor] = useLexicalComposerContext();
@@ -21,13 +19,6 @@ export default function FloatingToolbarPlugin() {
 	const {
 		isText,
 		isLink,
-		isBold,
-		isItalic,
-		isStrikethrough,
-		isSubscript,
-		isSuperscript,
-		isUnderline,
-		isCode,
 	} = useFloatingToolbarStates(editor);
 
 	if (!isText || isLink) {

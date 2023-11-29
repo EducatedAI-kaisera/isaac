@@ -176,57 +176,40 @@ const AIFunctionsDropdown = () => {
 							<Pencil size={16} className="mr-2 h-4 w-4" />
 							Custom
 						</DropdownMenuItem>
-						<TooltipProvider>
-							<div id={'other-items'}>
-								<DropdownMenuLabel>Utilities</DropdownMenuLabel>
-								<Tooltip>
-									<TooltipTrigger disabled={!tooLong}>
-										<DropdownMenuItem
-											onClick={() => sendToAIDetector(selectedText)}
-											aria-label="ai-detector"
-											disabled={tooLong}
-										>
-											<Radar size={16} className="mr-2 h-4 w-4" />
-											AI Detector
-										</DropdownMenuItem>
-									</TooltipTrigger>
-									<TooltipContent>
-										{
-											'Please select less than 1000 characters to use the AI detector.'
-										}
-									</TooltipContent>
-								</Tooltip>
-								<br />
-								<Tooltip>
-									<TooltipTrigger>
-										<div>
-											<DropdownMenuItem
-												onClick={() => findSources(selectedText)}
-												aria-label="find-sources"
-												disabled={tooLong}
-											>
-												<Search size={16} className="mr-2 h-4 w-4" />
-												Find Sources
-											</DropdownMenuItem>
-										</div>
-									</TooltipTrigger>
-									<TooltipContent>
-										{'Please select less than 1000 characters to find sources.'}
-									</TooltipContent>
-								</Tooltip>
+
+						<DropdownMenuLabel>Utilities</DropdownMenuLabel>
+
 								<DropdownMenuItem
-									id={'manipulate-text'}
-									onClick={() =>
-										manipulateText(selectedText, ManipulateTextMethods.EXPLAIN)
-									}
-									aria-label="manipulate-text"
+									onClick={() => sendToAIDetector(selectedText)}
+									aria-label="ai-detector"
 									disabled={tooLong}
 								>
-									<HelpCircle size={16} className="mr-2 h-4 w-4" />
-									Explain
+									<Radar size={16} className="mr-2 h-4 w-4" />
+									AI Detector
 								</DropdownMenuItem>
-							</div>
-						</TooltipProvider>
+
+
+
+								<DropdownMenuItem
+									onClick={() => findSources(selectedText)}
+									aria-label="find-sources"
+									disabled={tooLong}
+								>
+									<Search size={16} className="mr-2 h-4 w-4" />
+									Find Sources
+								</DropdownMenuItem>
+
+						<DropdownMenuItem
+							id={'manipulate-text'}
+							onClick={() =>
+								manipulateText(selectedText, ManipulateTextMethods.EXPLAIN)
+							}
+							aria-label="manipulate-text"
+							disabled={tooLong}
+						>
+							<HelpCircle size={16} className="mr-2 h-4 w-4" />
+							Explain
+						</DropdownMenuItem>
 					</>
 				)}
 			</DropdownMenuContent>

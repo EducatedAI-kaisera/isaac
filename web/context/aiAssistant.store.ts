@@ -19,6 +19,7 @@ interface AIAssistantState {
 		setCachedSelection: (cachedSelection: RangeSelection) => void;
 		setLiteratureReferenceOutput: (cachedSelection: any[]) => void;
 		setLiteratureReferenceOutputLoading: (bool: boolean) => void;
+		setOpen: (open: boolean) => void;
 	};
 }
 
@@ -52,6 +53,9 @@ const useAIAssistantStore = create<AIAssistantState>(set => ({
 		setCachedSelection: (cachedSelection: any) => {
 			set({ cachedSelection });
 		},
+		setOpen: (open: boolean) => {
+			set({ open });
+		}
 	},
 }));
 

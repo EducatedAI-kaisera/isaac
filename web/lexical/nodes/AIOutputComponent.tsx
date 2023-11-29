@@ -55,7 +55,7 @@ const AIOutputComponent = ({
 	const AIOutput = useAIAssistantStore(state => state.AITextOutput);
 	const [editor] = useLexicalComposerContext();
 	const cachedSelection = useAIAssistantStore(state => state.cachedSelection);
-	const { setAITextOutput } = useAIAssistantStore(state => state.actions);
+	const { setAITextOutput, setOpen } = useAIAssistantStore(state => state.actions);
 
 	const acceptText = () => {
 		editor.focus();
@@ -78,6 +78,7 @@ const AIOutputComponent = ({
 			if ($isAIOutputNode(node)) {
 				node.remove();
 				setAITextOutput('');
+				setOpen(false);
 			}
 		});
 	};
@@ -89,6 +90,7 @@ const AIOutputComponent = ({
 			if ($isAIOutputNode(node)) {
 				node.remove();
 				setAITextOutput('');
+				setOpen(false);
 			}
 		});
 	}, [editor, nodeKey, setAITextOutput]);
