@@ -115,7 +115,6 @@ const EditorLayout = ({ children }: Props) => {
 				<AppHeader />
 				<div className="flex">
 					{/* FABS & Modals */}
-					{/* <BottomLeftFab /> */}
 					<UpdateUploadedMetaModal />
 					<CreateNewDocumentModal />
 					<EquationModal />

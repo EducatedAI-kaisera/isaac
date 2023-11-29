@@ -1,3 +1,4 @@
+import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import { useHover } from '@mantine/hooks';
 import {
 	ArrowUpRight,
@@ -22,6 +23,7 @@ export default function ChatSessionCard({
 	onDeleteClick?: () => void;
 }) {
 	const { ref, hovered } = useHover();
+	const { isAboveMd, isBelowMd } = useBreakpoint('md');
 
 	return (
 		<div className=" border rounded p-2 flex justify-between gap-1" ref={ref}>
@@ -43,18 +45,18 @@ export default function ChatSessionCard({
 				</p>
 			</div>
 			<div className="flex gap-1">
-				{hovered && type === 'CONVERSATION' && (
+				{((hovered && type === 'CONVERSATION') || isBelowMd) && (
 					<X
 						size={20}
 						onClick={onDeleteClick}
-						className="text-gray-600 hover:text-isaac cursor-pointer"
+						className="text-gray-600 hover:text-isaac cursor-pointer pt-1 md:pt-0"
 						strokeWidth={1}
 					/>
 				)}
 				<ArrowUpRight
 					size={20}
 					onClick={onOpenTabClick}
-					className="text-gray-600 hover:text-isaac cursor-pointer"
+					className="text-gray-600 hover:text-isaac cursor-pointer hidden md:block"
 					strokeWidth={1}
 				/>
 			</div>

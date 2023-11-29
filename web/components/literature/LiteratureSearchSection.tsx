@@ -107,7 +107,7 @@ const LiteratureSearchSection = () => {
 								label: literatureSearchPayload?.keyword || 'Search Literature',
 							});
 						}}
-						className="text-gray-600 hover:text-isaac cursor-pointer"
+						className="text-gray-600 hover:text-isaac cursor-pointer hidden md:block"
 						strokeWidth={1}
 					/>
 				</>
