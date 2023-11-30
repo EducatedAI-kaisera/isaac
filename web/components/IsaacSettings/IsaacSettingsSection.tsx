@@ -111,7 +111,7 @@ const IsaacSettingsSection = () => {
 									</span>
 								)}
 							</div>
-							<div className="flex gap-2">
+							<div className="flex flex-col">
 								<Button
 									size="sm"
 									className="mt-2"
