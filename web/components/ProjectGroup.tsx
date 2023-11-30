@@ -97,8 +97,9 @@ const ProjectGroup = () => {
 									openProject(project.id);
 								}}
 								variant="ghost"
+								size="sm"
 								className={clsx(
-									`mb-px leading-none block pl-3 pr-2 text-sm cursor-pointer rounded-none w-full`,
+									'leading-none block pl-3 pr-2 text-sm cursor-pointer rounded-none w-full',
 								)}
 							>
 								<div className="flex justify-left group items-center">
@@ -108,7 +109,7 @@ const ProjectGroup = () => {
 
 									<p
 										className={clsx(
-											'ml-[9px] font-normal truncate max-w-[200px]',
+											'ml-[9px] font-normal line-clamp-1 max-w-[200px]',
 											activeProjectId === project.id && 'font-medium ',
 										)}
 									>
@@ -156,7 +157,7 @@ const ProjectGroup = () => {
 									initial="closed"
 									exit="closed"
 									animate={activeProjectId === project.id ? 'open' : 'closed'}
-									className="flex flex-col gap-px my-0.5"
+									className="flex flex-col gap-px"
 								>
 									<div>
 										{project.documents?.map(_document => {
@@ -186,7 +187,7 @@ const ProjectGroup = () => {
 															isBelowMd && openPanel(undefined);
 														}}
 														className={clsx(
-															`leading-none flex py-2 pr-2 pl-8 text-sm cursor-pointer rounded-md mx-3 my-0.5 hover:bg-accent hover:text-accent-foreground`,
+															'leading-none flex py-2 pr-2 pl-4 text-sm cursor-pointer rounded-md mx-3 hover:bg-accent hover:text-accent-foreground',
 															isActiveDoc && 'text-isaac',
 														)}
 													>
@@ -203,9 +204,7 @@ const ProjectGroup = () => {
 																size={14}
 															/>
 														)}
-														<p className="truncate max-w-[200px]">
-															{_document.title}
-														</p>
+														<p className="line-clamp-1">{_document.title}</p>
 													</motion.div>
 													{isActiveDoc && <DocumentTableOfContent />}
 												</EditDocumentContextMenu>
@@ -218,7 +217,7 @@ const ProjectGroup = () => {
 					</div>
 				))
 			) : (
-				<span className="text-xs text-muted-foreground mb-px h-8 leading-none block p-2 text-smw-full">
+				<span className="text-xs text-muted-foreground mb-px h-8 leading-none block p-2  w-full">
 					{' '}
 					No projects yet{' '}
 				</span>

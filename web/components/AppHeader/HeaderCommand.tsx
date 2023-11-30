@@ -205,7 +205,7 @@ export default function ProjectNavCommand() {
 											className="mr-2 shrink-0"
 										/>
 										<span className="whitespace-nowrap">{project.title}</span>
-										<span className="text-transparent truncate">
+										<span className="text-transparent line-clamp-1">
 											{project.id}
 										</span>
 									</CommandItem>
@@ -232,7 +232,7 @@ export default function ProjectNavCommand() {
 													/>
 												</div>
 												<span className="whitespace-nowrap">{doc.title}</span>{' '}
-												<span className="text-transparent truncate">
+												<span className="text-transparent line-clamp-1">
 													{`${project.title} ${project.id}`}
 												</span>
 											</CommandItem>

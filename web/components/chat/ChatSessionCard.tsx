@@ -39,7 +39,7 @@ export default function ChatSessionCard({
 						<MessageSquarePlusIcon strokeWidth={1} size={20} />
 					)}
 				</div>
-				<p className="text-sm truncate ">
+				<p className="text-sm line-clamp-1">
 					{type === 'CONVERSATION' && label}
 					{type === 'NEW' && 'New Chat Session'}
 				</p>

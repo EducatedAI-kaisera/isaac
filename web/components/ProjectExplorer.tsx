@@ -33,7 +33,7 @@ const ProjectExplorer = memo(() => {
 	return (
 		<nav
 			className={clsx(
-				'relative z-20 w-full flex flex-col h-full',
+				'relative z-20  flex flex-col h-full',
 				'dark:bg-black bg-white',
 			)}
 		>
