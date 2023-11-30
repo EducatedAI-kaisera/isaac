@@ -25,7 +25,6 @@ const IsaacSettingsSection = () => {
 		onSuccessCb: () => router.push('/'),
 	});
 
-	// TODO: Fix subscription
 	const loadPortal = async () => {
 		const { data } = await axios.get('/api/portal');
 		router.push(data.url);
@@ -112,7 +111,7 @@ const IsaacSettingsSection = () => {
 									</span>
 								)}
 							</div>
-							<div className="flex flex-col gap-0">
+							<div className="flex gap-2">
 								<Button
 									size="sm"
 									className="mt-2"
@@ -123,10 +122,10 @@ const IsaacSettingsSection = () => {
 									Manage Billing
 								</Button>
 								<Button
+									variant="outline"
 									size="sm"
 									className="mt-2"
 									onClick={logout}
-									variant="destructive"
 								>
 									<LogOut className="mr-2 h-4 w-4" />
 									Sign Out
