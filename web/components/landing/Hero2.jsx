@@ -22,10 +22,10 @@ export function Hero() {
 	const { user } = useUser();
 
 	return (
-		<div className="overflow-hidden py-4 md:py-20 lg:pb-32 xl:pb-36">
+		<div className="overflow-hidden py-4 md:py-40	 lg:pb-32 xl:pb-36">
 			{/* <RetroGrid /> */}
 			<Container>
-				{/* <Ripple/> */}
+				<Ripple/>
 
 				<div className="flex flex-col items-center justify-center">
 					<div className="text-center max-w-2xl">
@@ -39,9 +39,9 @@ export function Hero() {
 							<TypedText />
 						</p>
 
-						<div className="mt-12 flex flex-wrap gap-x-6 gap-y-4 justify-center">
+						<div className="mt-20 flex flex-wrap gap-x-6 gap-y-4 justify-center">
 							{user ? (
-								<LandingButton asChild>
+								<LandingButton asChild className="z-10">
 									<Link href="/editor">Go to editor</Link>
 								</LandingButton>
 							) : (
@@ -57,7 +57,7 @@ export function Hero() {
 						</div>
 					</div>
 
-					<div className="mt-8 md:mt-28 text-center">
+					<div className="mt-8 md:mt-20 text-center">
 						<p className="text-sm mt-2 font-semibold text-gray-900">
 							Join more than +23,735 researchers & students
 						</p>

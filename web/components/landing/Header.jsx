@@ -151,7 +151,7 @@ export function Header() {
 								</>
 							)}
 						</Popover>
-						<div className='hidden lg:block'>
+						<div className='hidden md:inline-flex gap-2'>
 							{user ? (
 								<>
 									<Link
