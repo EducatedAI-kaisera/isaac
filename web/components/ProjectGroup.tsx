@@ -22,6 +22,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { File, FileText, Folder, FolderOpen, Plus } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import EditProjectDropdown from './core/EditProjectDropdown';
 
 // Animation variants for the project folders
 const folderVariants = {
@@ -116,35 +117,46 @@ const ProjectGroup = () => {
 										{project.title}
 									</p>
 
-									<Tooltip>
-										<TooltipTrigger asChild>
-											<Button
-												id="create-document-button"
-												variant="ghost"
-												onClick={e => {
-													e.stopPropagation();
-													setShowCreateDocumentModal(true);
-													isBelowMd && openPanel(undefined);
-													setTimeout(
-														() => setCurrentStep(prev => prev + 1),
-														500,
-													);
-												}}
-												className={clsx(
-													activeProjectId === project.id ||
-														(tutorialMode && currentStep === 4)
-														? 'visible'
-														: 'invisible',
-													'group-hover:visible hover:bg-muted absolute right-0',
-												)}
-											>
-												<Plus size={14} strokeWidth={1.4} />
-											</Button>
-										</TooltipTrigger>
-										<TooltipContent side="right">
-											<p>Create new document</p>
-										</TooltipContent>
-									</Tooltip>
+									{isBelowMd ? (
+										<EditProjectDropdown
+											className={clsx(
+												'absolute right-0 w-8',
+												activeProjectId === project.id ? 'visible' : 'hidden',
+											)}
+											projectId={project.id}
+											projectName={project.title}
+										/>
+									) : (
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<Button
+													id="create-document-button"
+													variant="ghost"
+													onClick={e => {
+														e.stopPropagation();
+														setShowCreateDocumentModal(true);
+														isBelowMd && openPanel(undefined);
+														setTimeout(
+															() => setCurrentStep(prev => prev + 1),
+															500,
+														);
+													}}
+													className={clsx(
+														activeProjectId === project.id ||
+															(tutorialMode && currentStep === 4)
+															? 'visible'
+															: 'invisible',
+														'group-hover:visible hover:bg-muted absolute right-0',
+													)}
+												>
+													<Plus size={14} strokeWidth={1.4} />
+												</Button>
+											</TooltipTrigger>
+											<TooltipContent side="right">
+												<p>Create new document</p>
+											</TooltipContent>
+										</Tooltip>
+									)}
 								</div>
 							</Button>
 						</EditProjectContextMenu>

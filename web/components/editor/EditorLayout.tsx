@@ -134,7 +134,7 @@ const EditorLayout = ({ children }: Props) => {
 								<Allotment.Pane
 									preferredSize={isAboveMd ? 400 : undefined}
 									minSize={isAboveMd ? 250 : undefined}
-									maxSize={isAboveMd ? 550 : undefined}
+									maxSize={isAboveMd ? 550 : 1000}
 									visible={!!uiStore.activePanel}
 									className={clsx(
 										'flex z-30 w-full border-r border-border h-full bg-white dark:bg-black ',
