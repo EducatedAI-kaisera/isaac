@@ -1,5 +1,6 @@
 import AIOutputLogPanel from '@components/AIOutputLogPanel';
 import ChatSessions from '@components/chat';
+import IsaacSettingsSection from '@components/IsaacSettings/IsaacSettingsSection';
 import ReferenceSearchSection from '@components/literature/LiteratureSearchSection';
 import ReferencesSection from '@components/literature/ReferencesSection';
 import NotesSection from '@components/notes/NotesSection';
@@ -65,6 +66,16 @@ export default function Sidebar() {
 				)}
 			>
 				<AIOutputLogPanel />
+			</div>
+			<div
+				className={clsx(
+					'flex-grow',
+					activePanel !== Panel.ISAAC_SETTINGS
+						? 'w-0 overflow-hidden flex-grow-0'
+						: 'w-[inherit]',
+				)}
+			>
+				<IsaacSettingsSection />
 			</div>
 		</>
 	);

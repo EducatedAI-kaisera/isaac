@@ -129,7 +129,7 @@ export function Header() {
 															</LandingButton>
 														</div>
 													) : (
-														<div className="mt-8 flex flex-col gap-4">
+														<div className="mt-8 flex flex-col gap-4">A
 															<LandingButton asChild>
 																<Link href="/signup">
 																	Start writing for free
