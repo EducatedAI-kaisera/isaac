@@ -79,7 +79,7 @@ const EditorTabs = () => {
 	const maxWidth = activeSidebar ? 310 : 10 + rightPanelWidth;
 
 	return (
-		<div className="flex" style={{ width: `calc(100vw - ${maxWidth}px)` }}>
+		<div className="flex">
 			{!activeSidebar && (
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
@@ -200,14 +200,6 @@ const EditorTabs = () => {
 					))}
 				</SortableDDContainer>
 			</div>
-			<div
-				className={clsx(
-					!currentProjectTabs?.length && '',
-					'flex-grow',
-					'if-right-panel-closes' && false && 'mr-20',
-					// 'text-gray-500',
-				)}
-			></div>
 		</div>
 	);
 };

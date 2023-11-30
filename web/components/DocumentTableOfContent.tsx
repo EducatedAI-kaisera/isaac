@@ -1,5 +1,7 @@
 import { Separator } from '@components/ui/separator';
 import useLexicalEditorStore from '@context/lexicalEditor.store';
+import { useUIStore } from '@context/ui.store';
+import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 // import data, { Emoji } from '@emoji-mart/data';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
@@ -45,6 +47,9 @@ export default function DocumentTableOfContent() {
 		});
 	}
 
+	const { isBelowMd } = useBreakpoint('md');
+	const openPanel = useUIStore(s => s.openPanel);
+
 	return (
 		<motion.div variants={documentVariants}>
 			{tableOfContents.map((content, index) => (
@@ -53,7 +58,10 @@ export default function DocumentTableOfContent() {
 						'text-sm  cursor-pointer hover:text-isaac line-clamp-1 flex gap-4 ',
 						selectedKey === content.nodeId && 'text-isaac',
 					)}
-					onClick={() => scrollToNode(content.nodeId, index)}
+					onClick={() => {
+						scrollToNode(content.nodeId, index);
+						isBelowMd && openPanel(undefined);
+					}}
 					style={{
 						paddingLeft: indentSize[content.header] + 50,
 					}}

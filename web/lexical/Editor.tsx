@@ -230,7 +230,7 @@ const EditorLexical = ({ documentId, active }: Props) => {
 				<div
 					className={clsx(
 						!active ? 'hidden h-0' : 'h-full',
-						'dark:bg-black bg-white editor-pdf flex flex-col items-center relative w-full pr-6',
+						'dark:bg-black bg-white editor-pdf flex flex-col items-center relative w-full  pr-6',
 					)}
 				>
 					<RichTextPlugin
@@ -246,7 +246,7 @@ const EditorLexical = ({ documentId, active }: Props) => {
 									<ToolbarV2Plugin />
 									<GrammarlyEditorPlugin
 										className={clsx(
-											'grow w-full prose px-6 pb-28 relative dark:prose-invert',
+											'grow w-full prose  px-4 md:px-6 pb-28 relative dark:prose-invert',
 											showDocumentComments ? 'max-w-3xl' : 'max-w-5xl',
 										)}
 										config={{

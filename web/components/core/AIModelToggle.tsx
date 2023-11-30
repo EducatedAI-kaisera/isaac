@@ -17,7 +17,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const ToggleButton = classed.button(
 	cva({
-		base: 'text-xs font-medium leading-none flex items-center gap-1 px-2.5 py-1.5 rounded-md',
+		base: 'text-xs font-medium leading-none flex items-center gap-1 px-2.5 py-1.5 rounded-md w-full whitespace-nowrap',
 		variants: {
 			isActive: {
 				true: 'text-primary-foreground',
@@ -61,7 +61,7 @@ export default function AIModelToggle() {
 
 	return (
 		<Popover onOpenChange={setUpgradeVisible} open={isUpgradeVisible}>
-			<PopoverAnchor>
+			<PopoverAnchor className="w-full">
 				<div className="p-0.5 border flex items-center gap-0.5 rounded-lg overflow-hidden z-10 relative">
 					{models.map(({ model, disabled, label }) => (
 						<ToggleButton

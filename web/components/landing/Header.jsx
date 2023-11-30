@@ -151,34 +151,36 @@ export function Header() {
 								</>
 							)}
 						</Popover>
-						{user ? (
-							<>
-								<Link
-									href="/editor"
-									className={landingButtonVariants({ variant: 'default' })}
-								>
-									Go to editor
-								</Link>
+						<div className='hidden lg:block'>
+							{user ? (
+								<>
+									<Link
+										href="/editor"
+										className={landingButtonVariants({ variant: 'default' })}
+									>
+										Go to editor
+									</Link>
 
-								<LandingButton onClick={logout} variant="ghost">
-									Sign out
-								</LandingButton>
-							</>
-						) : (
-							<>
-								<LandingButton
-									asChild
-									variant="outline"
-									className="hidden lg:flex bg-gray-50"
-								>
-									<Link href="signin">Sign in </Link>
-								</LandingButton>
+									<LandingButton onClick={logout} variant="ghost">
+										Sign out
+									</LandingButton>
+								</>
+							) : (
+								<>
+									<LandingButton
+										asChild
+										variant="outline"
+										className="hidden lg:flex bg-gray-50"
+									>
+										<Link href="signin">Sign in </Link>
+									</LandingButton>
 
-								<LandingButton asChild className="hidden lg:flex">
-									<Link href="signup"> Start writing for free</Link>
-								</LandingButton>
-							</>
-						)}
+									<LandingButton asChild className="hidden lg:flex">
+										<Link href="signup"> Start writing for free</Link>
+									</LandingButton>
+								</>
+							)}
+						</div>
 					</div>
 				</Container>
 			</nav>

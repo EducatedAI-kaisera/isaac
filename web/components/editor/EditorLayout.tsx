@@ -2,8 +2,9 @@ import BottomLeftFab from '@components/BottomLeftFab';
 import AppMenuBar from '@components/editor/AppMenuBar';
 import EditorBottomRightFab from '@components/editor/EditorBottomRightFab';
 import { EquationModal } from '@components/editor/EquationModal';
-import { useUIStore } from '@context/ui.store';
+import { SideBarWidth, useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
+import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import useAuthRedirect from '@hooks/useAuthRedirect';
 import useDocumentTabs, { paperTypeTabs } from '@hooks/useDocumentTabs';
 import useEditorShortcut from '@hooks/useEditorShortcut';
@@ -12,7 +13,6 @@ import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
 import clsx from 'clsx';
 import { headerHeight } from 'data/style.data';
-import mixpanel from 'mixpanel-browser';
 import dynamic from 'next/dynamic';
 import { ReactNode, useEffect } from 'react';
 import Sidebar from './Sidebar';
@@ -65,6 +65,7 @@ const EditorLayout = ({ children }: Props) => {
 	const { user } = useUser();
 	const { ref: editorRef, width: editorWidth } = useElementSize();
 	const { width: editorMobileWidth } = useElementSize();
+	const { isAboveMd, isBelowMd } = useBreakpoint('md');
 
 	const uiStore = useUIStore(s => ({
 		activePanel: s.activePanel,
@@ -114,7 +115,6 @@ const EditorLayout = ({ children }: Props) => {
 				<AppHeader />
 				<div className="flex">
 					{/* FABS & Modals */}
-					<BottomLeftFab />
 					<UpdateUploadedMetaModal />
 					<CreateNewDocumentModal />
 					<EquationModal />
@@ -128,16 +128,16 @@ const EditorLayout = ({ children }: Props) => {
 							height: `calc(100vh - ${headerHeight}px)`,
 						}}
 					>
-						<div className="w-full h-full lg:flex lg:flex-row ">
+						<div className="flex flex-col-reverse  w-full h-full lg:flex md:flex-row flex-nowrap ">
 							<AppMenuBar />
 							<Allotment separator={false} className="allotment">
 								<Allotment.Pane
-									preferredSize={400}
-									minSize={250}
-									maxSize={550}
+									preferredSize={isAboveMd ? 400 : undefined}
+									minSize={isAboveMd ? 250 : undefined}
+									maxSize={isAboveMd ? 550 : 1000}
 									visible={!!uiStore.activePanel}
 									className={clsx(
-										'flex z-30 w-full border-r border-border h-full bg-white dark:bg-black',
+										'flex z-30 w-full border-r border-border h-full bg-white dark:bg-black ',
 									)}
 								>
 									<Sidebar />
@@ -145,11 +145,12 @@ const EditorLayout = ({ children }: Props) => {
 
 								{/* Editor */}
 								<Allotment.Pane
+									visible={!(isBelowMd && uiStore.activePanel !== undefined)}
 									className={clsx(
 										'flex flex-col w-full h-full bg-white dark:bg-black',
 									)}
 								>
-									<EditorTabs />
+									{isAboveMd && <EditorTabs />}
 									<EditorBottomRightFab />
 									<div
 										id="scrollable-editor-container"
@@ -163,8 +164,8 @@ const EditorLayout = ({ children }: Props) => {
 										<div
 											ref={editorRef}
 											className={clsx(
-												'w-full h-full pt-8',
-												uiStore.activePanel ? 'px-10' : 'px-16',
+												'w-full h-full pt-8 px-2 sm:px-4',
+												uiStore.activePanel ? 'md:px-10' : 'md:px-16',
 												paperTypeTabs.includes(activeDocument?.type)
 													? uiStore.showDocumentComments
 														? 'max-w-[68rem]'
@@ -172,7 +173,7 @@ const EditorLayout = ({ children }: Props) => {
 													: 'max-w-[90rem]',
 												uiStore.activePanel &&
 													paperTypeTabs.includes(activeDocument?.type) &&
-													'sm:mr-[2vw] md:mr-[3vw] lg:mr-[4vw] xl:mr-[6vw]',
+													'mr-[0] sm:mr-[2vw] md:mr-[3vw] lg:mr-[4vw] xl:mr-[6vw]',
 											)}
 										>
 											{children}

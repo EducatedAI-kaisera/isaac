@@ -32,6 +32,7 @@ import { useUser } from '@context/user';
 
 import AIModelMenu from '@components/core/AIModelToggle';
 import { Icons } from '@components/landing/icons';
+import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import { useUpdateEditorLanguage } from '@resources/user';
 import { appHeaderMenuTitle } from '@styles/className';
 import { discordInviteLink, twitterLink } from 'data/externalLinks';
@@ -41,7 +42,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 
 const EditorSettingsMenu = memo(() => {
 	return (
-		<Menubar>
+		<Menubar className="flex flex-col md:flex-row gap-1">
 			<AIModelMenu />
 			<SettingsMenu />
 			<HelpMenu />
@@ -55,6 +56,7 @@ const SettingsMenu = memo(() => {
 	const setCustomInstructionsModalOpen = useUIStore(
 		s => s.setCustomInstructionsModalOpen,
 	);
+	const { isAboveMd, isBelowMd } = useBreakpoint('md');
 
 	const { citationStyle, setCitationStyle } = useCitationStyle();
 	const { user } = useUser();
@@ -92,8 +94,13 @@ const SettingsMenu = memo(() => {
 
 	return (
 		<MenubarMenu>
-			<MenubarTrigger className={appHeaderMenuTitle}>Settings</MenubarTrigger>
-			<MenubarContent align="center">
+			<MenubarTrigger className={appHeaderMenuTitle}>
+				<span className="mx-auto">Settings</span>
+			</MenubarTrigger>
+			<MenubarContent
+				side={isBelowMd ? 'left' : 'bottom'}
+				align={isBelowMd ? 'start' : 'center'}
+			>
 				<MenubarItem onClick={() => setCustomInstructionsModalOpen(true)}>
 					Custom Instructions
 				</MenubarItem>
@@ -146,9 +153,7 @@ const SettingsMenu = memo(() => {
 						handleToggleTheme();
 					}}
 				>
-					<span>
-						{isDarkMode ? 'Light mode' : 'Dark mode'}
-					</span>
+					<span>{isDarkMode ? 'Light mode' : 'Dark mode'}</span>
 					<MenubarShortcut>
 						{commandKey}
 						{hotKeys.toggleTheme.key.toUpperCase()}
@@ -176,6 +181,8 @@ const HelpMenu = memo(() => {
 	const setFeedbackModalOpen = useUIStore(s => s.setFeedbackModalOpen);
 	const showChangelogUpdate = useUIStore(s => s.showChangelogUpdate);
 	const setShowChangelogUpdate = useUIStore(s => s.setShowChangelogUpdate);
+	const { isAboveMd, isBelowMd } = useBreakpoint('md');
+
 	const { boot, show } = useIntercom();
 	const { user } = useUser();
 	const { push } = useRouter();
@@ -203,12 +210,15 @@ const HelpMenu = memo(() => {
 	return (
 		<MenubarMenu>
 			<MenubarTrigger className={appHeaderMenuTitle}>
-				<span>Help</span>
+				<span className="mx-auto">Help</span>
 				{showChangelogUpdate && (
 					<CircleDot size={16} className="ml-2 text-isaac" />
 				)}
 			</MenubarTrigger>
-			<MenubarContent align="end">
+			<MenubarContent
+				side={isBelowMd ? 'left' : 'bottom'}
+				align={isBelowMd ? 'start' : 'center'}
+			>
 				<MenubarLabel>Need help?</MenubarLabel>
 				<MenubarItem onClick={() => setFeedbackModalOpen(true)}>
 					<Heart size={16} className="mr-3" />

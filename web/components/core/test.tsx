@@ -1,98 +1,11 @@
-import { useUIStore } from '@context/ui.store';
-import useGetProjectWithDocuments from '@hooks/api/useGetProjectWithDocuments';
-import { useBreakpoint } from '@hooks/misc/useBreakPoint';
-import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
-import useGetEditorRouter from '@hooks/useGetEditorRouter';
-import { useTour } from '@reactour/tour';
-import { isDocumentEmpty } from '@utils/misc';
-import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
-import { File, FileText, Folder, FolderOpen, Plus } from 'lucide-react';
-import { useRouter } from 'next/router';
-import React, { useCallback, useMemo } from 'react';
+import React from 'react'
 
-import EditDocumentContextMenu from '@components/core/EditDocumentContextMenu';
-import EditProjectContextMenu from '@components/core/EditProjectContextMenu';
-import DocumentTableOfContent from '@components/DocumentTableOfContent';
-import { Button } from '@components/ui/button';
-import { ScrollArea } from '@components/ui/scroll-area';
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from '@components/ui/tooltip';
-import EditProjectDropdown from './core/EditProjectDropdown';
+type Props = {}
 
-const folderVariants = {
-	open: {
-		height: 'auto',
-		opacity: 1,
-		transition: {
-			duration: 0.3,
-			ease: 'easeInOut',
-			staggerChildren: 0.1,
-		},
-	},
-	closed: {
-		height: 0,
-		opacity: 0,
-		transition: {
-			duration: 0.3,
-			ease: 'easeInOut',
-		},
-	},
-};
-
-const documentVariants = {
-	open: {
-		opacity: 1,
-		transition: {
-			duration: 0.3,
-		},
-	},
-	closed: {
-		opacity: 0,
-		transition: {
-			duration: 0.3,
-		},
-	},
-};
-
-const ProjectGroup = () => {
-	const { push } = useRouter();
-	const { isOpen: tutorialMode, setCurrentStep, currentStep } = useTour();
-	const { projectId: activeProjectId } = useGetEditorRouter();
-	const { openDocument, activeDocument } = useDocumentTabs();
-	const { projectDocuments } = useGetProjectWithDocuments();
-
-	const setShowCreateDocumentModal = useUIStore(
-		s => s.setShowCreateDocumentModal,
-	);
-	const openPanel = useUIStore(s => s.openPanel);
-
-	// const [isDragging, setIsDraging] = useState(false);
-	const isDragging = false;
-
-	const openProject = useCallback(
-		(projectId: string) => {
-			push(`/editor/${projectId}`);
-		},
-		[push],
-	);
-
-	const projectDocumentsMemo = useMemo(
-		() => projectDocuments,
-		[projectDocuments],
-	);
-
-	const { isBelowMd } = useBreakpoint('md');
-
+const test = (props: Props) => {
 	return (
-		<ScrollArea
-			id="all-projects"
-			className="flex-1 flex-grow h-[30vh] md:h-[45vh] lg:max-h-[80vh] flex flex-col gap-1"
-		>
-			{projectDocumentsMemo?.length > 0 ? (
+		<div>
+				{projectDocumentsMemo?.length > 0 ? (
 				projectDocumentsMemo.map(project => (
 					<div key={project.id} className="w-full">
 						<EditProjectContextMenu
@@ -168,7 +81,7 @@ const ProjectGroup = () => {
 						</EditProjectContextMenu>
 
 						<AnimatePresence>
-							{!isDragging && activeProjectId === project.id && (
+								{!isDragging && activeProjectId === project.id && (
 								<motion.div
 									id={`created-documents`}
 									variants={folderVariants}
@@ -238,10 +151,9 @@ const ProjectGroup = () => {
 				<span className="text-xs text-muted-foreground mb-px h-8 leading-none block p-2  w-full">
 					{' '}
 					Create your first project{' '}
-				</span>
 			)}
-		</ScrollArea>
-	);
-};
+		</div>
+	)
+}
 
-export default React.memo(ProjectGroup);
+export default test

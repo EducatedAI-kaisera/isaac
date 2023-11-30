@@ -163,7 +163,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 															className="mr-2 h-4 w-4 shrink-0 text-neutral-500"
 														/>
 													</div>
-													<p className="truncate">
+													<p className="line-clamp-1">
 														{file.custom_citation?.title || file.file_name}
 													</p>
 												</DropdownMenuItem>
