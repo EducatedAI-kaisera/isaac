@@ -41,7 +41,7 @@ export function Hero() {
 
 						<div className="mt-20 flex flex-wrap gap-x-6 gap-y-4 justify-center">
 							{user ? (
-								<LandingButton asChild>
+								<LandingButton asChild className="z-10">
 									<Link href="/editor">Go to editor</Link>
 								</LandingButton>
 							) : (
