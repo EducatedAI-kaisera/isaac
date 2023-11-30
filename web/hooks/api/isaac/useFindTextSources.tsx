@@ -17,6 +17,7 @@ const useFindTextSources = () => {
 		setLiteratureReferenceOutput,
 		setLiteratureReferenceOutputLoading,
 		setCachedSelection,
+		setOpen,
 	} = useAIAssistantStore(state => state.actions);
 
 	const insertAIOutputComponent = useCallback(() => {
@@ -36,6 +37,7 @@ const useFindTextSources = () => {
 	const findSources = async (text: string) => {
 		mixpanel.track('Searched Sources');
 		insertAIOutputComponent();
+		setOpen(true)
 
 		// TODO: consider language
 		// const prompt = manipulateTextMap[method]?.promptBuilder(text);

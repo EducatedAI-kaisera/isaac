@@ -29,7 +29,7 @@ const TabButton = classed.button(
 		base: 'w-10 h-10 flex justify-center items-center text-gray-400 transition-colors hover:text-isaac dark:text-gray-500 hover:dark:text-isaac rounded-md',
 		variants: {
 			active: {
-				true: 'bg-gray-200  dark:bg-gray-900  text-isaac dark:text-isaac',
+				true: 'bg-accent  dark:bg-gray-900  text-isaac dark:text-isaac',
 			},
 		},
 	}),
@@ -101,7 +101,7 @@ export default function AppMenuBar() {
 	return (
 		<div
 			className={clsx(
-				'p-3 flex flex-row md:flex-col gap-2 sm:gap-4 md:gap-2 justify-center md:justify-start bg-white dark:bg-black border-t md:border-t-0',
+				'p-3  py-3 flex flex-row md:flex-col gap-2 sm:gap-4 md:gap-2 justify-center md:justify-start bg-white dark:bg-black border-t md:border-t-0',
 				activePanel && ' md:border-r',
 			)}
 		>
@@ -132,7 +132,7 @@ export default function AppMenuBar() {
 
 			<div className="div flex xs:flex-row  md:flex-col gap-2  md:gap-2 sm:gap-4  mt-auto">
 				<TabButton active={false} onClick={openSettings}>
-					<SettingsIcon size={22} strokeWidth={1.4} />
+					<SettingsIcon size={22} strokeWidth={1.2} />
 				</TabButton>
 				<UserMenu
 					email={user?.email}

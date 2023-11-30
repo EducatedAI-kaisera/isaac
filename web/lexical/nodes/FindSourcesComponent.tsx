@@ -51,7 +51,7 @@ const AISearchSourceComponent = ({
 	const isLoading = useAIAssistantStore(
 		state => state.literatureReferenceOutputLoading,
 	);
-	const { setLiteratureReferenceOutput } = useAIAssistantStore(
+	const { setLiteratureReferenceOutput, setOpen } = useAIAssistantStore(
 		state => state.actions,
 	);
 	const { data: _referenceList } = useGetReference(projectId);
@@ -107,6 +107,7 @@ const AISearchSourceComponent = ({
 			if ($isAIOutputNode(node)) {
 				node.remove();
 				setLiteratureReferenceOutput(undefined);
+				setOpen(false)
 			}
 		});
 	};
@@ -118,6 +119,7 @@ const AISearchSourceComponent = ({
 			if ($isAIOutputNode(node)) {
 				node.remove();
 				setLiteratureReferenceOutput(undefined);
+				setOpen(false)
 			}
 		});
 	}, [editor, nodeKey]);
