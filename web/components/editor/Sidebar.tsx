@@ -1,6 +1,6 @@
 import AIOutputLogPanel from '@components/AIOutputLogPanel';
 import ChatSessions from '@components/chat';
-import IsaacSettingsSection from '@components/IsaacSettings/IsaacSettingsSection';
+import GlobalSettingsSection from '@components/core/GlobalSettingsSection';
 import ReferenceSearchSection from '@components/literature/LiteratureSearchSection';
 import ReferencesSection from '@components/literature/ReferencesSection';
 import NotesSection from '@components/notes/NotesSection';
@@ -75,7 +75,7 @@ export default function Sidebar() {
 						: 'w-[inherit]',
 				)}
 			>
-				<IsaacSettingsSection />
+				<GlobalSettingsSection />
 			</div>
 		</>
 	);

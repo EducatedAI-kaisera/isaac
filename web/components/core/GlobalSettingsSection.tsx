@@ -14,7 +14,8 @@ import { CreditCard, LogOut } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import toast from 'react-hot-toast';
-const IsaacSettingsSection = () => {
+
+const GlobalSettingsSection = () => {
 	const { user, logout, userIsLoading } = useUser();
 
 	const router = useRouter();
@@ -59,7 +60,6 @@ const IsaacSettingsSection = () => {
 			{!userIsLoading && (
 				<div className="flex flex-col mb-8">
 					<span className="text-xs text-muted-foreground">{email}</span>
-
 				</div>
 			)}
 
@@ -121,4 +121,4 @@ const IsaacSettingsSection = () => {
 	);
 };
 
-export default IsaacSettingsSection;
+export default GlobalSettingsSection;
