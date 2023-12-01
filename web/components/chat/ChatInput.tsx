@@ -45,7 +45,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 		addNewMessage,
 		setChatSidebar,
 		setIsHandling,
-		stopStreaming,
+		resetStateOnError,
 	} = useChatSessions(s => s.actions);
 
 	const { streamChatMessage } = useStreamChatMessage();
@@ -87,7 +87,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 				},
 				onError: errorMessage => {
 					toast.error(errorMessage);
-					stopStreaming(id);
+					resetStateOnError(id);
 				},
 			});
 		},
@@ -125,7 +125,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 				},
 				onError: errorMessage => {
 					toast.error(errorMessage);
-					stopStreaming(sessionId);
+					resetStateOnError(sessionId);
 				},
 			});
 			// TODO: Manage Is Handling

@@ -40,8 +40,8 @@ const useStreamChatMessage = () => {
 			let cumulativeChunk = '';
 
 			source.addEventListener('error', e => {
-				console.log({ e });
 				onError(JSON.parse(e.data).error);
+				source.close();
 			});
 
 			// Start Streaming
@@ -52,7 +52,6 @@ const useStreamChatMessage = () => {
 
 					queryClient.invalidateQueries([QKFreeAIToken]);
 				} else {
-					console.log({ data: e.data });
 					const payload = JSON.parse(e.data);
 					const chunkText = payload.choices[0].delta.content;
 
@@ -64,6 +63,8 @@ const useStreamChatMessage = () => {
 			});
 
 			source.stream();
+
+			return { stopStreaming: source.close as () => void };
 		} catch (error) {
 			if (error instanceof DOMException && error.name === 'AbortError') return;
 			console.log({ error });

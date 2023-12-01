@@ -51,7 +51,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 		setChatContext,
 		setChatSearchInput,
 		setActiveFileReference,
-		stopStreaming,
+		resetStateOnError,
 	} = useChatSessions(s => s.actions);
 
 	const { projectId } = useGetEditorRouter();
@@ -209,7 +209,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 
 				{/* // TODO: Figure out how to stop generation */}
 				{isHandling && (
-					<InputSettingButton onClick={() => stopStreaming(sessionId)}>
+					<InputSettingButton onClick={() => resetStateOnError(sessionId)}>
 						Stop Generation{' '}
 						<FaStopCircle size="10" className="inline-block animate-pulse" />
 					</InputSettingButton>
