@@ -1,6 +1,6 @@
 import Chatbox from '@components/chat/Chatbox';
-import ChatInputSetting from '@components/chat/ChatInputSetting';
 import ChatInput from '@components/chat/ChatInput';
+import ChatInputSetting from '@components/chat/ChatInputSetting';
 import useChatSessions from '@context/chatSessions.store';
 import { retrieveChatMessages } from '@hooks/api/isaac/useRetrieveChatMessages';
 import useDocumentTabs, {
@@ -40,12 +40,12 @@ const ChatTab = ({ active, sessionId }: Props) => {
 	return (
 		<div
 			className={clsx(
-				'relative h-full max-w-[1400px] mx-auto',
+				'flex flex-col h-full max-w-[1400px] mx-auto justify-between',
 				active ? 'block' : 'hidden',
 			)}
 		>
 			<Chatbox sessionId={sessionId} />
-			<div className="absolute w-full bottom-0">
+			<div className=" w-full">
 				<ChatInputSetting sessionId={sessionId} />
 				<ChatInput sessionId={sessionId} />
 			</div>

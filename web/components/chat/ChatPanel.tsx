@@ -1,6 +1,6 @@
 import Chatbox from '@components/chat/Chatbox';
-import ChatInputSetting from '@components/chat/ChatInputSetting';
 import ChatInput from '@components/chat/ChatInput';
+import ChatInputSetting from '@components/chat/ChatInputSetting';
 import useChatSessions from '@context/chatSessions.store';
 import { retrieveChatMessages } from '@hooks/api/isaac/useRetrieveChatMessages';
 import { UniqueTabSources } from '@hooks/useDocumentTabs';
@@ -28,13 +28,13 @@ const ChatPanel = () => {
 	}, [chatSessionContext, sessionId]);
 
 	return (
-		<>
+		<div className="w-full flex flex-col justify-between max-h-[calc(100vh-100px)]">
 			<Chatbox sessionId={sessionId} minimized />
-			<div className="absolute w-full bottom-0 px-3">
+			<div className="w-full px-3">
 				<ChatInputSetting minimized sessionId={sessionId} />
 				<ChatInput minimized sessionId={sessionId} />
 			</div>
-		</>
+		</div>
 	);
 };
 
