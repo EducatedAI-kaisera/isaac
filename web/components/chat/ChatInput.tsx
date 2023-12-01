@@ -10,6 +10,7 @@ import useDocumentTabs, { UniqueTabSources } from '@hooks/useDocumentTabs';
 import clsx from 'clsx';
 import { Send } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import { ChatMessageV2 } from 'types/chat';
 // Types
 interface ChatInputProps {
@@ -44,6 +45,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 		addNewMessage,
 		setChatSidebar,
 		setIsHandling,
+		stopStreaming,
 	} = useChatSessions(s => s.actions);
 
 	const { streamChatMessage } = useStreamChatMessage();
@@ -83,6 +85,10 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 				onStreamChunk: chunk => {
 					updateAIStreamByChunk(id, assistantMessage.id, chunk);
 				},
+				onError: errorMessage => {
+					toast.error(errorMessage);
+					stopStreaming(id);
+				},
 			});
 		},
 	});
@@ -116,6 +122,10 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 				},
 				onStreamChunk: chunk => {
 					updateAIStreamByChunk(sessionId, assistantMessage.id, chunk);
+				},
+				onError: errorMessage => {
+					toast.error(errorMessage);
+					stopStreaming(sessionId);
 				},
 			});
 			// TODO: Manage Is Handling

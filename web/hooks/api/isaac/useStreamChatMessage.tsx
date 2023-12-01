@@ -14,6 +14,7 @@ const useStreamChatMessage = () => {
 	const streamChatMessage = ({
 		messages,
 		onComplete,
+		onError,
 		onStreamChunk,
 		context = 'project',
 		uploadId,
@@ -23,6 +24,7 @@ const useStreamChatMessage = () => {
 		uploadId?: string;
 		onComplete: (response: string) => void;
 		onStreamChunk: (chunk: string) => void;
+		onError: (error: string) => void;
 	}) => {
 		const payload = JSON.stringify({
 			messages,
@@ -32,11 +34,17 @@ const useStreamChatMessage = () => {
 			uploadId,
 			context,
 		});
-		const source = new SSE(`/api/chat`, { payload });
-		let cumulativeChunk = '';
 
-		// Start Streaming
 		try {
+			const source = new SSE('/api/chat', { payload });
+			let cumulativeChunk = '';
+
+			source.addEventListener('error', e => {
+				console.log({ e });
+				onError(JSON.parse(e.data).error);
+			});
+
+			// Start Streaming
 			source.addEventListener('message', async function (e) {
 				if (e.data === '[DONE]') {
 					source.close();

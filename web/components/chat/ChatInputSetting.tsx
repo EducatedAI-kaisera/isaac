@@ -47,8 +47,12 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 	const activeFileReference = useChatSessions(
 		s => s.chatSessions[sessionId]?.activeFileReference,
 	);
-	const { setChatContext, setChatSearchInput, setActiveFileReference } =
-		useChatSessions(s => s.actions);
+	const {
+		setChatContext,
+		setChatSearchInput,
+		setActiveFileReference,
+		stopStreaming,
+	} = useChatSessions(s => s.actions);
 
 	const { projectId } = useGetEditorRouter();
 	const { data: uploadFiles } = useGetUserUploads(user?.id, projectId);
@@ -205,7 +209,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 
 				{/* // TODO: Figure out how to stop generation */}
 				{isHandling && (
-					<InputSettingButton onClick={() => alert('cancel')}>
+					<InputSettingButton onClick={() => stopStreaming(sessionId)}>
 						Stop Generation{' '}
 						<FaStopCircle size="10" className="inline-block animate-pulse" />
 					</InputSettingButton>
