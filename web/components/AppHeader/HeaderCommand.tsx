@@ -111,7 +111,7 @@ export default function ProjectNavCommand() {
 						}}
 					>
 						<CommandInput
-							placeholder="Search project..."
+							placeholder="Search for commands and projects..."
 							className="h-[34px]"
 							onValueChange={setSearch}
 							value={search}
@@ -121,7 +121,7 @@ export default function ProjectNavCommand() {
 						</CommandEmpty>
 						{
 							<>
-								<CommandGroup heading="Suggestions">
+								<CommandGroup heading="Editor commands">
 									<CommandItem
 										onSelect={() => {
 											activeEditor.update(() => {
@@ -151,7 +151,7 @@ export default function ProjectNavCommand() {
 											openDocument({
 												source: UniqueTabSources.NEW_LIT_SEARCH,
 												type: TabType.LiteratureSearch,
-												label: 'Search Literature',
+												label: 'Search literature',
 											});
 											setShowEditorCommand(false);
 										}}
