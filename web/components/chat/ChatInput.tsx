@@ -125,7 +125,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 	// Submit Form on Enter
 	const handleKeyDown = useCallback(
 		(event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-			if (event.key === 'Enter' && !event.shiftKey) {
+			if (event.key === 'Enter' && !event.shiftKey && !isHandling) {
 				event.preventDefault();
 				formRef.current?.dispatchEvent(
 					new Event('submit', { cancelable: true, bubbles: true }),
@@ -140,7 +140,8 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 	useEffect(() => {
 		inputRef?.current.focus();
 	}, [sessionId]);
-
+	const inputText =
+		sessionId === UniqueTabSources.NEW_CHAT ? inputValue : promptInput;
 	return (
 		<div className="pb-4 bg-gradient-to-b from-transparent dark:via-neutral-950/60 dark:to-neutral-900 via-bg-desertStorm-100/60 to-desertStorm-100">
 			<form
@@ -155,12 +156,19 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 			>
 				<TextareaChat
 					id="isaac-chat-input"
-					className="min-h-10 placeholder:pt-1"
+					className={clsx(
+						'placeholder:pt-1 overflow-y-hidden',
+						minimized ? 'text-sm' : 'text-md',
+					)}
 					ref={inputRef}
+					disabled={isHandling}
+					style={{
+						minHeight: '80px',
+						maxHeight: '260px',
+						height: `${(inputText?.split('\n').length || 0) * 28}px`,
+					}}
 					placeholder="Type your message..."
-					value={
-						sessionId === UniqueTabSources.NEW_CHAT ? inputValue : promptInput
-					}
+					value={inputText}
 					onChange={e =>
 						sessionId === UniqueTabSources.NEW_CHAT
 							? setInputValue(e.target.value)
