@@ -54,11 +54,18 @@ const IsaacSettingsSection = () => {
 	};
 	return (
 		<div className="flex flex-col justify-between p-3">
-			<p className="text-sm font-medium text-foreground mb-6">Settings</p>
+			<p className="text-sm font-semibold text-foreground mb-1">Settings</p>
+
+			{!userIsLoading && (
+				<div className="flex flex-col mb-8">
+					<span className="text-xs text-muted-foreground">{email}</span>
+
+				</div>
+			)}
 
 			<div className="flex flex-col gap-6">
-				<div>
-					<p className="text-sm font-semibold">Third Party Integrations</p>
+				<div className="mb-8">
+					<p className="text-sm font-medium">Third Party Integrations</p>
 					<div className="flex mt-4 items-center space-x-2">
 						<Switch
 							checked={!!userIntegration?.mendeley}
@@ -80,38 +87,13 @@ const IsaacSettingsSection = () => {
 						</Label>
 					</div>
 				</div>
-				{/* <div>
-					{!userIsLoading && (
-						<>
-							<p className="text-sm font-semibold">Manage Subscription</p>
-							<Button
-								size="sm"
-								className="mt-2"
-								onClick={loadPortal}
-								variant="outline"
-							>
-								<CreditCard className="mr-2 h-4 w-4" />
-								Manage Subscription
-							</Button>
-						</>
-					)}
-				</div> */}
+
 				<div>
 					{user && (
 						<>
-							<p className="text-sm font-semibold mb-2">Account</p>
-							{!userIsLoading && (
-								<span className="text-sm text-gray-800">{email}</span>
-							)}
-							<div>
-								{!userIsLoading && (
-									<span className="text-sm text-gray-800">
-										Created at:{' '}
-										{format(new Date(user?.created_at), 'dd MMM yyyy')}
-									</span>
-								)}
-							</div>
-							<div className="flex flex-col">
+							<p className="text-sm font-medium mb-2">Account settings</p>
+
+							<div className="flex h-full flex-col justify-between mt-4">
 								<Button
 									size="sm"
 									className="mt-2"
@@ -122,7 +104,7 @@ const IsaacSettingsSection = () => {
 									Manage Billing
 								</Button>
 								<Button
-									variant="outline"
+									variant="ghost"
 									size="sm"
 									className="mt-2"
 									onClick={logout}
