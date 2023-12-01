@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Dialog } from '@components/ui/dialog';
 import {
 	Tooltip,
@@ -48,13 +49,6 @@ const buttons: {
 	{ tab: Panel.NOTES, Icon: StickyNoteIcon },
 ];
 
-const SettingsModal = dynamic(
-	() => import('../../components/core/SettingsModal'),
-	{
-		ssr: false,
-	},
-);
-
 const CustomInstructionsModal = dynamic(
 	() => import('../../components/core/CustomInstructionsModal'),
 	{
@@ -70,7 +64,6 @@ export default function AppMenuBar() {
 	const openPanel = useUIStore(s => s.openPanel);
 	const activePanel = useUIStore(s => s.activePanel);
 	const { user, logout } = useUser();
-	const [isSettingsOpen, openSettings, , , setSettingsOpen] = useToggle();
 	const { projectId: activeProjectId } = useGetEditorRouter();
 	const customInstructionsModalOpen = useUIStore(
 		s => s.customInstructionsModalOpen,
@@ -131,17 +124,21 @@ export default function AppMenuBar() {
 				})}
 
 			<div className="div flex xs:flex-row  md:flex-col gap-2  md:gap-2 sm:gap-4  mt-auto">
-				<TabButton active={false} onClick={openSettings}>
-					<SettingsIcon size={22} strokeWidth={1.2} />
-				</TabButton>
-				<UserMenu
-					email={user?.email}
-					logout={logout}
-					avatarUrl={user?.user_metadata?.avatar_url ?? ''}
-				/>
-				<Dialog open={isSettingsOpen} onOpenChange={setSettingsOpen}>
-					<SettingsModal />
-				</Dialog>
+				<div
+					onClick={() => openPanel(Panel.ISAAC_SETTINGS)}
+					className="relative flex items-center justify-start gap-2 w-text-popover-foreground w-full cursor-pointer hover:text-muted-foreground"
+				>
+					<Avatar className="h-10 w-10 rounded-md">
+						<AvatarImage
+							src={user?.user_metadata?.avatar_url ?? ''}
+							alt="user-pp"
+						/>
+						<AvatarFallback className="rounded-md ">
+							{user?.email?.slice(0, 2).toUpperCase()}
+						</AvatarFallback>
+					</Avatar>
+				</div>
+
 				<Dialog
 					open={customInstructionsModalOpen}
 					onOpenChange={setCustomInstructionsModalOpen}

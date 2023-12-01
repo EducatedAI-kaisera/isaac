@@ -12,7 +12,7 @@ import useRevokeMendeleyToken from '@hooks/api/mendeley/useMendeleyToken.delete'
 import { useGetUserIntegration } from '@hooks/api/useUserIntegration.get';
 import useRevokeZoteroToken from '@hooks/api/zotero/useZoteroToken.delete';
 import { getMendeleyUserAuthorizationUrl } from '@resources/integration/mendeley';
-import { useDeleteUser, useUpdateUserEmail } from '@resources/user';
+import { useDeleteUser } from '@resources/user';
 import axios from 'axios';
 import { Settings } from 'lucide-react';
 import mixpanel from 'mixpanel-browser';
@@ -76,20 +76,6 @@ export default function SettingsModal() {
 							/>
 							<span className="text-muted-foreground">Settings</span>
 						</div>{' '}
-						{/* <Text
-							className="text-muted-foreground"
-							sx={{
-								fontSize: '12px',
-							}}
-						>
-							{email?.length >= 25 ? (
-								<Tooltip label={email?.toUpperCase()}>
-									<span>{email?.toUpperCase().slice(0, 25)}...</span>
-								</Tooltip>
-							) : (
-								email?.toUpperCase()
-							)}
-						</Text> */}
 					</DialogTitle>
 				</DialogHeader>
 
