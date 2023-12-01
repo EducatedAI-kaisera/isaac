@@ -36,12 +36,12 @@ const ProjectExplorer = memo(() => {
 	return (
 		<nav
 			className={clsx(
-				'relative z-20  flex flex-col h-full',
+				'relative z-20 flex flex-col h-full',
 				'dark:bg-black bg-white',
 			)}
 		>
 			<div className="flex items-center justify-between p-3">
-				<p className="text-sm font-medium text-foreground">Projects</p>
+				<p className="text-sm font-semibold text-foreground">Projects</p>
 				<div className="inline-flex items-center gap-0.5">
 					<Popover open={createProjectPopoverOpen}>
 						<Tooltip>
