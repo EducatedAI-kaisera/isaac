@@ -55,7 +55,7 @@ export default function ProjectNavCommand() {
 	const [editorCommand, opts] = useUIStore(s => s.showEditorCommand);
 	const setShowEditorCommand = useUIStore(s => s.setShowEditorCommand);
 	const activeEditor = useLexicalEditorStore(s => s.activeEditor);
-	const { openDocument } = useDocumentTabs();
+	const { openDocument, activeDocument, projectId } = useDocumentTabs();
 
 	const [activeSubCommand, setActiveSubCommand] = useState<SubCommand>();
 
@@ -111,18 +111,17 @@ export default function ProjectNavCommand() {
 						}}
 					>
 						<CommandInput
-							placeholder="Search project..."
+							placeholder="Search for commands and projects..."
 							className="h-[34px]"
 							onValueChange={setSearch}
 							value={search}
 						/>
 						<CommandEmpty>
 							<p>No command found</p>
-							<Button> Hello</Button>
 						</CommandEmpty>
 						{
 							<>
-								<CommandGroup heading="Suggestions">
+								<CommandGroup heading="Editor commands">
 									<CommandItem
 										onSelect={() => {
 											activeEditor.update(() => {
@@ -152,7 +151,7 @@ export default function ProjectNavCommand() {
 											openDocument({
 												source: UniqueTabSources.NEW_LIT_SEARCH,
 												type: TabType.LiteratureSearch,
-												label: 'Search Literature',
+												label: 'Search literature',
 											});
 											setShowEditorCommand(false);
 										}}
@@ -191,13 +190,13 @@ export default function ProjectNavCommand() {
 						<CommandSeparator />
 						<CommandGroup heading="Open Project" className="mx-1 my-0.5">
 							{projectDocuments?.map(project => (
-								<CommandList
-									key={project.id}
-									onSelect={() => openProject(project.id)}
-								>
+								<CommandList key={project.id}>
 									<CommandItem
 										key={project.id}
-										onSelect={() => openProject(project.id)}
+										onSelect={() => {
+											openProject(project.id);
+											setShowEditorCommand(false);
+										}}
 									>
 										<Folder
 											size={15}
@@ -211,6 +210,7 @@ export default function ProjectNavCommand() {
 									</CommandItem>
 
 									{search &&
+										project.id === projectId &&
 										project.documents.map(doc => (
 											<CommandItem
 												key={doc.id}
