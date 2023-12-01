@@ -91,9 +91,9 @@ const MessageV2 = ({
 				<div>
 					{isHandling && !content && (
 						<div className="flex justify-center gap-1 pt-3">
-							<span className="w-2 h-2 rounded-full bg-gray-300 animate-bounce"></span>
-							<span className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-100"></span>
-							<span className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-200"></span>
+							<span className="w-2 h-2 rounded-full bg-isaac/50 animate-bounce"></span>
+							<span className="w-2 h-2 rounded-full bg-isaac/50 animate-bounce delay-100"></span>
+							<span className="w-2 h-2 rounded-full bg-isaac/50 animate-bounce delay-200"></span>
 						</div>
 					)}
 					<div
