@@ -16,9 +16,17 @@ type Props = {
 	role: ChatRoles;
 	minimized?: boolean;
 	linkedNoteId?: string;
+	isHandling?: boolean;
 };
 
-const MessageV2 = ({ id, content, role, minimized, linkedNoteId }: Props) => {
+const MessageV2 = ({
+	id,
+	content,
+	role,
+	minimized,
+	linkedNoteId,
+	isHandling,
+}: Props) => {
 	const [copied, setCopied] = useState(false);
 	const [linkedNote, setLinkedNote] = useState(linkedNoteId);
 
@@ -81,12 +89,13 @@ const MessageV2 = ({ id, content, role, minimized, linkedNoteId }: Props) => {
 					)}
 				</p>
 				<div>
-					{/* <ReactMarkdown
-						linkTarget="_blank"
-						className={minimized ? 'leading-6' : 'leading-8'}
-					>
-						{content}
-					</ReactMarkdown> */}
+					{isHandling && !content && (
+						<div className="flex justify-center gap-1 pt-3">
+							<span className="w-2 h-2 rounded-full bg-gray-300 animate-bounce"></span>
+							<span className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-100"></span>
+							<span className="w-2 h-2 rounded-full bg-gray-300 animate-bounce delay-200"></span>
+						</div>
+					)}
 					<div
 						className={minimized ? 'leading-6' : 'leading-8'}
 						dangerouslySetInnerHTML={{ __html: markdownContent }}
