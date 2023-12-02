@@ -1,6 +1,6 @@
 <p align="center">
 
-  <a href="https://isaac.algora.io">
+  <a href="https://isaaceditor.com">
     <img src="assets/isaac-logo.png" alt="Isaac Logo" width="100" height="100">
   
   <h3 align="center">Isaac</h3>
