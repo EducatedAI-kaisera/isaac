@@ -45,6 +45,8 @@ import { LinePlaceholderPlugin } from './plugins/LinePlaceholderPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import DefaultTheme from './themes/DefaultTheme';
+import {SharedAutocompleteContext} from './context/SharedAutocompleteContext';
+import { AutocompleteNode } from './nodes/AutocompleteNode';
 
 type Props = {
 	documentId: string;
@@ -141,6 +143,10 @@ const DevPlaygroundPlugin = dynamic(
 	},
 );
 
+const CopilotPlugin = dynamic(() => import('./plugins/CopilotPlugin'), {
+	ssr: false,
+});
+
 const EditorLexical = ({ documentId, active }: Props) => {
 	const { data: document } = useGetDocumentById(documentId);
 	const [floatingAnchorElem, setFloatingAnchorElem] =
@@ -224,9 +230,12 @@ const EditorLexical = ({ documentId, active }: Props) => {
 						CollapsibleContentNode,
 						CollapsibleTitleNode,
 						AIOutputNode,
+						AutocompleteNode,
 					],
 				}}
 			>
+				   <SharedAutocompleteContext>
+					 <TableContext>
 				<div
 					className={clsx(
 						!active ? 'hidden h-0' : 'h-full',
@@ -294,7 +303,8 @@ const EditorLexical = ({ documentId, active }: Props) => {
 							<InlinePromptPlugin />
 							<CitationPlugin />
 							<OutlinesGeneratorPlugin />
-							<TableContext>
+							<CopilotPlugin />
+
 								<>
 									<TablePlugin />
 									{<TableCellResizer />}
@@ -304,7 +314,7 @@ const EditorLexical = ({ documentId, active }: Props) => {
 										/>
 									)}
 								</>
-							</TableContext>
+
 							<AutoSavePlugin saveDocument={saveDocument} />
 						</>
 					)}
@@ -324,6 +334,8 @@ const EditorLexical = ({ documentId, active }: Props) => {
 					)}
 					{/* {process.env.NODE_ENV === 'development' && <DevPlaygroundPlugin />} */}
 				</div>
+				</TableContext>
+				</SharedAutocompleteContext>
 			</LexicalComposer>
 		</>
 	);
