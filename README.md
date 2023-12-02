@@ -1,5 +1,8 @@
 # Isaac
-The AI-native research workspace.
+The AI-native, open source research workspace. Accelerating science.
+
+[![Open Bounties](https://img.shields.io/endpoint?url=https%3A%2F%2Fconsole.algora.io%2Fapi%2Fshields%2Fisaac%2Fbounties%3Fstatus%3Dopen)](https://console.algora.io/org/isaac/bounties?status=open)
+
 ## Work in progress...
 
 You've stumbled upon the most exciting thing since sliced bread in the world of research and AI. But guess what? Our README is playing catch up with our awesomeness. It's still a work-in-progress, just like the best of us.
