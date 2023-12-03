@@ -65,9 +65,17 @@ const useDeleteChatSession = (params?: {
 					<DialogHeader>
 						<DialogTitle>Delete chat session?</DialogTitle>
 					</DialogHeader>
-					<DialogDescription><span> This will delete <strong>{showConfirmDialog?.title}</strong></span></DialogDescription>
+					<DialogDescription>
+						<span>
+							{' '}
+							This will delete <strong>{showConfirmDialog?.title}</strong>
+						</span>
+					</DialogDescription>
 					<DialogFooter>
-					<Button variant="ghost" onClick={() => setShowConfirmDialog(undefined)}>
+						<Button
+							variant="ghost"
+							onClick={() => setShowConfirmDialog(undefined)}
+						>
 							Cancel
 						</Button>
 						<Button
@@ -78,7 +86,6 @@ const useDeleteChatSession = (params?: {
 						>
 							Delete
 						</Button>
-
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>

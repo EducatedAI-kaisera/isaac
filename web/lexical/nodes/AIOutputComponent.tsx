@@ -55,7 +55,9 @@ const AIOutputComponent = ({
 	const AIOutput = useAIAssistantStore(state => state.AITextOutput);
 	const [editor] = useLexicalComposerContext();
 	const cachedSelection = useAIAssistantStore(state => state.cachedSelection);
-	const { setAITextOutput, setOpen } = useAIAssistantStore(state => state.actions);
+	const { setAITextOutput, setOpen } = useAIAssistantStore(
+		state => state.actions,
+	);
 
 	const acceptText = () => {
 		editor.focus();
