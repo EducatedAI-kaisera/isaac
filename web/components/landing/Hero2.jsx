@@ -25,7 +25,7 @@ export function Hero() {
 		<div className="overflow-hidden py-4 md:py-40	 lg:pb-32 xl:pb-36">
 			{/* <RetroGrid /> */}
 			<Container>
-				<Ripple/>
+				<Ripple />
 
 				<div className="flex flex-col items-center justify-center">
 					<div className="text-center max-w-2xl">

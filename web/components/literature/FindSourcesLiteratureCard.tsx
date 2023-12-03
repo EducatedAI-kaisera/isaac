@@ -100,26 +100,26 @@ const FindSourcesLiteratureCard = ({
 						Insert citation{' '}
 					</Button>
 				)}
-				<Tooltip >
+				<Tooltip>
 					<TooltipTrigger>
-				<Button
-					size="icon"
-					variant="ghost"
-
-					onClick={e => {
-						e.stopPropagation();
-						!added ? onAdd() : onRemove();
-					}}
-				>
-					<Bookmark
-						className={clsx(' h-4 w-4', added && 'fill-isaac stroke-isaac')}
-						size={20}
-						strokeWidth={1.2}
-					/>
-
-				</Button>
-				</TooltipTrigger>
-				<TooltipContent side="right">{added ? "Remove from references"  : "Save to references"} </TooltipContent>
+						<Button
+							size="icon"
+							variant="ghost"
+							onClick={e => {
+								e.stopPropagation();
+								!added ? onAdd() : onRemove();
+							}}
+						>
+							<Bookmark
+								className={clsx(' h-4 w-4', added && 'fill-isaac stroke-isaac')}
+								size={20}
+								strokeWidth={1.2}
+							/>
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent side="right">
+						{added ? 'Remove from references' : 'Save to references'}{' '}
+					</TooltipContent>
 				</Tooltip>
 			</div>
 		</div>

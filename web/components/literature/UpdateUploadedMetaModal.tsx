@@ -39,7 +39,6 @@ const UpdateUploadedMeta = () => {
 			addCitation({
 				docId: open.uploadId,
 				citation: {
-
 					title: input.title,
 					authors: authorArr,
 					year: Number(input.year),
@@ -71,7 +70,7 @@ const UpdateUploadedMeta = () => {
 			setValue(
 				'title',
 				dataToInit.custom_citation?.title ||
-				dataToInit.file_name.replace('.pdf', ''),
+					dataToInit.file_name.replace('.pdf', ''),
 			);
 			setValue('authors', dataToInit.custom_citation?.authors.join(', '));
 			setValue('year', dataToInit.custom_citation?.year);
@@ -90,7 +89,7 @@ const UpdateUploadedMeta = () => {
 						setValue(
 							'title',
 							citation?.custom_citation?.title ||
-							open?.fileName.replace('.pdf', ''),
+								open?.fileName.replace('.pdf', ''),
 						);
 						setValue('authors', citation?.custom_citation?.authors.join(', '));
 						setValue('year', citation?.custom_citation?.year);

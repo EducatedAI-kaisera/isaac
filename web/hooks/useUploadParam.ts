@@ -1,24 +1,24 @@
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type UploadState = string | null;
 
 const useUploadParam = (): UploadState => {
-  const router = useRouter();
-  const [upload, setUpload] = useState<UploadState>(null);
+	const router = useRouter();
+	const [upload, setUpload] = useState<UploadState>(null);
 
-  useEffect(() => {
-    const { query = {} } = router;
-    const { upload: uploadID } = query;
+	useEffect(() => {
+		const { query = {} } = router;
+		const { upload: uploadID } = query;
 
-    if (uploadID) {
-      setUpload(uploadID as string);
-    } else {
-      setUpload(null);
-    }
-  }, [router]);
+		if (uploadID) {
+			setUpload(uploadID as string);
+		} else {
+			setUpload(null);
+		}
+	}, [router]);
 
-  return upload;
+	return upload;
 };
 
 export default useUploadParam;

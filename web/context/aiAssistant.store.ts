@@ -55,7 +55,7 @@ const useAIAssistantStore = create<AIAssistantState>(set => ({
 		},
 		setOpen: (open: boolean) => {
 			set({ open });
-		}
+		},
 	},
 }));
 
