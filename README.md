@@ -1,3 +1,5 @@
+_README.md is a work-in-progress. Please check back later for more updates._
+
 <p align="center">
 
   <a href="https://isaaceditor.com">
@@ -101,4 +103,4 @@ Isaac is open-source under GNU Affero General Public License Version 3 [(AGPLv3)
 
 ---
 
-_README.md is a work-in-progress. Please check back later for more updates._
+
