@@ -10,6 +10,7 @@ import useDocumentTabs, { UniqueTabSources } from '@hooks/useDocumentTabs';
 import clsx from 'clsx';
 import { Send } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import { ChatMessageV2 } from 'types/chat';
 // Types
 interface ChatInputProps {
@@ -44,6 +45,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 		addNewMessage,
 		setChatSidebar,
 		setIsHandling,
+		resetStateOnError,
 	} = useChatSessions(s => s.actions);
 
 	const { streamChatMessage } = useStreamChatMessage();
@@ -60,7 +62,6 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 			}
 
 			// API Calls here
-			setIsHandling(sessionId, true);
 			streamChatMessage({
 				uploadId: fileReference?.fileId,
 				context: chatContext,
@@ -74,7 +75,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 						{ ...assistantMessage, content: completedText },
 					];
 					saveChatMessage(messages);
-					setIsHandling(sessionId, true);
+					setIsHandling(id, false);
 					generateTitle(
 						id,
 						messages.map(m => ({ role: m.role, content: m.content })),
@@ -82,6 +83,10 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 				},
 				onStreamChunk: chunk => {
 					updateAIStreamByChunk(id, assistantMessage.id, chunk);
+				},
+				onError: errorMessage => {
+					toast.error(errorMessage);
+					resetStateOnError(id);
 				},
 			});
 		},
@@ -116,6 +121,10 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 				},
 				onStreamChunk: chunk => {
 					updateAIStreamByChunk(sessionId, assistantMessage.id, chunk);
+				},
+				onError: errorMessage => {
+					toast.error(errorMessage);
+					resetStateOnError(sessionId);
 				},
 			});
 			// TODO: Manage Is Handling

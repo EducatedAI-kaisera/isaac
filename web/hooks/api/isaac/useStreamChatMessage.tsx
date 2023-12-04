@@ -14,6 +14,7 @@ const useStreamChatMessage = () => {
 	const streamChatMessage = ({
 		messages,
 		onComplete,
+		onError,
 		onStreamChunk,
 		context = 'project',
 		uploadId,
@@ -23,6 +24,7 @@ const useStreamChatMessage = () => {
 		uploadId?: string;
 		onComplete: (response: string) => void;
 		onStreamChunk: (chunk: string) => void;
+		onError: (error: string) => void;
 	}) => {
 		const payload = JSON.stringify({
 			messages,
@@ -32,11 +34,17 @@ const useStreamChatMessage = () => {
 			uploadId,
 			context,
 		});
-		const source = new SSE(`/api/chat`, { payload });
-		let cumulativeChunk = '';
 
-		// Start Streaming
 		try {
+			const source = new SSE('/api/chat', { payload });
+			let cumulativeChunk = '';
+
+			source.addEventListener('error', e => {
+				onError(JSON.parse(e.data).error);
+				source.close();
+			});
+
+			// Start Streaming
 			source.addEventListener('message', async function (e) {
 				const eventMessage = atob(e.data)
 				if (eventMessage === '[DONE]') {
@@ -56,6 +64,8 @@ const useStreamChatMessage = () => {
 			});
 
 			source.stream();
+
+			return { stopStreaming: source.close as () => void };
 		} catch (error) {
 			if (error instanceof DOMException && error.name === 'AbortError') return;
 			console.log({ error });

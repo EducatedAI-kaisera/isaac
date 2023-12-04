@@ -16,6 +16,9 @@ export async function performCompletion(res, body, inPlace = false) {
         });
         // Handle completion request completion
         completion.body.on('end', () => {
+            // Send a final chunk to the frontend that says [DONE]
+            const doneMessage = Buffer.from('[DONE]').toString('base64');
+            res.write(`data: ${doneMessage}\n\n`);
             // Close the SSE connection when the completion request is complete
             res.end();
         });

@@ -59,8 +59,6 @@ export default async function (req: NextApiRequest, res) {
 		if (context === 'references') {
 			const body = uploadId ? { prompt, uploadId } : { prompt, projectId };
 
-			console.log(body);
-
 			const res = await fetch(
 				uploadId ? singleReferenceEndpoint : projectReferenceEndpoint,
 				{
