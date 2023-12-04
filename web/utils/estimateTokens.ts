@@ -5,7 +5,7 @@
  * @returns The estimated number of tokens.
  */
 export function estimateTokens(str: string): number {
-  const tokenLength = 4;
-  const estimatedTokens = Math.ceil(str.length / tokenLength);
-  return estimatedTokens;
+	const tokenLength = 4;
+	const estimatedTokens = Math.ceil(str.length / tokenLength);
+	return estimatedTokens;
 }

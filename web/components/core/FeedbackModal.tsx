@@ -13,11 +13,9 @@ import { Check, Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-
 interface FeedbackModalProps {
-  userEmail: string;
+	userEmail: string;
 }
-
 
 const FeedbackModal = (props: FeedbackModalProps) => {
 	const [loading, setLoading] = useState(false);

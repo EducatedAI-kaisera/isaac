@@ -5,10 +5,10 @@ import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
 import { ChatContext } from 'types/chat';
 
 export const config = {
-  api: {
-    externalResolver: true,
-  },
-}
+	api: {
+		externalResolver: true,
+	},
+};
 
 type Payload = {
 	userId: string;
@@ -61,7 +61,7 @@ export default async function (req: NextApiRequest, res) {
 		if (context === 'references') {
 			const body = uploadId ? { prompt, uploadId } : { prompt, projectId };
 
-			console.log(body)
+			console.log(body);
 
 			const res = await fetch(
 				uploadId ? singleReferenceEndpoint : projectReferenceEndpoint,
@@ -75,7 +75,9 @@ export default async function (req: NextApiRequest, res) {
 			);
 
 			if (!res.ok) {
-				throw new Error(`Failed to fetch from reference endpoint: ${res.statusText}`);
+				throw new Error(
+					`Failed to fetch from reference endpoint: ${res.statusText}`,
+				);
 			}
 
 			const injectedDoc = await res.json();
@@ -100,7 +102,9 @@ export default async function (req: NextApiRequest, res) {
 			});
 
 			if (!res.ok) {
-				throw new Error(`Failed to fetch from realtime endpoint: ${res.statusText}`);
+				throw new Error(
+					`Failed to fetch from realtime endpoint: ${res.statusText}`,
+				);
 			}
 
 			const realtimeContext = await res.json();
@@ -135,6 +139,8 @@ export default async function (req: NextApiRequest, res) {
 		});
 	} catch (error) {
 		console.error(error);
-		res.status(500).json({ error: 'An error occurred while processing your request.' });
+		res
+			.status(500)
+			.json({ error: 'An error occurred while processing your request.' });
 	}
 }

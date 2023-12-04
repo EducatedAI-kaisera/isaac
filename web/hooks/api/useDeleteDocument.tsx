@@ -1,5 +1,5 @@
 import { TextDocument } from '@hooks/api/useGetDocuments';
-import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
+import useDocumentTabs from '@hooks/useDocumentTabs';
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from 'react-query';

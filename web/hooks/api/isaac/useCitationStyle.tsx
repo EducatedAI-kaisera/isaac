@@ -4,12 +4,12 @@ import { CitationStyle } from 'data/citationStyles';
 export const citationStyleLocalStorageKey = 'isaac-citation-style-key';
 
 const useCitationStyle = () => {
-  const [citationStyle, setCitationStyle] = useLocalStorage<CitationStyle>({
-    key: citationStyleLocalStorageKey,
-    defaultValue: CitationStyle.APA,
-  });
+	const [citationStyle, setCitationStyle] = useLocalStorage<CitationStyle>({
+		key: citationStyleLocalStorageKey,
+		defaultValue: CitationStyle.APA,
+	});
 
-  return { citationStyle, setCitationStyle };
+	return { citationStyle, setCitationStyle };
 };
 
 export default useCitationStyle;

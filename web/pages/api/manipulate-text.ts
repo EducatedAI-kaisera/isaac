@@ -8,10 +8,10 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export const config = {
-  api: {
-    externalResolver: true,
-  },
-}
+	api: {
+		externalResolver: true,
+	},
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async function (req, res) {

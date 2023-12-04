@@ -19,7 +19,6 @@ const ChatBoxV2 = ({ sessionId, minimized }: ChatBoxProps) => {
 
 	// Use this useEffect to scroll to the bottom when new messages arrive
 	useEffect(() => {
-		console.log({ scrollRef, isStreaming });
 		if (scrollRef && isStreaming) {
 			scrollRef.current.scrollTo({
 				top: scrollRef.current.scrollHeight,
@@ -51,6 +50,7 @@ const ChatBoxV2 = ({ sessionId, minimized }: ChatBoxProps) => {
 					role={message.role}
 					content={message.content}
 					linkedNoteId={message.note_id}
+					isHandling={isStreaming}
 				/>
 			))}
 		</div>

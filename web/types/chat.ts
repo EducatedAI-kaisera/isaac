@@ -52,6 +52,6 @@ export type ChatSession = {
 	title: string;
 	projectId: string;
 	type: ChatSessionType;
-	createdAt: Date;
-	updatedAt: Date;
+	created_at: Date;
+	updated_at: Date;
 };

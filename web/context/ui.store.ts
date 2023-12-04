@@ -9,6 +9,7 @@ export enum Panel {
 	REFERENCES = 'REFERENCES',
 	NOTES = 'NOTES',
 	AI_OUTPUT_LOGS = 'AI_OUTPUT_LOGS',
+	ISAAC_SETTINGS = 'ISAAC_SETTINGS',
 }
 
 export const SideBarWidth = 300;
