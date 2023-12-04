@@ -17,7 +17,7 @@ import useHandleToastQuery from '@hooks/misc/useHandleToastQuery';
 import {} from '@radix-ui/react-select';
 import { useGetProjects } from '@resources/editor-page';
 import clsx from 'clsx';
-import { FolderPlus } from 'lucide-react';
+import { FolderPlus, Loader2 } from 'lucide-react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -113,12 +113,17 @@ const EditorPage = () => {
 		[sortedProjects],
 	);
 
+	const projectsLoadedAndEmpty = useMemo(() => !isGetProjectsLoading && projects?.length === 0, [
+		isGetProjectsLoading,
+		projects,
+	]);
+
 	return (
 		<>
 			<EditorHead />
 			<style>{editorPageStyle}</style>
 			<EditorLayout>
-				{renderedProjects?.length > 2000 ? (
+				{!projectsLoadedAndEmpty ? (
 					<div className="w-full">
 						<h1 className="text-center text-foreground">Projects</h1>
 
@@ -136,13 +141,8 @@ const EditorPage = () => {
 								</SelectGroup>
 							</SelectContent>
 						</Select>
-						{isGetProjectsLoading ? (
-							<div className={projectGridClasses}>
-								<LoadingPlaceholder />
-							</div>
-						) : (
-							<div className={projectGridClasses}>{renderedProjects}</div>
-						)}
+
+						<div className={projectGridClasses}>{renderedProjects}</div>
 					</div>
 				) : (
 					<div className="flex h-screen flex-col items-center mx-auto justify-center text-center">
