@@ -38,6 +38,7 @@ import {
 
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { commandKey } from '@lexical/utils/meta';
 
 enum SubCommand {
 	CITATION_COMMAND = 'CITATION_COMMAND',
@@ -88,7 +89,12 @@ export default function ProjectNavCommand() {
 			>
 				<PopoverTrigger asChild>
 					<button className="w-[280px] sm-[300px] md:w-[360px] border text-sm  h-7 rounded">
-						{currentProjectDocuments?.title || 'Search Anything'}
+
+							<span className="">
+								{commandKey} + K
+							</span>
+
+
 					</button>
 				</PopoverTrigger>
 				<PopoverContent className="w-[360px] p-0" sideOffset={-30}>
@@ -111,7 +117,7 @@ export default function ProjectNavCommand() {
 						}}
 					>
 						<CommandInput
-							placeholder="Search for commands and projects..."
+							placeholder="Type a command or search..."
 							className="h-[34px]"
 							onValueChange={setSearch}
 							value={search}
