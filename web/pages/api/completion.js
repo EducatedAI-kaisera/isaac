@@ -1,9 +1,4 @@
-import { Configuration, OpenAIApi } from 'openai';
-
-const configuration = new Configuration({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+import fetch from 'node-fetch';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async function (req, res) {
@@ -14,12 +9,17 @@ export default async function (req, res) {
 
 	// if word count is less than 5, return error
 	if (req.body.split(' ').length < 5) {
-		res.write('"Please write a few words and try again. Kindly - Isaac 🧑‍🚀"');
+		res.write('data: "Please write a few words and try again. Kindly - Isaac 🧑‍🚀"\n\n');
 		return res.end();
 	}
 
-	const completion = await openai.createChatCompletion(
-		{
+	// Send an initial comment to establish the connection
+	res.write(':ok\n\n');
+
+	const completion = await fetch('http://0.0.0.0:5001/api/completion', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', 'x-api-key': 'default-api-route-secret' },
+		body: JSON.stringify({
 			model: 'gpt-3.5-turbo',
 			messages: [
 				{
@@ -37,13 +37,19 @@ export default async function (req, res) {
 			max_tokens: 2000,
 			top_p: 1,
 			stream: true,
-		},
+		}),
+	});
 
-		{ responseType: 'stream' },
-	);
+	// Forward the data from the completion request to the client
+	completion.body.on('data', chunk => {
+		// Send each chunk as an SSE message
+		res.write(`data: ${chunk}\n\n`);
+	});
 
-	completion.data.on('data', data => {
-		res.write(data.toString());
+	// Handle completion request completion
+	completion.body.on('end', () => {
+		// Close the SSE connection when the completion request is complete
+		res.end();
 	});
 
 	function generatePrompt(input) {

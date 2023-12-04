@@ -11,7 +11,7 @@ export default async function (req, res) {
 
 	const completion = await fetch('http://0.0.0.0:5001/api/completion', {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
+		headers: { 'Content-Type': 'application/json', 'x-api-key': 'default-api-route-secret' },
 		body: JSON.stringify({
 			model: 'gpt-3.5-turbo',
 			messages: [
