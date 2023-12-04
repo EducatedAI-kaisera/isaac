@@ -62,7 +62,6 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 			}
 
 			// API Calls here
-			setIsHandling(sessionId, true);
 			streamChatMessage({
 				uploadId: fileReference?.fileId,
 				context: chatContext,
@@ -76,7 +75,7 @@ const ChatInput = ({ sessionId, minimized }: ChatInputProps) => {
 						{ ...assistantMessage, content: completedText },
 					];
 					saveChatMessage(messages);
-					setIsHandling(sessionId, true);
+					setIsHandling(id, false);
 					generateTitle(
 						id,
 						messages.map(m => ({ role: m.role, content: m.content })),

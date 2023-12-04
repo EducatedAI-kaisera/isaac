@@ -73,7 +73,7 @@ const useChatSessions = create<ChatSessionStore>((set, get) => ({
 			const chatSessionData: ChatSessionData = {
 				chatContext: 'project',
 				promptInput: '',
-				isHandling: false,
+				isHandling: true,
 				chatSearchInput: '',
 				messages: [userMessage, assistantMessage],
 				activeFileReference: undefined,
