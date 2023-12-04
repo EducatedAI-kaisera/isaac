@@ -5,7 +5,7 @@ export async function performCompletion(res, body, inPlace = false) {
     const completion = await fetch(`${API_HOST}/api/completion`, {
         method: 'POST',
         body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json', 'x-api-key': 'default-api-route-secret' },
+        headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.API_ROUTE_SECRET },
     });
     if (body['stream']) {
         // Send an initial comment to establish the connection
