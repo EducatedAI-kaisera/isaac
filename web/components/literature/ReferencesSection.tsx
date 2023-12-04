@@ -138,7 +138,7 @@ const References = () => {
 			</div>
 
 			{/* SEARCH INPUT */}
-			<div className="flex flex-col gap-2  items-stretch">
+			<div className="flex flex-col gap-2 items-stretch">
 				<div className="flex items-center flex-wrap gap-2 mb-2 relative px-3">
 					<Input
 						onChange={e => setRefSearchInput(e.target.value)}
