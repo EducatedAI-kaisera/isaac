@@ -1,14 +1,15 @@
 import fetch from 'node-fetch';
 
 export async function performCompletion(res, body, inPlace = false) {
-    // Send an initial comment to establish the connection
-    res.write(':ok\n\n');
     const completion = await fetch('http://0.0.0.0:5001/api/completion', {
         method: 'POST',
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json', 'x-api-key': 'default-api-route-secret' },
     });
     if (body['stream']) {
+        // Send an initial comment to establish the connection
+        res.write(':ok\n\n');
+
         // Forward the data from the completion request to the client
         completion.body.on('data', chunk => {
             // Send each chunk as an SSE message
