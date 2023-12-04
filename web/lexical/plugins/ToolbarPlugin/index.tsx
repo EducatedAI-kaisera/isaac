@@ -256,10 +256,11 @@ export default function ToolbarPlugin({ documentName }) {
 		});
 
 		source.addEventListener('message', function (e) {
-			if (e.data === '[DONE]') {
+			const eventMessage = atob(e.data)
+			if (eventMessage === '[DONE]') {
 				source.close();
 			} else {
-				const text = e.data;
+				const text = eventMessage;
 
 				editor.update(() => {
 					const selection = $getSelection();

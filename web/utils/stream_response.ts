@@ -11,9 +11,9 @@ export async function performCompletion(res, body, inPlace = false) {
         res.write(':ok\n\n');
 
         // Forward the data from the completion request to the client
-				completion.body.on('data', chunk => {
-					res.write(`data: ${Buffer.from(chunk.toString(), 'utf8').toString('base64')}\n\n`);
-			});
+        completion.body.on('data', chunk => {
+            res.write(`data: ${chunk.toString('base64')}\n\n`);
+        });
         // Handle completion request completion
         completion.body.on('end', () => {
             // Close the SSE connection when the completion request is complete

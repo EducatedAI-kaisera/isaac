@@ -61,10 +61,11 @@ const ResearchQuestionPlugin = () => {
 		sseSourceRef.current = source;
 
 		source.addEventListener('message', e => {
-			if (e.data === '[DONE]') {
+			const eventMessage = atob(e.data)
+			if (eventMessage === '[DONE]') {
 				source.close();
 			} else {
-				setAnswer(prev => prev + e.data);
+				setAnswer(prev => prev + eventMessage);
 				setShowModal(true);
 			}
 		});

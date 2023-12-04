@@ -38,7 +38,8 @@ const OutlinesGeneratorPlugin = () => {
 			let isFirstWord = false;
 
 			source.addEventListener('message', function (e) {
-				if (e.data === '[DONE]') {
+				const eventMessage = atob(e.data)
+				if (eventMessage === '[DONE]') {
 					editor.update(() => {
 						const selection = $getSelection();
 						const paragraphNode = $createParagraphNode();
@@ -51,7 +52,7 @@ const OutlinesGeneratorPlugin = () => {
 					push(`/editor/${projectId}`);
 				} else {
 					// remove two line breaks after another from the text
-					const text = e.data.replace(
+					const text = eventMessage.replace(
 						/\n\n/g,
 						'',
 					) as string;
