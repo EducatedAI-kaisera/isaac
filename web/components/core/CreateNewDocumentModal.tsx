@@ -28,7 +28,7 @@ export const CreateNewDocumentModal = memo(() => {
 		s => s.showCreateDocumentModal,
 	);
 	const { openDocument } = useDocumentTabs();
-	const { push, asPath, pathname } = useRouter();
+	const { push, asPath } = useRouter();
 
 	const { mutateAsync: createDocument } = useCreateDocument({
 		onSuccessCb: async data => {
