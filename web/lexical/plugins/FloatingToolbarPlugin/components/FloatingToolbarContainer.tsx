@@ -1,3 +1,4 @@
+import useAIAssistantStore from '@context/aiAssistant.store';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { mergeRegister } from '@lexical/utils';
 import { getDOMRangeRect } from '@lexical/utils/getDOMRangeRect';
@@ -10,7 +11,6 @@ import {
 } from 'lexical';
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import useAIAssistantStore from '@context/aiAssistant.store';
 
 type Props = {
 	children: ReactNode;
@@ -72,7 +72,7 @@ const FloatingToolbarBox = ({ children, persist }: Props) => {
 			className={clsx(
 				`flex align-middle absolute z-10 top-0 shadow-xl border border-[#191711]/[0.08] rounded-md`,
 				' dark:bg-[#2C2E33] bg-white',
-				{ 'hidden': inEditorAIAssistantOpen }
+				{ hidden: inEditorAIAssistantOpen },
 			)}
 			id="ai-assistant-menu"
 		>

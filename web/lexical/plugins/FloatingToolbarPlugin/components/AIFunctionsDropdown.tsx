@@ -179,25 +179,23 @@ const AIFunctionsDropdown = () => {
 
 						<DropdownMenuLabel>Utilities</DropdownMenuLabel>
 
-								<DropdownMenuItem
-									onClick={() => sendToAIDetector(selectedText)}
-									aria-label="ai-detector"
-									disabled={tooLong}
-								>
-									<Radar size={16} className="mr-2 h-4 w-4" />
-									AI Detector
-								</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => sendToAIDetector(selectedText)}
+							aria-label="ai-detector"
+							disabled={tooLong}
+						>
+							<Radar size={16} className="mr-2 h-4 w-4" />
+							AI Detector
+						</DropdownMenuItem>
 
-
-
-								<DropdownMenuItem
-									onClick={() => findSources(selectedText)}
-									aria-label="find-sources"
-									disabled={tooLong}
-								>
-									<Search size={16} className="mr-2 h-4 w-4" />
-									Find Sources
-								</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => findSources(selectedText)}
+							aria-label="find-sources"
+							disabled={tooLong}
+						>
+							<Search size={16} className="mr-2 h-4 w-4" />
+							Find Sources
+						</DropdownMenuItem>
 
 						<DropdownMenuItem
 							id={'manipulate-text'}

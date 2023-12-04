@@ -47,7 +47,7 @@ const useManipulationText = () => {
 			const aiOutputNode = $createAIOutputNode('text');
 			const focusedNode = selection.focus.getNode();
 			focusedNode.insertAfter(aiOutputNode, true);
-			setOpen(true)
+			setOpen(true);
 		});
 	}, [editor]);
 

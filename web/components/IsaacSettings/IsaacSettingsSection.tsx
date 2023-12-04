@@ -59,7 +59,6 @@ const IsaacSettingsSection = () => {
 			{!userIsLoading && (
 				<div className="flex flex-col mb-8">
 					<span className="text-xs text-muted-foreground">{email}</span>
-
 				</div>
 			)}
 

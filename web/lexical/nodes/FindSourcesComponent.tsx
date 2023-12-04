@@ -107,7 +107,7 @@ const AISearchSourceComponent = ({
 			if ($isAIOutputNode(node)) {
 				node.remove();
 				setLiteratureReferenceOutput(undefined);
-				setOpen(false)
+				setOpen(false);
 			}
 		});
 	};
@@ -119,7 +119,7 @@ const AISearchSourceComponent = ({
 			if ($isAIOutputNode(node)) {
 				node.remove();
 				setLiteratureReferenceOutput(undefined);
-				setOpen(false)
+				setOpen(false);
 			}
 		});
 	}, [editor, nodeKey]);
@@ -145,7 +145,11 @@ const AISearchSourceComponent = ({
 				<CardContent className="grid gap-4">
 					<div className="flex flex-col gap-2 pt-3 rounded-md border-none">
 						<div className="flex justify-between">
-							{!isLoading && <span className="font-semibold text-xs">Suggested sources:</span>}
+							{!isLoading && (
+								<span className="font-semibold text-xs">
+									Suggested sources:
+								</span>
+							)}
 							<button className="" onClick={discard}>
 								<X strokeWidth={1} size={16} />
 							</button>

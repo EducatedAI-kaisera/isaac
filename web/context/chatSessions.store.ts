@@ -233,7 +233,7 @@ const useChatSessions = create<ChatSessionStore>((set, get) => ({
 		resetStateOnError: sessionId => {
 			const _chatSessions = get().chatSessions;
 			const targetChatSession = _chatSessions[sessionId];
-			const updatedMessaged = _chatSessions[sessionId].messages.slice(0, -1);
+			const updatedMessaged = _chatSessions[sessionId].messages?.slice(0, -1);
 			set({
 				chatSessions: {
 					..._chatSessions,

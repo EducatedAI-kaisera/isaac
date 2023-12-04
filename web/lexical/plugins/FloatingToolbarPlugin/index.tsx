@@ -16,10 +16,7 @@ export default function FloatingToolbarPlugin() {
 		s => s.floatingInputActive,
 	);
 
-	const {
-		isText,
-		isLink,
-	} = useFloatingToolbarStates(editor);
+	const { isText, isLink } = useFloatingToolbarStates(editor);
 
 	if (!isText || isLink) {
 		return null;

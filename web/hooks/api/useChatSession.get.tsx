@@ -20,9 +20,6 @@ const useGetChatSessions = (projectId: string) => {
 		enabled: !!projectId,
 		onError: error => {
 			console.log({ error });
-
-			//TODO: need to show a more clearer message
-			toast.error('There is something wrong. Please try again.');
 		},
 	});
 };

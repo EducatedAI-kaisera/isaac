@@ -214,9 +214,9 @@ module.exports = {
 					},
 				},
 				grid: {
-          "0%": { transform: "translateY(-50%)" },
-          "100%": { transform: "translateY(0)" },
-        },
+					'0%': { transform: 'translateY(-50%)' },
+					'100%': { transform: 'translateY(0)' },
+				},
 				'fade-in': {
 					from: { opacity: 0 },
 					to: { opacity: 1 },

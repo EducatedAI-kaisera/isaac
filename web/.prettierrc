@@ -10,8 +10,6 @@
 	"bracketSpacing": true,
 	"proseWrap": "always",
 	"jsxSingleQuote": false,
-	"plugins": [
-		"prettier-plugin-organize-imports"
-	],
+	"plugins": ["prettier-plugin-organize-imports"],
 	"organizeImportsSkipDestructiveCodeActions": true
 }
