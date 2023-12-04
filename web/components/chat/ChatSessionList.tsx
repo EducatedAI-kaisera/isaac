@@ -104,6 +104,22 @@ const ChatSessionList = () => {
 	return (
 		<div className="px-3 flex flex-col gap-2 h-[calc(100vh-90px)] overflow-scroll">
 			<DeleteConfirmationDialog />
+			<ChatSessionCard
+				type="NEW"
+				onClick={() => {
+					setChatSidebar('DETAIL', {
+						title: 'New Chat',
+						sessionId: UniqueTabSources.NEW_CHAT,
+					});
+				}}
+				onOpenTabClick={() =>
+					openDocument({
+						type: TabType.Chat,
+						source: UniqueTabSources.NEW_CHAT,
+						label: 'New Chat',
+					})
+				}
+			/>
 			{/* Other Components */}
 			{sessionGroups && renderSessions(sessionGroups.today, 'Today')}
 			{sessionGroups && renderSessions(sessionGroups.yesterday, 'Yesterday')}
