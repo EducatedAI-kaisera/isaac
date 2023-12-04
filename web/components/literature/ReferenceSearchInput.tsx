@@ -2,11 +2,15 @@ import { Input } from '@components/ui/input';
 import { Search } from 'lucide-react';
 import React from 'react';
 
-const SavedReferenceSearchInput = () => {
+type Props = {
+	onSearch: (keyword: string) => void;
+};
+
+const ReferenceSearchInput = ({ onSearch }: Props) => {
 	return (
 		<div className="flex items-center flex-wrap gap-2 mb-2 relative px-3">
 			<Input
-				// onChange={e => setRefSearchInput(e.target.value)}
+				onChange={e => onSearch(e.target.value)}
 				placeholder="Search your references..."
 				className="bg-white dark:bg-inherit"
 			/>
@@ -17,4 +21,4 @@ const SavedReferenceSearchInput = () => {
 	);
 };
 
-export default SavedReferenceSearchInput;
+export default ReferenceSearchInput;
