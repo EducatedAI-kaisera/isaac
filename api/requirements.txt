@@ -8,3 +8,4 @@ PyPDF2==3.0.1
 stripe==6.5.0
 torch==2.0.1
 pytesseract==0.3.10
+litellm==1.7.11
