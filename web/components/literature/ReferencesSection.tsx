@@ -6,10 +6,14 @@ import useLiteratureToPreview from '@components/literature/useLiteratureToPrevie
 import { Input } from '@components/ui/input';
 import { useLiteratureReferenceStore } from '@context/literatureReference.store';
 import { useUser } from '@context/user';
+import useDocumentTabs, {
+	TabType,
+	UniqueTabSources,
+} from '@hooks/useDocumentTabs';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useGetReference, useGetUserUploads } from '@resources/editor-page';
 import Fuse from 'fuse.js';
-import { Search } from 'lucide-react';
+import { ArrowUpRight, Search } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import {
 	ReferenceLiterature,
@@ -41,9 +45,9 @@ const References = () => {
 
 	const { data: _referenceList } = useGetReference(projectId);
 	const { data: userUploads } = useGetUserUploads(user?.id, projectId);
+	const { openDocument } = useDocumentTabs();
 
 	// Clientside Filter for reference
-
 	const fuseInstances: Map<string, Fuse<any>> = new Map();
 	const getFuseInstance = (dataList: any[], keys: string[]) => {
 		const keyString = keys.join(',');
@@ -113,9 +117,25 @@ const References = () => {
 	return (
 		<div className="flex flex-col h-full w-full overflow-y-scroll scrollbar-hide bg-white dark:bg-black">
 			{/* HEADER */}
-			<p className="font-semibold text-sm flex gap-2 p-3 items-center">
-				Saved References
-			</p>
+			<div className="flex justify-between items-top p-3">
+				<p className="font-semibold text-sm flex gap-2 items-center">
+					Saved References
+				</p>
+				<div>
+					<ArrowUpRight
+						size={20}
+						onClick={() => {
+							openDocument({
+								type: TabType.SavedReference,
+								source: UniqueTabSources.SAVED_REFERENCE_TAB,
+								label: 'References',
+							});
+						}}
+						className="text-gray-600 hover:text-isaac cursor-pointer hidden md:block"
+						strokeWidth={1}
+					/>
+				</div>
+			</div>
 
 			{/* SEARCH INPUT */}
 			<div className="flex flex-col gap-2  items-stretch">

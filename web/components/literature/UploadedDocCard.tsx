@@ -66,7 +66,7 @@ const UploadedDocCard = ({
 	return (
 		<div
 			ref={ref}
-			className="text-sm w-full flex justify-between gap-3 rounded-md border border-border hover:shadow-md p-3 hover:cursor-pointer"
+			className="text-xs w-full flex justify-between gap-3 rounded-md border border-border hover:shadow-md p-3 hover:cursor-pointer"
 			onClick={onClick}
 		>
 			<div className="flex gap-3 ">
