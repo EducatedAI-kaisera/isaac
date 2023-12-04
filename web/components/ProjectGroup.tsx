@@ -7,7 +7,7 @@ import { useTour } from '@reactour/tour';
 import { isDocumentEmpty } from '@utils/misc';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { File, FileText, Folder, FolderOpen, Plus } from 'lucide-react';
+import { File, FileText, Folder, FolderOpen } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useMemo } from 'react';
 
@@ -16,11 +16,6 @@ import EditProjectContextMenu from '@components/core/EditProjectContextMenu';
 import DocumentTableOfContent from '@components/DocumentTableOfContent';
 import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from '@components/ui/tooltip';
 import EditProjectDropdown from './core/EditProjectDropdown';
 
 const folderVariants = {
@@ -123,7 +118,7 @@ const ProjectGroup = () => {
 										{project.title}
 									</p>
 
-									{isBelowMd ? (
+									{isBelowMd && (
 										<EditProjectDropdown
 											className={clsx(
 												'absolute right-0 w-8',
@@ -132,36 +127,6 @@ const ProjectGroup = () => {
 											projectId={project.id}
 											projectName={project.title}
 										/>
-									) : (
-										<Tooltip>
-											<TooltipTrigger asChild>
-												<Button
-													id="create-document-button"
-													variant="ghost"
-													onClick={e => {
-														e.stopPropagation();
-														setShowCreateDocumentModal(true);
-														isBelowMd && openPanel(undefined);
-														setTimeout(
-															() => setCurrentStep(prev => prev + 1),
-															500,
-														);
-													}}
-													className={clsx(
-														activeProjectId === project.id ||
-															(tutorialMode && currentStep === 4)
-															? 'visible'
-															: 'invisible',
-														'group-hover:visible hover:bg-muted absolute right-0',
-													)}
-												>
-													<Plus size={14} strokeWidth={1.4} />
-												</Button>
-											</TooltipTrigger>
-											<TooltipContent side="right">
-												<p>Create new document</p>
-											</TooltipContent>
-										</Tooltip>
 									)}
 								</div>
 							</Button>
@@ -235,10 +200,12 @@ const ProjectGroup = () => {
 					</div>
 				))
 			) : (
-				<span className="text-xs text-muted-foreground mb-px h-8 leading-none block p-2  w-full">
-					{' '}
-					Create your first project{' '}
-				</span>
+				<div className="flex flex-col items-center justify-center p-3 text-center">
+					<span className="text-xs text-muted-foreground mb-px h-8 leading-none block p-2  w-full">
+						{' '}
+						Create your first project{' '}
+					</span>
+				</div>
 			)}
 		</ScrollArea>
 	);
