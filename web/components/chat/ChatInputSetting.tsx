@@ -209,8 +209,8 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 
 				{/* // TODO: Figure out how to stop generation */}
 				{isHandling && (
-					<InputSettingButton onClick={() => resetStateOnError(sessionId)}>
-						Stop Generation{' '}
+					<InputSettingButton className="inline-flex items-center" onClick={() => resetStateOnError(sessionId)}>
+						<span className="mr-0.5"> Stop generation</span>
 						<FaStopCircle size="10" className="inline-block animate-pulse" />
 					</InputSettingButton>
 				)}
