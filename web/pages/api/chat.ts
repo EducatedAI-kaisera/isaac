@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { updateTokenUsageForFreeTier } from '@resources/user';
 import { AIModels } from 'data/aiModels.data';
 import { NextApiRequest } from 'next';
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
+import { ChatCompletionRequestMessage } from 'openai';
 import { ChatContext } from 'types/chat';
 
 export const config = {
@@ -20,11 +20,6 @@ type Payload = {
 	uploadId: string;
 	temperature: number;
 };
-
-const configuration = new Configuration({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
 
 const singleReferenceEndpoint = `${process.env.NEXT_PUBLIC_APP_URL}/api/retrieve-single-reference-embeddings`;
 const projectReferenceEndpoint = `${process.env.NEXT_PUBLIC_APP_URL}/api/retrieve-reference-embeddings`;
