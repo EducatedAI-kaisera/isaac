@@ -2,7 +2,7 @@ import { Project } from '@hooks/api/useGetProjects';
 import useDocumentTabs from '@hooks/useDocumentTabs';
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 const deleteProject = async (projectId: string) => {
 	const { data } = await supabase
@@ -16,15 +16,13 @@ const deleteProject = async (projectId: string) => {
 
 const useDeleteProject = () => {
 	const queryClient = useQueryClient();
-	const { deleteProject: deleteProjectFromTab } = useDocumentTabs();
+	const { deleteProjectFromTabMemory } = useDocumentTabs();
 	return useMutation(deleteProject, {
 		mutationKey: 'delete-project',
 		onSuccess: (project: Project) => {
 			toast.success('Project deleted successfully!');
 			queryClient.invalidateQueries(['get-projects']);
-			deleteProjectFromTab(project.id);
-
-			// TODO: Redirect if the current project
+			deleteProjectFromTabMemory(project.id);
 		},
 		onError: error => {
 			console.log({ error });

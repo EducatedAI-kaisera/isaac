@@ -15,7 +15,7 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { useDeleteProject, useRenameProject } from '@resources/editor-page';
-import { CornerDownRight, Pencil, Trash } from 'lucide-react';
+import { Pencil, Trash } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
 type Props = {
