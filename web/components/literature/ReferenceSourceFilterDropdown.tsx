@@ -7,7 +7,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@components/ui/select';
-import { filter } from 'lodash';
 import React from 'react';
 import { ReferenceSourceFilter } from './LiteratureSearchSection';
 

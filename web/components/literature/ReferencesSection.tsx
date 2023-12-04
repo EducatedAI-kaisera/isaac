@@ -3,7 +3,6 @@ import ImportZoteroModal from '@components/literature/ImportZoteroModal';
 import LiteratureSummaryPreview from '@components/literature/LiteratureSummaryPreview';
 import ReferenceList from '@components/literature/ReferenceList';
 import useLiteratureToPreview from '@components/literature/useLiteratureToPreview';
-import { Input } from '@components/ui/input';
 import { useLiteratureReferenceStore } from '@context/literatureReference.store';
 import useReferenceListOperation, {
 	ReferenceSourceFilter,
@@ -23,6 +22,7 @@ const References = () => {
 	);
 	const { openDocument, setTargetDOI, setRefSearchInput, mergedItem } =
 		useReferenceListOperation();
+
 	const targetDOI = useLiteratureReferenceStore(
 		s => s.savedReferenceDOIPreview,
 	);
@@ -63,7 +63,7 @@ const References = () => {
 			</div>
 
 			{/* SEARCH INPUT & FILTER */}
-			<div className="flex flex-col gap-2 items-stretch px-3">
+			<div className="flex flex-col gap-2 items-stretch px-3 mb-3">
 				<ReferenceSearchInput onSearch={setRefSearchInput} />
 				<ReferenceSourceFilterDropdown
 					onFilterChange={setFilter}

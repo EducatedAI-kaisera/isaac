@@ -25,7 +25,7 @@ import {
 } from '@resources/literature.api';
 import clsx from 'clsx';
 import { Bookmark } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	ReferenceSource,
 	SemanticScholarReference,

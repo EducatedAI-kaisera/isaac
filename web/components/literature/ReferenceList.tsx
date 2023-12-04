@@ -39,65 +39,62 @@ const ReferenceList = ({ list, onClick }: Props) => {
 	const { mutateAsync: removeReference } = useDeleteReference();
 
 	return (
-		<div className="flex flex-col gap-4">
-			<div className="">
-				<div className="flex flex-col gap-1.5 items-center justify-between "></div>
-			</div>
-			<div
-				className="flex flex-col gap-2 pl-3 pr-2  max-h-[calc(100vh-210px)] overflow-y-auto"
-				id="reference-list"
-			>
-				{list?.map(i => {
-					return (
-						<React.Fragment key={`card-${i.source}-${i.id}`}>
-							{i.source === 'reference' && (
-								<LiteratureCard
+		<div
+			className="flex flex-col gap-2 pl-3 pr-2  max-h-[calc(100vh-210px)] overflow-y-auto"
+			id="reference-list"
+		>
+			{list?.map(i => {
+				return (
+					<React.Fragment key={`card-${i.source}-${i.id}`}>
+						{i.source === 'reference' && (
+							<LiteratureCard
+								key={i.id}
+								onRemove={() =>
+									confirm(
+										`Are you sure to remove ${
+											(i as ReferenceLiterature).title
+										} from the saved references`,
+									) && removeReference(i.id)
+								}
+								title={(i as ReferenceLiterature).title}
+								onClick={() => onClick(i as ReferenceLiterature)}
+								type={(i as ReferenceLiterature).type}
+								authors={(i as ReferenceLiterature).authors.map(
+									author => author.name,
+								)}
+								year={Number((i as ReferenceLiterature).year)}
+								source="Search"
+								added={true}
+							/>
+						)}
+						{i.source === 'uploaded' && (
+							<>
+								<UploadedDocCard
 									key={i.id}
-									onRemove={() =>
-										confirm(
-											`Are you sure to remove ${
-												(i as ReferenceLiterature).title
-											} from the saved references`,
-										) && removeReference(i.id)
+									id={i.id}
+									title={
+										(i as UploadedFile).custom_citation?.title ||
+										(i as UploadedFile).file_name
 									}
-									title={(i as ReferenceLiterature).title}
-									onClick={() => onClick(i as ReferenceLiterature)}
-									type={(i as ReferenceLiterature).type}
-									authors={(i as ReferenceLiterature).authors.map(
-										author => author.name,
-									)}
-									year={Number((i as ReferenceLiterature).year)}
-									source="Search"
-									added={true}
+									fileName={(i as UploadedFile).file_name}
+									year={(i as UploadedFile).custom_citation?.year}
+									authors={(i as UploadedFile).custom_citation?.authors}
+									created_at={(i as UploadedFile).created_at}
+									onClick={() => {
+										openDocument({
+											source: (i as UploadedFile).id,
+											label:
+												(i as UploadedFile)?.custom_citation?.title ||
+												(i as UploadedFile).file_name,
+											type: TabType.UserUpload,
+										});
+									}}
 								/>
-							)}
-							{i.source === 'uploaded' && (
-								<>
-									<UploadedDocCard
-										key={i.id}
-										id={i.id}
-										title={
-											(i as UploadedFile).custom_citation?.title ||
-											(i as UploadedFile).file_name
-										}
-										fileName={(i as UploadedFile).file_name}
-										year={(i as UploadedFile).custom_citation?.year}
-										authors={(i as UploadedFile).custom_citation?.authors}
-										created_at={(i as UploadedFile).created_at}
-										onClick={() => {
-											openDocument({
-												source: (i as UploadedFile).id,
-												label: (i as UploadedFile).file_name,
-												type: TabType.UserUpload,
-											});
-										}}
-									/>
-								</>
-							)}
-						</React.Fragment>
-					);
-				})}
-			</div>
+							</>
+						)}
+					</React.Fragment>
+				);
+			})}
 		</div>
 	);
 };
