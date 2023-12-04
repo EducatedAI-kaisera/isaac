@@ -16,8 +16,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from fastapi.security.api_key import APIKeyHeader
 from langchain.prompts import PromptTemplate
-from fastapi.responses import StreamingResponse, PlainTextResponse
-from litellm import completion
+from fastapi.responses import StreamingResponse, PlainTextResponse, JSONResponse
+from litellm import completion, embedding
 
 # Environment variables
 EMBEDDINGS_DATABASE_HOST = os.environ.get("EMBEDDINGS_DATABASE_HOST", "default_host")
@@ -389,6 +389,20 @@ async def read_root(request: Request):
         if non_streaming_response is not None:
             return PlainTextResponse(content=non_streaming_response)
         return PlainTextResponse(content="")
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
+
+@app.post("/api/embedding")
+async def create_embedding(request: Request):
+    try:
+        request_body = await request.body()
+        body_dict = json.loads(request_body.decode('utf-8'))
+        response_litellm = embedding(**body_dict)
+        non_streaming_response = response_litellm.data[0].embedding
+        if non_streaming_response is not None:
+            return JSONResponse(content=non_streaming_response)
+        return JSONResponse(content=[])
     except Exception as e:
         print(f"Error occurred: {e}")
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
