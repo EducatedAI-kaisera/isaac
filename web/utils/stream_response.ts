@@ -1,12 +1,10 @@
 import fetch from 'node-fetch';
 
 export async function performCompletion(res, body, inPlace = false) {
-    const API_HOST = process.env.API_HOST;
-		const API_ROUTE_SECRET = process.env.API_ROUTE_SECRET;
-    const completion = await fetch(`${API_HOST}/api/completion`, {
+    const completion = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/completion`, {
         method: 'POST',
         body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json', 'X-API-KEY': API_ROUTE_SECRET },
+        headers: { 'Content-Type': 'application/json', 'X-API-KEY': process.env.NEXT_PUBLIC_API_ROUTE_SECRET },
     });
     if (body['stream']) {
         // Send an initial comment to establish the connection
