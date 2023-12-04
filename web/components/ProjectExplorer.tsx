@@ -13,6 +13,7 @@ import {
 	TooltipTrigger,
 } from '@components/ui/tooltip';
 import { useUIStore } from '@context/ui.store';
+import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useClickOutside } from '@mantine/hooks';
 import { useTour } from '@reactour/tour';
 import clsx from 'clsx';
@@ -33,6 +34,7 @@ const ProjectExplorer = memo(() => {
 	const handleClickOutside = () => setCreateProjectPopoverOpen(false);
 	const createProjectRef = useClickOutside(handleClickOutside);
 	const { isOpen: tutorialMode, setCurrentStep } = useTour();
+	const { projectId: activeProjectId } = useGetEditorRouter();
 	return (
 		<nav
 			className={clsx(
@@ -80,6 +82,7 @@ const ProjectExplorer = memo(() => {
 							/>
 						</PopoverContent>
 					</Popover>
+					{activeProjectId && (
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button
@@ -97,6 +100,7 @@ const ProjectExplorer = memo(() => {
 							<p>New document </p>
 						</TooltipContent>
 					</Tooltip>
+					)}
 				</div>
 			</div>
 			<ProjectGroup />
