@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export async function performCompletion(res, body) {
+export async function performCompletion(res, body, inPlace = false) {
     // Send an initial comment to establish the connection
     res.write(':ok\n\n');
     const completion = await fetch('http://0.0.0.0:5001/api/completion', {
@@ -22,6 +22,7 @@ export async function performCompletion(res, body) {
     }
     else {
         const response = await completion.text()
-        res.end(response)
+        if (inPlace) return response
+        else res.end(response)
     }
 }
