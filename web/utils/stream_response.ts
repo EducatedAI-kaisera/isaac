@@ -13,7 +13,7 @@ export async function performCompletion(res, body, inPlace = false) {
         // Forward the data from the completion request to the client
         completion.body.on('data', chunk => {
             // Send each chunk as an SSE message
-            res.write(`data: ${chunk}\n\n`);
+            res.write(`data: ${chunk.toString()}\n\n`);
         });
         // Handle completion request completion
         completion.body.on('end', () => {
