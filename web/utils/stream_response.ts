@@ -1,7 +1,8 @@
 import fetch from 'node-fetch';
 
 export async function performCompletion(res, body, inPlace = false) {
-    const completion = await fetch('http://0.0.0.0:5001/api/completion', {
+    const API_HOST = process.env.API_HOST;
+    const completion = await fetch(`${API_HOST}/api/completion`, {
         method: 'POST',
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json', 'x-api-key': 'default-api-route-secret' },
