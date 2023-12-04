@@ -7,6 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@components/ui/dialog';
+import useDocumentTabs from '@hooks/useDocumentTabs';
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
 import { useState } from 'react';
@@ -31,6 +32,7 @@ const useDeleteChatSession = (params?: {
 		title: string;
 		sessionId: string;
 	}>();
+	const { closeTab } = useDocumentTabs();
 	const queryClient = useQueryClient();
 	const { mutateAsync } = useMutation(deleteChatSession, {
 		mutationKey: 'delete-chat-session',
@@ -44,6 +46,7 @@ const useDeleteChatSession = (params?: {
 			}
 			toast.success('Chat session deleted!');
 			queryClient.invalidateQueries(['get-chat-sessions']);
+			closeTab(chatSession.id);
 		},
 		onError: error => {
 			console.log({ error });

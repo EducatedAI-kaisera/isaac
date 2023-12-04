@@ -109,14 +109,13 @@ const InlinePromptPlugin = () => {
 		);
 
 		source.addEventListener('message', function (e) {
-			if (e.data === '[DONE]') {
+			const eventMessage = atob(e.data)
+			if (eventMessage === '[DONE]') {
 				source.close();
 				queryClient.invalidateQueries([QKFreeAIToken]);
 			} else {
-				const payload = JSON.parse(e.data);
-
 				// remove two line breaks after another from the text
-				const text = payload.choices[0].delta.content?.replace(/\n\n/g, '');
+				const text = eventMessage.replace(/\n\n/g, '');
 
 				editor.update(() => {
 					const selection = $getSelection();

@@ -42,7 +42,7 @@ const ChatSessions = () => {
 				</p>
 
 				{/* TOP RIGHT ICON */}
-				{chatSidebar[0] === 'LIST' && (
+				{/* {chatSidebar[0] === 'LIST' && (
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<MessageSquarePlusIcon
@@ -59,7 +59,7 @@ const ChatSessions = () => {
 						</TooltipTrigger>
 						<TooltipContent>New Chat Session</TooltipContent>
 					</Tooltip>
-				)}
+				)} */}
 				{chatSidebar[0] === 'DETAIL' && (
 					<div className="md:flex gap-2 hidden">
 						<ArrowUpRight

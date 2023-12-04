@@ -46,14 +46,15 @@ const useStreamChatMessage = () => {
 
 			// Start Streaming
 			source.addEventListener('message', async function (e) {
-				if (e.data === '[DONE]') {
+				const eventMessage = atob(e.data)
+				if (eventMessage === '[DONE]') {
 					source.close();
 					onComplete(cumulativeChunk);
 
 					queryClient.invalidateQueries([QKFreeAIToken]);
 				} else {
-					const payload = JSON.parse(e.data);
-					const chunkText = payload.choices[0].delta.content;
+					console.log({ data: eventMessage });
+					const chunkText = eventMessage
 
 					if (chunkText !== undefined) {
 						onStreamChunk(chunkText);
