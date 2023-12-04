@@ -1,10 +1,4 @@
-/* eslint-disable import/no-anonymous-default-export */
-import { Configuration, OpenAIApi } from 'openai';
-
-const configuration = new Configuration({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+import { performCompletion } from '../../utils/stream_response';
 
 export default async function (req, res) {
 	res.setHeader('Content-Type', 'text/event-stream');
@@ -12,30 +6,23 @@ export default async function (req, res) {
 	res.setHeader('Connection', 'keep-alive');
 	res.setHeader('Content-Encoding', 'none');
 
-	const completion = await openai.createChatCompletion(
-		{
-			model: 'gpt-3.5-turbo',
-			messages: [
-				{
-					role: 'system',
-					content:
-						'You are a prolific and competent academic research writing assistant. Your writing style is scientific, precise and concise. You never add citations to your output, except the input already included them.',
-				},
+	await performCompletion(res, {
+		model: 'gpt-3.5-turbo',
+		messages: [
+			{
+				role: 'system',
+				content:
+					'You are a prolific and competent academic research writing assistant. Your writing style is scientific, precise and concise. You never add citations to your output, except the input already included them.',
+			},
 
-				{ role: 'user', content: req.body },
-			],
-			temperature: 0.6,
-			max_tokens: 3500,
-			top_p: 1,
-			frequency_penalty: 0,
-			presence_penalty: 0,
-			stream: true,
-		},
-		{ responseType: 'stream' },
-	);
-
-	completion.data.on('data', data => {
-		res.write(data.toString());
+			{ role: 'user', content: req.body },
+		],
+		temperature: 0.6,
+		max_tokens: 3500,
+		top_p: 1,
+		frequency_penalty: 0,
+		presence_penalty: 0,
+		stream: true,
 	});
 }
 

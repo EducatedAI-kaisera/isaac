@@ -1,11 +1,6 @@
 import { updateTokenUsageForFreeTier } from '@resources/user';
 import { AIModels } from 'data/aiModels.data';
-import { Configuration, OpenAIApi } from 'openai';
-
-const configuration = new Configuration({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+import { performCompletion } from '../../utils/stream_response'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async function (req, res) {
@@ -22,22 +17,14 @@ export default async function (req, res) {
 		llmModel = AIModels.GPT_3_5;
 	}
 
-	const completion = await openai.createChatCompletion(
-		{
-			model: llmModel || 'gpt-3.5-turbo',
-			messages: [{ role: 'user', content: req.body }],
-			temperature: 0.4,
-			max_tokens: 3500,
-			top_p: 1,
-			frequency_penalty: 0,
-			presence_penalty: 0,
-			stream: true,
-		},
-		{ responseType: 'stream' },
-	);
-
-	//@ts-expect-error
-	completion.data.on('data', data => {
-		res.write(data.toString());
-	});
+	await performCompletion(res, {
+		model: llmModel || 'gpt-3.5-turbo',
+		messages: [{ role: 'user', content: req.body }],
+		temperature: 0.4,
+		max_tokens: 3500,
+		top_p: 1,
+		frequency_penalty: 0,
+		presence_penalty: 0,
+		stream: true,
+	})
 }

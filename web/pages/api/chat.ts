@@ -1,7 +1,8 @@
+import { performCompletion } from '../../utils/stream_response';
 import { updateTokenUsageForFreeTier } from '@resources/user';
 import { AIModels } from 'data/aiModels.data';
 import { NextApiRequest } from 'next';
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
+import { ChatCompletionRequestMessage } from 'openai';
 import { ChatContext } from 'types/chat';
 
 export const config = {
@@ -19,11 +20,6 @@ type Payload = {
 	uploadId: string;
 	temperature: number;
 };
-
-const configuration = new Configuration({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
 
 const singleReferenceEndpoint = `${process.env.NEXT_PUBLIC_APP_URL}/api/retrieve-single-reference-embeddings`;
 const projectReferenceEndpoint = `${process.env.NEXT_PUBLIC_APP_URL}/api/retrieve-reference-embeddings`;
@@ -46,7 +42,9 @@ export default async function (req: NextApiRequest, res) {
 			uploadId,
 			context,
 		} = JSON.parse(req.body) as Payload;
+
 		let { llmModel } = JSON.parse(req.body);
+
 		const user = await updateTokenUsageForFreeTier(userId);
 
 		if (!user.is_subscribed) {
@@ -116,27 +114,14 @@ export default async function (req: NextApiRequest, res) {
 			});
 		}
 
-		const completion = await openai.createChatCompletion(
-			{
-				model: llmModel || 'gpt-3.5-turbo',
-				messages,
-				temperature,
-				max_tokens,
-				top_p: 1,
-				stream: true,
-			},
-
-			{ responseType: 'stream' },
-		);
-
-		// @ts-expect-error
-		completion.data.on('data', data => {
-			res.write(data.toString());
-		});
-		// @ts-expect-error
-		completion.data.on('end', () => {
-			res.end();
-		});
+		await performCompletion(res, {
+			model: llmModel || 'gpt-3.5-turbo',
+			messages,
+			temperature,
+			max_tokens,
+			top_p: 1,
+			stream: true,
+		})
 	} catch (error) {
 		console.error(error);
 		res

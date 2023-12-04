@@ -92,13 +92,13 @@ const useManipulationText = () => {
 		// Start Streaming
 		try {
 			source.addEventListener('message', async function (e) {
-				if (e.data === '[DONE]') {
+				const eventMessage = atob(e.data)
+				if (eventMessage === '[DONE]') {
 					source.close();
 
 					queryClient.invalidateQueries([QKFreeAIToken]);
 				} else {
-					const payload = JSON.parse(e.data);
-					const chunkText = payload.choices[0].delta.content;
+					const chunkText = eventMessage;
 
 					if (chunkText !== undefined) {
 						setAITextOutput(cumulativeChunk + chunkText);
