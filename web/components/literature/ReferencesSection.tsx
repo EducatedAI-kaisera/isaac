@@ -62,8 +62,8 @@ const References = () => {
 				</div>
 			</div>
 
-			{/* SEARCH INPUT */}
-			<div className="flex flex-col gap-2 items-stretch">
+			{/* SEARCH INPUT & FILTER */}
+			<div className="flex flex-col gap-2 items-stretch px-3">
 				<ReferenceSearchInput onSearch={setRefSearchInput} />
 				<ReferenceSourceFilterDropdown
 					onFilterChange={setFilter}
@@ -73,14 +73,15 @@ const References = () => {
 					<AddReferenceDropdown />
 					<ReferenceExportButton />
 				</div>
-				{/* LIST */}
-				<ReferenceList
-					list={mergedItem}
-					onClick={ref => {
-						setTargetDOI(ref.doi);
-					}}
-				/>
 			</div>
+
+			{/* LIST */}
+			<ReferenceList
+				list={mergedItem}
+				onClick={ref => {
+					setTargetDOI(ref.doi);
+				}}
+			/>
 			<ImportMendeleyModal />
 			<ImportZoteroModal />
 		</div>

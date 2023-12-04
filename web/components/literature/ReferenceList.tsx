@@ -40,11 +40,11 @@ const ReferenceList = ({ list, onClick }: Props) => {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="px-3">
+			<div className="">
 				<div className="flex flex-col gap-1.5 items-center justify-between "></div>
 			</div>
 			<div
-				className="flex flex-col gap-2 px-3  max-h-[calc(100vh-210px)] overflow-y-auto"
+				className="flex flex-col gap-2 pl-3 pr-2  max-h-[calc(100vh-210px)] overflow-y-auto"
 				id="reference-list"
 			>
 				{list?.map(i => {
@@ -53,7 +53,13 @@ const ReferenceList = ({ list, onClick }: Props) => {
 							{i.source === 'reference' && (
 								<LiteratureCard
 									key={i.id}
-									onRemove={() => removeReference(i.id)}
+									onRemove={() =>
+										confirm(
+											`Are you sure to remove ${
+												(i as ReferenceLiterature).title
+											} from the saved references`,
+										) && removeReference(i.id)
+									}
 									title={(i as ReferenceLiterature).title}
 									onClick={() => onClick(i as ReferenceLiterature)}
 									type={(i as ReferenceLiterature).type}

@@ -8,7 +8,7 @@ type Props = {
 
 const ReferenceSearchInput = ({ onSearch }: Props) => {
 	return (
-		<div className="flex items-center flex-wrap gap-2 mb-2 relative px-3">
+		<div className="flex items-center flex-wrap gap-2 mb-2 relative">
 			<Input
 				onChange={e => onSearch(e.target.value)}
 				placeholder="Search your references..."

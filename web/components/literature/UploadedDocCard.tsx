@@ -136,7 +136,7 @@ const UploadedDocCard = ({
 								event.stopPropagation();
 								setShowUploadMetaModal({ uploadId: id, fileName: title });
 							}}
-							className={clsx('p-1 h-8 w-8 text-muted-foreground ')}
+							className={clsx('p-1 h-6 w-6 text-muted-foreground ')}
 						>
 							<Pen size={18} strokeWidth={1.4} />
 						</Button>
@@ -147,7 +147,7 @@ const UploadedDocCard = ({
 								event.stopPropagation();
 								setDeleting(true);
 							}}
-							className={clsx('p-1 h-8 w-8 text-muted-foreground ')}
+							className={clsx('p-1 h-6 w-6 text-muted-foreground ')}
 						>
 							<Trash strokeWidth={1.4} size={18} />
 						</Button>
