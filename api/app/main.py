@@ -366,6 +366,8 @@ async def fetch_citation(identifier, uploadID):
         # Handle errors
         return
 
+litellm_fallback_models = ['gpt-4', 'gpt-3.5-turbo']
+
 async def stream_response(response):
     for chunk in response:
         chunk_content = chunk['choices'][0]['delta'].get('content', '')
@@ -377,6 +379,7 @@ async def read_root(request: Request):
     try:
         request_body = await request.body()
         body_dict = json.loads(request_body.decode('utf-8'))
+        body_dict['fallbacks'] = litellm_fallback_models
         if 'stream' not in body_dict:
             body_dict['stream'] = False
         response_litellm = completion(**body_dict)
