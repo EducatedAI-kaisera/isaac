@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import { updateTokenUsageForFreeTier } from '@resources/user';
 import { AIModels } from 'data/aiModels.data';
 import { NextApiRequest } from 'next';
@@ -46,7 +47,12 @@ export default async function (req: NextApiRequest, res) {
 			uploadId,
 			context,
 		} = JSON.parse(req.body) as Payload;
+
 		let { llmModel } = JSON.parse(req.body);
+
+		// Send an initial comment to establish the connection
+		res.write(':ok\n\n');
+
 		const user = await updateTokenUsageForFreeTier(userId);
 
 		if (!user.is_subscribed) {
@@ -116,25 +122,28 @@ export default async function (req: NextApiRequest, res) {
 			});
 		}
 
-		const completion = await openai.createChatCompletion(
-			{
+		const completion = await fetch('http://0.0.0.0:5001/api/completion', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'x-api-key': 'default-api-route-secret' },
+			body: JSON.stringify({
 				model: llmModel || 'gpt-3.5-turbo',
 				messages,
 				temperature,
 				max_tokens,
 				top_p: 1,
 				stream: true,
-			},
-
-			{ responseType: 'stream' },
-		);
-
-		// @ts-expect-error
-		completion.data.on('data', data => {
-			res.write(data.toString());
+			}),
 		});
-		// @ts-expect-error
-		completion.data.on('end', () => {
+
+		// Forward the data from the completion request to the client
+		completion.body.on('data', chunk => {
+			// Send each chunk as an SSE message
+			res.write(`data: ${chunk}\n\n`);
+		});
+
+		// Handle completion request completion
+		completion.body.on('end', () => {
+			// Close the SSE connection when the completion request is complete
 			res.end();
 		});
 	} catch (error) {
