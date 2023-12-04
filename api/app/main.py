@@ -1,5 +1,5 @@
 # main.py
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from pydantic import BaseModel
 from langchain.document_loaders import UnstructuredFileLoader
 from unstructured.cleaners.core import clean_extra_whitespace
@@ -16,7 +16,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from fastapi.security.api_key import APIKeyHeader
 from langchain.prompts import PromptTemplate
-
+from fastapi.responses import StreamingResponse, PlainTextResponse
+from litellm import completion
 
 # Environment variables
 EMBEDDINGS_DATABASE_HOST = os.environ.get("EMBEDDINGS_DATABASE_HOST", "default_host")
@@ -364,3 +365,27 @@ async def fetch_citation(identifier, uploadID):
     except Exception as e:
         # Handle errors
         return
+
+async def stream_response(response):
+    for chunk in response:
+        chunk_content = chunk['choices'][0]['delta'].get('content', '')
+        if chunk_content is not None:
+            yield chunk['choices'][0]['delta'].get('content', '')
+
+@app.post("/api/completion")
+async def read_root(request: Request):
+    try:
+        request_body = await request.body()
+        body_dict = json.loads(request_body.decode('utf-8'))
+        if 'stream' not in body_dict:
+            body_dict['stream'] = False
+        response_litellm = completion(**body_dict)
+        if body_dict['stream'] == True:
+            return StreamingResponse(stream_response(response_litellm), media_type='text/plain')
+        non_streaming_response = response_litellm['choices'][0].get('message').get('content', "")
+        if non_streaming_response is not None:
+            return PlainTextResponse(content=non_streaming_response)
+        return PlainTextResponse(content="")
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
