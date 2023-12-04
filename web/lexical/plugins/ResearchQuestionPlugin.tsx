@@ -64,8 +64,7 @@ const ResearchQuestionPlugin = () => {
 			if (e.data === '[DONE]') {
 				source.close();
 			} else {
-				const payload = JSON.parse(e.data);
-				setAnswer(prev => prev + payload.choices[0].delta.content);
+				setAnswer(prev => prev + e.data);
 				setShowModal(true);
 			}
 		});

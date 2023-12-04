@@ -113,10 +113,8 @@ const InlinePromptPlugin = () => {
 				source.close();
 				queryClient.invalidateQueries([QKFreeAIToken]);
 			} else {
-				const payload = JSON.parse(e.data);
-
 				// remove two line breaks after another from the text
-				const text = payload.choices[0].delta.content?.replace(/\n\n/g, '');
+				const text = e.data.replace(/\n\n/g, '');
 
 				editor.update(() => {
 					const selection = $getSelection();

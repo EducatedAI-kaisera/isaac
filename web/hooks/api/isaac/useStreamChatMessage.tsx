@@ -45,8 +45,7 @@ const useStreamChatMessage = () => {
 					queryClient.invalidateQueries([QKFreeAIToken]);
 				} else {
 					console.log({ data: e.data });
-					const payload = JSON.parse(e.data);
-					const chunkText = payload.choices[0].delta.content;
+					const chunkText = e.data
 
 					if (chunkText !== undefined) {
 						onStreamChunk(chunkText);

@@ -259,9 +259,7 @@ export default function ToolbarPlugin({ documentName }) {
 			if (e.data === '[DONE]') {
 				source.close();
 			} else {
-				const payload = JSON.parse(e.data);
-
-				const text = payload.choices[0].delta.content;
+				const text = e.data;
 
 				editor.update(() => {
 					const selection = $getSelection();

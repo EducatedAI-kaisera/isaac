@@ -50,10 +50,8 @@ const OutlinesGeneratorPlugin = () => {
 					queryClient.invalidateQueries([QKFreeAIToken]);
 					push(`/editor/${projectId}`);
 				} else {
-					const payload = JSON.parse(e.data);
-
 					// remove two line breaks after another from the text
-					const text = payload.choices[0].delta.content?.replace(
+					const text = e.data.replace(
 						/\n\n/g,
 						'',
 					) as string;
