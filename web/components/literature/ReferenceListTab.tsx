@@ -40,8 +40,14 @@ type Props = {
 };
 
 const ReferenceListTab = ({ active }: Props) => {
-	const { openDocument, setTargetDOI, setRefSearchInput, mergedItem } =
-		useReferenceListOperation();
+	const {
+		openDocument,
+		setTargetDOI,
+		setRefSearchInput,
+		mergedItem,
+		filter,
+		setFilter,
+	} = useReferenceListOperation();
 	const openPanel = useUIStore(s => s.openPanel);
 	const { deleteUpload } = useDeleteUserUpload();
 	const { user } = useUser();
@@ -61,8 +67,8 @@ const ReferenceListTab = ({ active }: Props) => {
 				/>
 				<ReferenceSourceFilterDropdown
 					className="w-[120px]"
-					onFilterChange={() => ''}
-					currentFilter={ReferenceSourceFilter.ALL}
+					onFilterChange={setFilter}
+					currentFilter={filter}
 				/>
 			</div>
 			<div className="flex justify-between">

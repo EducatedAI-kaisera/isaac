@@ -16,12 +16,14 @@ import ReferenceSearchInput from './ReferenceSearchInput';
 import ReferenceSourceFilterDropdown from './ReferenceSourceFilterDropdown';
 
 const References = () => {
-	// TODO: Include this in the operation
-	const [filter, setFilter] = useState<ReferenceSourceFilter>(
-		ReferenceSourceFilter.ALL,
-	);
-	const { openDocument, setTargetDOI, setRefSearchInput, mergedItem } =
-		useReferenceListOperation();
+	const {
+		openDocument,
+		setTargetDOI,
+		setRefSearchInput,
+		mergedItem,
+		filter,
+		setFilter,
+	} = useReferenceListOperation();
 
 	const targetDOI = useLiteratureReferenceStore(
 		s => s.savedReferenceDOIPreview,
