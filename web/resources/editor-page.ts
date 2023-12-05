@@ -120,7 +120,7 @@ const renameProject = async ({
 const getReference = async (projectId: string) => {
 	const { data } = await supabase
 		.from('references')
-		.select()
+		.select('*')
 		.filter('projectId', 'eq', projectId);
 
 	return data as ReferenceLiterature[];

@@ -114,11 +114,6 @@ const ReferenceListTab = ({ active }: Props) => {
 													type: TabType.UserUpload,
 											  };
 
-									const tldr =
-										item._source === 'reference'
-											? (item as ReferenceLiterature).tldr
-											: '';
-
 									const type =
 										item._source === 'reference'
 											? (item as ReferenceLiterature).type
@@ -184,7 +179,7 @@ const ReferenceListTab = ({ active }: Props) => {
 											</TableCell>
 											<TableCell className="max-w-[300px] align-top">
 												<ClampedParagraph
-													text={tldr}
+													text={item.abstract}
 													EmptyText={
 														<span className="text-gray-400 h-full italic">
 															No Abstract
@@ -194,7 +189,7 @@ const ReferenceListTab = ({ active }: Props) => {
 											</TableCell>
 											<TableCell className="max-w-[300px] align-top">
 												<ClampedParagraph
-													text={tldr}
+													text={item.tldr}
 													EmptyText={
 														<span className="text-gray-400 h-full italic">
 															Add TLDR

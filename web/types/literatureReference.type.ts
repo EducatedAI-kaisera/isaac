@@ -99,6 +99,8 @@ export type UploadedFile = {
 	created_at: string;
 	citation: { name: string; metadata: { year: string } } | null;
 	custom_citation?: CustomCitation;
+	abstract: string | null;
+	tldr: string | null;
 };
 
 export enum ReferenceType {
