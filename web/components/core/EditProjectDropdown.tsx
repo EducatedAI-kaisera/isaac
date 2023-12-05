@@ -21,7 +21,7 @@ import {
 } from '@components/ui/dropdown-menu';
 import { Input } from '@components/ui/input';
 import { useUIStore } from '@context/ui.store';
-import { useDeleteProject, useRenameProject } from '@resources/editor-page';
+import { useRenameProject } from '@resources/editor-page';
 import {
 	CornerDownRight,
 	MoreVertical,
@@ -29,7 +29,8 @@ import {
 	Plus,
 	Trash,
 } from 'lucide-react';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
+import useDeleteProject from '@hooks/api/useDeleteProject';
 
 type Props = {
 	projectName: string;
@@ -40,14 +41,14 @@ type Props = {
 const EditProjectDropdown = ({ projectId, projectName, className }: Props) => {
 	const [openRenameDialog, setOpenRenameDialog] = useState(false);
 	const [newProjectTitle, setNewProjectTitle] = useState(projectName);
-	const { mutateAsync: mutateDeleteProject } = useDeleteProject();
+	const { mutate: deleteProject, isLoading, isError } = useDeleteProject();
 	const { mutateAsync: mutateRenameProject } = useRenameProject({
 		onSuccessCb: () => setNewProjectTitle(''),
 	});
 
-	const deleteProject = () => {
+	const deleteProjectFunction = () => {
 		if (confirm('Are you sure you want to delete this project?')) {
-			mutateDeleteProject(projectId);
+			deleteProject(projectId);
 		}
 	};
 	const setShowCreateDocumentModal = useUIStore(
@@ -84,7 +85,7 @@ const EditProjectDropdown = ({ projectId, projectName, className }: Props) => {
 						Rename Project
 					</DropdownMenuItem>
 
-					<DropdownMenuItem onClick={deleteProject} className="text-red-700">
+					<DropdownMenuItem onClick={deleteProjectFunction} className="text-destructive">
 						<Trash size={14} className="mr-4" />
 						Delete Project
 					</DropdownMenuItem>

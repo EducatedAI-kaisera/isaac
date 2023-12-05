@@ -47,8 +47,12 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 	const activeFileReference = useChatSessions(
 		s => s.chatSessions[sessionId]?.activeFileReference,
 	);
-	const { setChatContext, setChatSearchInput, setActiveFileReference } =
-		useChatSessions(s => s.actions);
+	const {
+		setChatContext,
+		setChatSearchInput,
+		setActiveFileReference,
+		resetStateOnError,
+	} = useChatSessions(s => s.actions);
 
 	const { projectId } = useGetEditorRouter();
 	const { data: uploadFiles } = useGetUserUploads(user?.id, projectId);
@@ -62,7 +66,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 			<div className="flex  max-w-full gap-2  ">
 				<DropdownMenu>
 					<DropdownMenuTrigger>
-						<div className="px-2 py-1 transition-all duration-100 ease-in-out bg-white rounded-md border hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer dark:bg-neutral-950 ">
+						<InputSettingButton>
 							Context:{' '}
 							{chatContext === 'file'
 								? 'PDF'
@@ -71,7 +75,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 								: chatContext === 'references'
 								? activeFileReference?.name || 'All Documents'
 								: 'Default'}
-						</div>
+						</InputSettingButton>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
 						side="top"
@@ -205,8 +209,8 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 
 				{/* // TODO: Figure out how to stop generation */}
 				{isHandling && (
-					<InputSettingButton onClick={() => alert('cancel')}>
-						Stop Generation{' '}
+					<InputSettingButton className="inline-flex items-center" onClick={() => resetStateOnError(sessionId)}>
+						<span className="mr-0.5"> Stop generation</span>
 						<FaStopCircle size="10" className="inline-block animate-pulse" />
 					</InputSettingButton>
 				)}
@@ -220,9 +224,9 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 				<>
 					<Popover>
 						<PopoverTrigger asChild>
-							<div className="flex text-xs items-center gap-1 px-2 py-1 transition-all duration-100 ease-in-out bg-white rounded-md border hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer dark:bg-neutral-950">
+							<InputSettingButton>
 								<Search size="10" className="inline-block" /> Search
-							</div>
+							</InputSettingButton>
 						</PopoverTrigger>
 						<PopoverContent
 							side="top"

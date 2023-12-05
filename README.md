@@ -36,7 +36,7 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 2. Clone the forked repo to your local machine
 
 ```bash
-git clone https://github.com/<your-username>/isaac.git
+git clone https://github.com/aietal/isaac.git
 ```
 
 ### Setting up Docker image
@@ -61,7 +61,7 @@ docker build -t isaac-api .
 docker run -p 8000:8000 isaac-api
 ```
 
-### Setting up Web App
+### Setting up the web app
 
 1. Go to web directory
 
@@ -75,13 +75,13 @@ cd web
 npm install
 ```
 
-3. For Production (build)
+3. For production (build)
 
 ```bash
 npm run build
 ```
 
-4. For Development (dev)
+4. For development (dev)
 
 ```bash
 npm run dev
@@ -91,7 +91,7 @@ npm run dev
 
 First off, thanks for taking the time to contribute! ❤️
 
-All types of contributions are encouraged and valued. Please read our [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guidelines](CONTRIBUTING.md) to get started.
+All types of contributions are encouraged and valued. Please read our [Code of Conduct](CODE_OF_CONDUCT.md) to get started.
 
 ## Community
 

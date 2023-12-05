@@ -139,10 +139,10 @@ const useDocumentTabs = () => {
 		});
 	};
 
-	const closeTab = (source: string) => {
-		const filteredTab = projectDocumentTabsMemory[projectId].filter(
-			tab => tab.source !== source,
-		);
+	const closeTab = (source: string, _projectId?: string) => {
+		const filteredTab = projectDocumentTabsMemory[
+			_projectId || projectId
+		].filter(tab => tab.source !== source);
 
 		const noTabActive = filteredTab.every(tab => tab.active === false);
 		if (noTabActive) {
@@ -153,7 +153,7 @@ const useDocumentTabs = () => {
 
 		setProjectDocumentTabsMemory({
 			...projectDocumentTabsMemory,
-			[projectId]: filteredTab,
+			[_projectId || projectId]: filteredTab,
 		});
 
 		// Remove search cache here
@@ -184,7 +184,7 @@ const useDocumentTabs = () => {
 		});
 	};
 
-	const deleteProject = (projectId: string) => {
+	const deleteProjectFromTabMemory = (projectId: string) => {
 		const { [projectId]: deletedKey, ...rest } = projectDocumentTabsMemory;
 		setProjectDocumentTabsMemory(rest);
 	};
@@ -255,7 +255,7 @@ const useDocumentTabs = () => {
 		renameTab,
 		addProject,
 		handleTabOnSort,
-		deleteProject,
+		deleteProjectFromTabMemory,
 		toggleDocumentByTabIndex,
 		updateLiteratureSearchTab,
 		updateNewChatTab,
