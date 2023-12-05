@@ -55,6 +55,7 @@ const LiteratureSearchSection = () => {
 
 	const onAddRef = useCallback(
 		lit => {
+			console.log({ lit });
 			addReference({
 				projectId,
 				papers: [
@@ -64,6 +65,7 @@ const LiteratureSearchSection = () => {
 						doi: lit.externalIds.DOI,
 						year: lit.year,
 						sourceId: ReferenceSource.SEMANTIC_SCHOLAR,
+						// pdf: ,
 					},
 				],
 			});

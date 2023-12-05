@@ -43,6 +43,8 @@ export type ReferenceLiterature = {
 	type: ReferenceType;
 	tldr: string | null;
 	year: string;
+	abstract: string | null;
+	source: string | null;
 };
 
 export type PublicationTypes = 'Review' | 'JournalArticle' | 'Conference';

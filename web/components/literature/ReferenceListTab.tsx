@@ -77,6 +77,8 @@ const ReferenceListTab = ({ active }: Props) => {
 		});
 	};
 
+	console.log({ mergedItem });
+
 	return (
 		<div
 			className={clsx('max-w-[1400px] mx-auto', active ? 'block' : 'hidden')}
@@ -103,21 +105,22 @@ const ReferenceListTab = ({ active }: Props) => {
 						<Table className="">
 							<TableHeader>
 								<TableRow>
-									<TableHead className="w-[48%]">References</TableHead>
-									<TableHead className="w-[48%]">TLDR</TableHead>
+									<TableHead className="w-[40%]">References</TableHead>
+									<TableHead className="w-[32%]">Abstract</TableHead>
+									<TableHead className="w-[25%]">TLDR</TableHead>
 									<TableHead className="w-[4%]"></TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
 								{mergedItem?.map(item => {
 									const title =
-										item.source === 'reference'
+										item._source === 'reference'
 											? (item as ReferenceLiterature).title
 											: (item as UploadedFile).custom_citation.title ||
 											  (item as UploadedFile).file_name;
 
 									const authors =
-										item.source === 'reference'
+										item._source === 'reference'
 											? (item as ReferenceLiterature).authors?.map(a => a.name)
 											: (item as UploadedFile).custom_citation?.authors;
 									const authorsString = authors?.length
@@ -126,17 +129,17 @@ const ReferenceListTab = ({ active }: Props) => {
 										: 'Authors Unspecified';
 
 									const year =
-										item.source === 'reference'
+										item._source === 'reference'
 											? (item as ReferenceLiterature).year
 											: (item as UploadedFile).custom_citation.year;
 
 									const hasPdf =
-										item.source === 'reference'
+										item._source === 'reference'
 											? !!(item as ReferenceLiterature).pdf
 											: true;
 
 									const openDocumentProps =
-										item.source === 'reference'
+										item._source === 'reference'
 											? {
 													source: (item as ReferenceLiterature).pdf,
 													label: (item as ReferenceLiterature).title,
@@ -151,17 +154,23 @@ const ReferenceListTab = ({ active }: Props) => {
 											  };
 
 									const tldr =
-										item.source === 'reference'
+										item._source === 'reference'
 											? (item as ReferenceLiterature).tldr
 											: '';
 
 									const type =
-										item.source === 'reference'
+										item._source === 'reference'
 											? (item as ReferenceLiterature).type
-											: ReferenceType.USER_UPLOAD;
+											: ReferenceType.JOURNAL;
+
+									const source =
+										item._source === 'reference'
+											? (item as ReferenceLiterature).source ||
+											  ReferenceSource.SEMANTIC_SCHOLAR
+											: ReferenceSource.MANUAL_UPLOAD;
 
 									const onTitleClick = () => {
-										if (item.source === 'reference') {
+										if (item._source === 'reference') {
 											setTargetDOI(
 												(item as ReferenceLiterature).doi,
 												ReferenceSection.SAVED_REFERENCES,
@@ -193,6 +202,10 @@ const ReferenceListTab = ({ active }: Props) => {
 															)}
 														</Badge>
 														{year && <Badge variant="accent">{year}</Badge>}
+														<Badge variant="accent">
+															{' '}
+															{capitalize(startCase(source))}
+														</Badge>
 														{hasPdf && (
 															<Badge
 																className="cursor-pointer"
@@ -212,13 +225,23 @@ const ReferenceListTab = ({ active }: Props) => {
 													text={tldr}
 													EmptyText={
 														<span className="text-gray-400 h-full italic">
-															No TLDR
+															No Abstract
+														</span>
+													}
+												/>
+											</TableCell>
+											<TableCell className="max-w-[300px] align-top">
+												<ClampedParagraph
+													text={tldr}
+													EmptyText={
+														<span className="text-gray-400 h-full italic">
+															Add TLDR
 														</span>
 													}
 												/>
 											</TableCell>
 											<TableCell className="align-top ">
-												{item.source === 'reference' && (
+												{item._source === 'reference' && (
 													<Bookmark
 														onClick={() =>
 															confirm(

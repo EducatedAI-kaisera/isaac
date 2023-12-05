@@ -11,6 +11,9 @@ type ReferencePayload = {
 	sourceId?: string;
 	source?: string;
 	url?: string;
+	tldr?: string;
+	abstract?: string;
+	pdf?: string;
 };
 
 const addReference = async ({

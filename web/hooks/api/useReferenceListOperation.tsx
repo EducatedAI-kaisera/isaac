@@ -1,4 +1,3 @@
-import useLiteratureToPreview from '@components/literature/useLiteratureToPreview';
 import { useLiteratureReferenceStore } from '@context/literatureReference.store';
 import { useUser } from '@context/user';
 import useDocumentTabs from '@hooks/useDocumentTabs';
@@ -18,7 +17,7 @@ export enum ReferenceSourceFilter {
 }
 
 export type MergedItem = (ReferenceLiterature | UploadedFile) & {
-	source: 'reference' | 'uploaded';
+	_source: 'reference' | 'uploaded';
 };
 
 const useReferenceListOperation = () => {
@@ -114,10 +113,10 @@ const useReferenceListOperation = () => {
 			}
 
 			const mergedList = [
-				..._referenceList.map(i => ({ ...i, source: 'reference' })),
+				..._referenceList.map(i => ({ ...i, _source: 'reference' })),
 				..._uploadedList.map(i => ({
 					...i,
-					source: 'uploaded',
+					_source: 'uploaded',
 				})),
 			].sort(
 				(b, a) =>
@@ -135,6 +134,8 @@ const useReferenceListOperation = () => {
 		setTargetDOI,
 		setRefSearchInput,
 		mergedItem: allItems,
+		filter,
+		setFilter,
 	};
 };
 

@@ -1,30 +1,13 @@
-import AddReferenceDropdown from '@components/literature/AddReferenceDropdown';
 import LiteratureCard from '@components/literature/LiteratureCard';
 import UploadedDocCard from '@components/literature/UploadedDocCard';
-import { Button } from '@components/ui/button';
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectLabel,
-	SelectTrigger,
-	SelectValue,
-} from '@components/ui/select';
+import { MergedItem } from '@hooks/api/useReferenceListOperation';
 import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
 import { useDeleteReference } from '@resources/editor-page';
-import { FileDown } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import React from 'react';
 import {
 	ReferenceLiterature,
-	ReferenceSourceFilter,
 	UploadedFile,
 } from 'types/literatureReference.type';
-
-type MergedItem = (ReferenceLiterature | UploadedFile) & {
-	source: 'reference' | 'uploaded';
-};
 
 type Props = {
 	referenceList?: ReferenceLiterature[];
@@ -45,8 +28,8 @@ const ReferenceList = ({ list, onClick }: Props) => {
 		>
 			{list?.map(i => {
 				return (
-					<React.Fragment key={`card-${i.source}-${i.id}`}>
-						{i.source === 'reference' && (
+					<React.Fragment key={`card-${i._source}-${i.id}`}>
+						{i._source === 'reference' && (
 							<LiteratureCard
 								key={i.id}
 								onRemove={() =>
@@ -67,7 +50,7 @@ const ReferenceList = ({ list, onClick }: Props) => {
 								added={true}
 							/>
 						)}
-						{i.source === 'uploaded' && (
+						{i._source === 'uploaded' && (
 							<>
 								<UploadedDocCard
 									key={i.id}
