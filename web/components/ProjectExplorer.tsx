@@ -1,5 +1,4 @@
 import ProjectGroup from '@components/ProjectGroup';
-import SidebarFooter from '@components/SidebarFooter';
 import { Button } from '@components/ui/button';
 import {
 	Tooltip,
@@ -74,7 +73,6 @@ const ProjectExplorer = memo(() => {
 				</div>
 			</div>
 			<ProjectGroup />
-			<SidebarFooter />
 		</nav>
 	);
 });
