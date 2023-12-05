@@ -14,7 +14,8 @@ import {
 	DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import { useDeleteProject, useRenameProject } from '@resources/editor-page';
+import { useRenameProject } from '@resources/editor-page';
+import useDeleteProject from '@hooks/api/useDeleteProject';
 import { Pencil, Trash } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
@@ -31,16 +32,21 @@ export default function EditProjectContextMenu({
 }: Props) {
 	const [openRenameDialog, setOpenRenameDialog] = useState(false);
 	const [newProjectTitle, setNewProjectTitle] = useState(projectName);
-	const { mutateAsync: mutateDeleteProject } = useDeleteProject();
+	const { mutateAsync: deleteProject } = useDeleteProject();
 	const { mutateAsync: mutateRenameProject } = useRenameProject({
 		onSuccessCb: () => setNewProjectTitle(''),
 	});
 
-	const deleteProject = () => {
-		if (confirm('Are you sure you want to delete this project?')) {
-			mutateDeleteProject(projectId);
-		}
-	};
+	const handleDelete = async (projectId) => {
+    try {
+      // Call the mutation function with the project ID
+      await deleteProject(projectId);
+      // Handle any additional logic after deletion, if necessary
+    } catch (error) {
+      // Handle error case
+      console.error('Failed to delete project:', error);
+    }
+  };
 
 	const handleRenameProject = () => {
 		mutateRenameProject({
@@ -65,7 +71,7 @@ export default function EditProjectContextMenu({
 						Rename Project
 					</ContextMenuItem>
 
-					<ContextMenuItem onClick={deleteProject} className="text-red-700">
+					<ContextMenuItem onClick={() => handleDelete(projectId)} className="text-red-700">
 						<Trash size={14} className="mr-4" />
 						Delete Project
 					</ContextMenuItem>

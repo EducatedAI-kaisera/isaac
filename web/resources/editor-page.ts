@@ -8,8 +8,6 @@ import {
 } from 'types/literatureReference.type';
 import { Project } from 'types/project';
 
-// TODO: Refactor all these to its own hook then remove the file
-
 // types
 type User = {
 	id: string;
@@ -101,12 +99,6 @@ export const updateDocument = async (document: DocumentPayload) => {
 		.from('documents')
 		.update({ text: document.content })
 		.eq('id', document?.id);
-	return data;
-};
-
-const deleteProject = async (projectId: string) => {
-	const { data } = await supabase.from('projects').delete().eq('id', projectId);
-
 	return data;
 };
 
@@ -278,21 +270,6 @@ export const useDeleteDocument = () => {
 		onError: error => {
 			console.log({ error });
 			//TODO: need to show a more clearer message
-			toast.error('There is something wrong. Please try again.');
-		},
-	});
-};
-
-export const useDeleteProject = () => {
-	const queryClient = useQueryClient();
-	return useMutation(deleteProject, {
-		mutationKey: 'delete-project',
-		onSuccess: () => {
-			toast.success('Project deleted successfully!');
-			queryClient.invalidateQueries(['get-projects']);
-		},
-		onError: error => {
-			console.log({ error });
 			toast.error('There is something wrong. Please try again.');
 		},
 	});
