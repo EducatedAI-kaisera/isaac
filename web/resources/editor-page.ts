@@ -126,33 +126,6 @@ const getReference = async (projectId: string) => {
 	return data as ReferenceLiterature[];
 };
 
-type ReferencePayload = {
-	title: string;
-	authors: { name: string; authorId: string }[];
-	year: number;
-	doi: string;
-};
-
-const addReference = async ({
-	paper,
-	projectId,
-}: {
-	paper: ReferencePayload;
-	projectId: string;
-}) => {
-	const { data } = await supabase.from('references').insert([
-		{
-			title: paper?.title,
-			authors: paper?.authors,
-			year: paper?.year,
-			doi: paper.doi,
-			projectId,
-		},
-	]);
-
-	return data;
-};
-
 const deleteReference = async id => {
 	const { data } = await supabase.from('references').delete().eq('id', id);
 	return data;

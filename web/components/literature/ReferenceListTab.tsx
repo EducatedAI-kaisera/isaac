@@ -1,4 +1,5 @@
 import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import ClampedParagraph from '@components/ui/clamped-paragraph';
 import {
 	Table,
@@ -8,14 +9,19 @@ import {
 	TableHeader,
 	TableRow,
 } from '@components/ui/table';
-import { ReferenceSection } from '@context/literatureReference.store';
+import {
+	ReferenceSection,
+	useLiteratureReferenceStore,
+} from '@context/literatureReference.store';
 import { Panel, useUIStore } from '@context/ui.store';
+import { useUser } from '@context/user';
+import useDeleteUserUpload from '@hooks/api/useDeleteUserUpload';
 import useReferenceListOperation from '@hooks/api/useReferenceListOperation';
 import { TabType } from '@hooks/useDocumentTabs';
 import { useDeleteReference } from '@resources/editor-page';
 import clsx from 'clsx';
 import { capitalize, startCase } from 'lodash';
-import { Bookmark } from 'lucide-react';
+import { Bookmark, Pen, Trash } from 'lucide-react';
 import React from 'react';
 import {
 	ReferenceLiterature,
@@ -37,8 +43,12 @@ const ReferenceListTab = ({ active }: Props) => {
 	const { openDocument, setTargetDOI, setRefSearchInput, mergedItem } =
 		useReferenceListOperation();
 	const openPanel = useUIStore(s => s.openPanel);
-
+	const { deleteUpload } = useDeleteUserUpload();
+	const { user } = useUser();
 	const { mutateAsync: removeReference } = useDeleteReference();
+	const setShowUploadMetaModal = useLiteratureReferenceStore(
+		s => s.setShowUploadMetaModal,
+	);
 
 	return (
 		<div
@@ -215,6 +225,38 @@ const ReferenceListTab = ({ active }: Props) => {
 														size={20}
 														strokeWidth={0.6}
 													/>
+												)}
+												{item._source === 'uploaded' && (
+													<>
+														<Button
+															variant="ghost"
+															size="icon"
+															onClick={event => {
+																setShowUploadMetaModal({
+																	uploadId: item.id,
+																	fileName: title,
+																});
+															}}
+															className={clsx(
+																'p-1 h-6 w-6 mb-1.5 text-muted-foreground ',
+															)}
+														>
+															<Pen size={18} strokeWidth={1.4} />
+														</Button>
+														<Button
+															variant="ghost"
+															size="icon"
+															onClick={() =>
+																confirm(`Delete uploaded file:\n ${title}`) &&
+																deleteUpload(item.id, user?.id)
+															}
+															className={clsx(
+																'p-1 h-6 w-6 text-muted-foreground ',
+															)}
+														>
+															<Trash strokeWidth={1.4} size={18} />
+														</Button>
+													</>
 												)}
 											</TableCell>
 										</TableRow>

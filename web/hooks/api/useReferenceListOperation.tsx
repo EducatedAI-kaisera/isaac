@@ -23,7 +23,6 @@ export type MergedItem = (ReferenceLiterature | UploadedFile) & {
 const useReferenceListOperation = () => {
 	const { projectId } = useGetEditorRouter();
 	const { user } = useUser();
-	//
 	const [refSearchInput, setRefSearchInput] = useState<string>('');
 	const [referenceList, setReferenceList] = useState<ReferenceLiterature[]>();
 	const [uploadedReferenceList, setUploadedReferenceList] =
