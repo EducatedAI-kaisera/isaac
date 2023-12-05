@@ -353,26 +353,6 @@ export const useGetUserUploads = (
 	);
 };
 
-// export const useAddReference = (options?: {
-// 	onSuccess?: () => void;
-// 	onMutate?: () => void;
-// }) => {
-// 	const queryClient = useQueryClient();
-// 	return useMutation(addReference, {
-// 		mutationKey: 'add-reference',
-// 		onMutate: options?.onMutate,
-// 		onSuccess: () => {
-// 			queryClient.invalidateQueries(['get-reference']);
-// 			toast.success('Added to References!');
-// 			options?.onSuccess?.();
-// 		},
-// 		onError: error => {
-// 			console.log({ error });
-// 			toast.error('There is something wrong. Please try again.');
-// 		},
-// 	});
-// };
-
 export const useDeleteReference = () => {
 	const queryClient = useQueryClient();
 	return useMutation(deleteReference, {

@@ -1,6 +1,4 @@
-import LiteratureSearchInput from '@components/literature/LiteratureSearchInput';
 import { Badge } from '@components/ui/badge';
-import { Button } from '@components/ui/button';
 import ClampedParagraph from '@components/ui/clamped-paragraph';
 import {
 	Table,
@@ -11,26 +9,18 @@ import {
 	TableRow,
 } from '@components/ui/table';
 import { ReferenceSection } from '@context/literatureReference.store';
-import { useUIStore } from '@context/ui.store';
-import useAddReference from '@hooks/api/useAddToReference';
+import { Panel, useUIStore } from '@context/ui.store';
 import useReferenceListOperation from '@hooks/api/useReferenceListOperation';
 import { TabType } from '@hooks/useDocumentTabs';
-import useGetEditorRouter from '@hooks/useGetEditorRouter';
-import { useLocalStorage } from '@mantine/hooks';
-import { useDeleteReference, useGetReference } from '@resources/editor-page';
-import {
-	GetLiteraturePayload,
-	LiteratureResponse,
-} from '@resources/literature.api';
+import { useDeleteReference } from '@resources/editor-page';
 import clsx from 'clsx';
 import { capitalize, startCase } from 'lodash';
 import { Bookmark } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 import {
 	ReferenceLiterature,
 	ReferenceSource,
 	ReferenceType,
-	SemanticScholarReference,
 	UploadedFile,
 } from 'types/literatureReference.type';
 import AddReferenceDropdown from './AddReferenceDropdown';
@@ -48,36 +38,7 @@ const ReferenceListTab = ({ active }: Props) => {
 		useReferenceListOperation();
 	const openPanel = useUIStore(s => s.openPanel);
 
-	const { projectId } = useGetEditorRouter();
-	const [literatureSearchPayload, setLiteratureSearchPayload] =
-		useState<GetLiteraturePayload>();
-
-	const [searchedResultInLocalStorage, setSearchedResultInLocalStorage] =
-		useLocalStorage<Record<string, LiteratureResponse>>({
-			key: 'literature-search',
-			defaultValue: {},
-		});
-
-	const { data: savedReferenceList } = useGetReference(projectId);
-	const { mutateAsync: addReference } = useAddReference();
 	const { mutateAsync: removeReference } = useDeleteReference();
-
-	const handleSaveReference = (lit: SemanticScholarReference) => {
-		addReference({
-			projectId,
-			papers: [
-				{
-					authors: lit.authors,
-					title: lit.title,
-					doi: lit.externalIds.DOI,
-					year: lit.year,
-					sourceId: ReferenceSource.SEMANTIC_SCHOLAR,
-				},
-			],
-		});
-	};
-
-	console.log({ mergedItem });
 
 	return (
 		<div
@@ -171,6 +132,7 @@ const ReferenceListTab = ({ active }: Props) => {
 
 									const onTitleClick = () => {
 										if (item._source === 'reference') {
+											openPanel(Panel.REFERENCES);
 											setTargetDOI(
 												(item as ReferenceLiterature).doi,
 												ReferenceSection.SAVED_REFERENCES,

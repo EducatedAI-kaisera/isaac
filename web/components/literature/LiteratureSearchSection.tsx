@@ -17,7 +17,10 @@ import { useGetReference } from '@resources/editor-page';
 import { useGetLiterature } from '@resources/literature.api';
 import { ArrowUpRight } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
-import { ReferenceSource } from 'types/literatureReference.type';
+import {
+	ReferenceSource,
+	SemanticScholarReference,
+} from 'types/literatureReference.type';
 export enum ReferenceSourceFilter {
 	ALL = 'ALL',
 	SAVED = 'SAVED',
@@ -54,7 +57,7 @@ const LiteratureSearchSection = () => {
 	const { openDocument } = useDocumentTabs();
 
 	const onAddRef = useCallback(
-		lit => {
+		(lit: SemanticScholarReference) => {
 			console.log({ lit });
 			addReference({
 				projectId,
@@ -65,7 +68,8 @@ const LiteratureSearchSection = () => {
 						doi: lit.externalIds.DOI,
 						year: lit.year,
 						sourceId: ReferenceSource.SEMANTIC_SCHOLAR,
-						// pdf: ,
+						pdf: lit.openAccessPdf.url || null,
+						abstract: lit.abstract,
 					},
 				],
 			});

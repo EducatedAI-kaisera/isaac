@@ -79,6 +79,8 @@ const LiteratureSearchTab = ({ active }: Props) => {
 					doi: lit.externalIds.DOI,
 					year: lit.year,
 					sourceId: ReferenceSource.SEMANTIC_SCHOLAR,
+					pdf: lit.openAccessPdf.url || null,
+					abstract: lit.abstract,
 				},
 			],
 		});

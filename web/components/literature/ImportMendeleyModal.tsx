@@ -80,7 +80,7 @@ const ImportMendeleyModal = () => {
 					type,
 					sourceId: i.id,
 					source: ReferenceSource.MENDELEY,
-					tldr: i.abstract,
+					abstract: i.abstract,
 					pdf: null,
 				};
 			}),
