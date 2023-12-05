@@ -1,14 +1,18 @@
 import { Input } from '@components/ui/input';
+import clsx from 'clsx';
 import { Search } from 'lucide-react';
 import React from 'react';
 
 type Props = {
 	onSearch: (keyword: string) => void;
+	className?: string;
 };
 
-const ReferenceSearchInput = ({ onSearch }: Props) => {
+const ReferenceSearchInput = ({ onSearch, className }: Props) => {
 	return (
-		<div className="flex items-center flex-wrap gap-2 mb-2 relative">
+		<div
+			className={clsx('flex items-center flex-wrap gap-2 relative', className)}
+		>
 			<Input
 				onChange={e => onSearch(e.target.value)}
 				placeholder="Search your references..."

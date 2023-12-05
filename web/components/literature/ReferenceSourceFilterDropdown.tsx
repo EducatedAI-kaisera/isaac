@@ -13,18 +13,20 @@ import { ReferenceSourceFilter } from './LiteratureSearchSection';
 type Props = {
 	onFilterChange: (value: ReferenceSourceFilter) => void;
 	currentFilter: ReferenceSourceFilter;
+	className?: string;
 };
 
 const ReferenceSourceFilterDropdown = ({
 	onFilterChange,
 	currentFilter,
+	className,
 }: Props) => {
 	return (
 		<Select
 			value={currentFilter}
 			onValueChange={value => onFilterChange(value as ReferenceSourceFilter)}
 		>
-			<SelectTrigger className="w-full h-6">
+			<SelectTrigger className={className}>
 				<SelectValue placeholder="Select a document type" />
 			</SelectTrigger>
 			<SelectContent>

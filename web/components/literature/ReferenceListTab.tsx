@@ -1,5 +1,6 @@
 import LiteratureSearchInput from '@components/literature/LiteratureSearchInput';
 import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import ClampedParagraph from '@components/ui/clamped-paragraph';
 import {
 	Table,
@@ -9,6 +10,8 @@ import {
 	TableHeader,
 	TableRow,
 } from '@components/ui/table';
+import { ReferenceSection } from '@context/literatureReference.store';
+import { useUIStore } from '@context/ui.store';
 import useAddReference from '@hooks/api/useAddToReference';
 import useReferenceListOperation from '@hooks/api/useReferenceListOperation';
 import { TabType } from '@hooks/useDocumentTabs';
@@ -30,6 +33,11 @@ import {
 	SemanticScholarReference,
 	UploadedFile,
 } from 'types/literatureReference.type';
+import AddReferenceDropdown from './AddReferenceDropdown';
+import { ReferenceSourceFilter } from './LiteratureSearchSection';
+import ReferenceExportButton from './ReferenceExportButton';
+import ReferenceSearchInput from './ReferenceSearchInput';
+import ReferenceSourceFilterDropdown from './ReferenceSourceFilterDropdown';
 
 type Props = {
 	active: boolean;
@@ -38,6 +46,7 @@ type Props = {
 const ReferenceListTab = ({ active }: Props) => {
 	const { openDocument, setTargetDOI, setRefSearchInput, mergedItem } =
 		useReferenceListOperation();
+	const openPanel = useUIStore(s => s.openPanel);
 
 	const { projectId } = useGetEditorRouter();
 	const [literatureSearchPayload, setLiteratureSearchPayload] =
@@ -72,15 +81,25 @@ const ReferenceListTab = ({ active }: Props) => {
 		<div
 			className={clsx('max-w-[1400px] mx-auto', active ? 'block' : 'hidden')}
 		>
-			<LiteratureSearchInput
-				onSubmit={data => {
-					setLiteratureSearchPayload(data);
-				}}
-			/>
+			<div className="flex gap-2 mb-2">
+				<ReferenceSearchInput
+					onSearch={setRefSearchInput}
+					className="flex-grow"
+				/>
+				<ReferenceSourceFilterDropdown
+					className="w-[120px]"
+					onFilterChange={() => ''}
+					currentFilter={ReferenceSourceFilter.ALL}
+				/>
+			</div>
+			<div className="flex justify-between">
+				<AddReferenceDropdown displayAsButtons />
+				<ReferenceExportButton />
+			</div>
 
 			<>
 				{!!mergedItem?.length && (
-					<div className="mt-6 h-[calc(100vh-220px)] overflow-scroll">
+					<div className="mt-6 h-[calc(100vh-200px)] overflow-scroll">
 						<Table className="">
 							<TableHeader>
 								<TableRow>
@@ -99,11 +118,10 @@ const ReferenceListTab = ({ active }: Props) => {
 
 									const authors =
 										item.source === 'reference'
-											? (item as ReferenceLiterature).authors.map(a => a.name)
-											: (item as UploadedFile).custom_citation.authors;
-
+											? (item as ReferenceLiterature).authors?.map(a => a.name)
+											: (item as UploadedFile).custom_citation?.authors;
 									const authorsString = authors?.length
-										? authors.join(', ') +
+										? authors?.join(', ') +
 										  ((authors.length || 0) > 3 ? ' et al.' : '')
 										: 'Authors Unspecified';
 
@@ -142,10 +160,26 @@ const ReferenceListTab = ({ active }: Props) => {
 											? (item as ReferenceLiterature).type
 											: ReferenceType.USER_UPLOAD;
 
+									const onTitleClick = () => {
+										if (item.source === 'reference') {
+											setTargetDOI(
+												(item as ReferenceLiterature).doi,
+												ReferenceSection.SAVED_REFERENCES,
+											);
+										} else {
+											openDocument(openDocumentProps);
+										}
+									};
+
 									return (
 										<TableRow key={item.id}>
 											<TableCell className="align-top ">
-												<p className="font-medium">{title}</p>
+												<p
+													className="font-medium cursor-pointer"
+													onClick={onTitleClick}
+												>
+													{title}
+												</p>
 												<div className="text-sm leading-7 break-words text-neutral-700 dark:text-neutral-400 line-clamp-1 ">
 													<p>{authorsString}</p>
 													<div className="flex gap-2">
@@ -187,7 +221,11 @@ const ReferenceListTab = ({ active }: Props) => {
 												{item.source === 'reference' && (
 													<Bookmark
 														onClick={() =>
-															confirm('Are you sure to delete reference? ') &&
+															confirm(
+																`Are you sure to delete item below from reference: \n${
+																	(item as ReferenceLiterature).title
+																} `,
+															) &&
 															removeReference((item as ReferenceLiterature).id)
 														}
 														className={clsx(
