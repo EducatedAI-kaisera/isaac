@@ -9,7 +9,7 @@ const useAuthRedirect = () => {
 		const user = supabase.auth.user();
 
 		if (!user) {
-			router.push('/signup');
+			router.push('/signup?refresh=true');
 			return;
 		}
 
