@@ -56,6 +56,11 @@ export default function Signup() {
 		if (user) {
 			router.push(`/editor`);
 		}
+		// read the url query params and if refresh=true then refresh the page
+		if (router.query.refresh) {
+			router.replace(router.pathname);
+		}
+
 	}, [router, user]);
 
 	return (

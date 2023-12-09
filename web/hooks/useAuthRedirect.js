@@ -20,7 +20,9 @@ const useAuthRedirect = () => {
 			.single()
 			.then(result => {
 				// If user isn't logged in (no profile data), redirect to signup page
-				if (!result.data) router.push('/signup');
+				if (!result.data) {
+					router.push('/signup?refresh=true');
+				}
 			});
 	}, [router.pathname]);
 };
