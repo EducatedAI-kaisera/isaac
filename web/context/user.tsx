@@ -98,10 +98,16 @@ const UserProvider = ({ children }) => {
 					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 				await supabase.auth.signIn(
 					{ provider: 'google' },
-					{
-						redirectTo: `${apiUrl}/editor?`,
-					},
 				);
+				setTimeout(() => {
+					const user = supabase.auth.user();
+					if (user) {
+						router.push('/editor');
+					} else {
+						// Handle the case where authentication failed or is still pending
+						console.log('Authentication in progress or failed');
+					}
+				}, 1000);
 			},
 		}),
 		[userProfile, sessionUser, isLoading],
