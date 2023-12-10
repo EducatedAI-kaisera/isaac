@@ -3,7 +3,7 @@ import useDocumentTabs from '@hooks/useDocumentTabs';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { allCommandKeys, hotKeys, tabNumberKeys } from 'data/shortcuts';
 import { COMMAND_PRIORITY_NORMAL, KEY_MODIFIER_COMMAND } from 'lexical';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 const HotkeyPlugin = () => {
 	const [editor] = useLexicalComposerContext();
@@ -14,7 +14,7 @@ const HotkeyPlugin = () => {
 	const toggleDocumentComment = useUIStore(s => s.toggleDocumentComment);
 	const setShowEditorCommand = useUIStore(s => s.setShowEditorCommand);
 	const { toggleDocumentByTabIndex } = useDocumentTabs();
-	const [pressedKey, setPressedKey] = useState<string>();
+	const pressedKey = useRef<string>();
 
 	// * Register hotkey
 	useEffect(() => {
@@ -26,7 +26,8 @@ const HotkeyPlugin = () => {
 					if (allCommandKeys.includes(event.key)) {
 						event.preventDefault();
 						event.stopPropagation();
-						setPressedKey(event.key);
+						pressedKey.current = event.key;
+						handleKeyPress();
 					}
 				}
 
@@ -36,31 +37,31 @@ const HotkeyPlugin = () => {
 		);
 	}, []);
 
-	// * Trigger the key because register event callback doesn't update when state is updated
-	useEffect(() => {
-		if (pressedKey === hotKeys.toggleSidebar.key) {
+	// * Handle key press
+	const handleKeyPress = () => {
+		if (pressedKey.current === hotKeys.toggleSidebar.key) {
 			toggleSideBar();
-		} else if (pressedKey === hotKeys.isaacPanel.key) {
+		} else if (pressedKey.current === hotKeys.isaacPanel.key) {
 			activePanel === Panel.CHAT ? closePanel() : openPanel(Panel.CHAT);
-		} else if (pressedKey === hotKeys.referencePanel.key) {
+		} else if (pressedKey.current === hotKeys.referencePanel.key) {
 			activePanel === Panel.REFERENCES
 				? closePanel()
 				: openPanel(Panel.REFERENCES);
-		} else if (pressedKey === hotKeys.notePanel.key) {
+		} else if (pressedKey.current === hotKeys.notePanel.key) {
 			activePanel === Panel.NOTES ? closePanel() : openPanel(Panel.NOTES);
-		} else if (pressedKey === hotKeys.closePanel.key) {
+		} else if (pressedKey.current === hotKeys.closePanel.key) {
 			closePanel();
-		} else if (tabNumberKeys.includes(pressedKey)) {
-			toggleDocumentByTabIndex(Number(pressedKey) - 1);
-		} else if (pressedKey === hotKeys.toggleComment.key) {
+		} else if (tabNumberKeys.includes(pressedKey.current)) {
+			toggleDocumentByTabIndex(Number(pressedKey.current) - 1);
+		} else if (pressedKey.current === hotKeys.toggleComment.key) {
 			toggleDocumentComment();
-		} else if (pressedKey === hotKeys.openCommand.key) {
+		} else if (pressedKey.current === hotKeys.openCommand.key) {
 			setShowEditorCommand(true, { showAIFunctions: true });
-		} else if (pressedKey === hotKeys.toggleTheme.key) {
+		} else if (pressedKey.current === hotKeys.toggleTheme.key) {
 			// toggleColorScheme(); // TODO: Rework this
 		}
-		setPressedKey(undefined);
-	}, [pressedKey]);
+		pressedKey.current = undefined;
+	};
 
 	return null;
 };
