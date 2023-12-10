@@ -142,7 +142,7 @@ create table notes (
   updated_at timestamp default now()
 );
 
-create table references (
+create table "references" (
   id uuid default uuid_generate_v4() primary key,
   created_at timestamp default now(),
   title text,
