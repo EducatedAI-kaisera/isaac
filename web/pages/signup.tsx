@@ -52,15 +52,15 @@ export default function Signup() {
 	}
 
 	useEffect(() => {
-		// if user redirect to /editor
+		// Redirect to /editor if user exists
 		if (user) {
-			router.push(`/editor`);
-		}
-		// read the url query params and if refresh=true then refresh the page
-		if (router.query.refresh) {
-			router.replace(router.pathname);
+			router.push('/editor');
 		}
 
+		// Reload the page if url query params include refresh=true
+		if (router.query.refresh) {
+			setTimeout(router.reload, 500);
+		}
 	}, [router, user]);
 
 	return (
