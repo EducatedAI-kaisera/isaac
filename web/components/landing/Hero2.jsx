@@ -30,12 +30,12 @@ export function Hero() {
 				<div className="flex flex-col items-center justify-center">
 					<div className="text-center max-w-2xl">
 						<h1 className="text-5xl font-bold tracking-tight text-gray-900">
-							Research, write, edit. <br />
+							Research, edit, write. <br />
 							With AI at your side.
 						</h1>
 
 						<p className="mt-4 text-2xl text-gray-600">
-							The AI-powered workspace for <br className="sm:hidden" />
+							The AI-native workspace for <br className="sm:hidden" />
 							<TypedText />
 						</p>
 
