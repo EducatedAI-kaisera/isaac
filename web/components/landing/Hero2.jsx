@@ -59,7 +59,7 @@ export function Hero() {
 
 					<div className="mt-8 md:mt-20 text-center">
 						<p className="text-sm mt-2 font-semibold text-gray-900">
-							Join more than +23,735 researchers & students
+							Join more than +25,179 researchers & students
 						</p>
 						<ul
 							role="list"
