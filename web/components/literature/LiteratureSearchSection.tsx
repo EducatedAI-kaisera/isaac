@@ -16,7 +16,7 @@ import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useGetReference } from '@resources/editor-page';
 import { useGetLiterature } from '@resources/literature.api';
 import { ArrowUpRight } from 'lucide-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { ReferenceSource } from 'types/literatureReference.type';
 export enum ReferenceSourceFilter {
 	ALL = 'ALL',
@@ -123,6 +123,8 @@ const LiteratureSearchSection = () => {
 
 			{(litSearchFetching || litSearchLoading) && (
 				<div className="flex-col flex px-3 gap-2">
+					<LiteratureCardSkeleton />
+					<LiteratureCardSkeleton />
 					<LiteratureCardSkeleton />
 					<LiteratureCardSkeleton />
 					<LiteratureCardSkeleton />
