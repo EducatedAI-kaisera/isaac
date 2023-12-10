@@ -4,6 +4,11 @@ import LiteratureSearchInput from '@components/literature/LiteratureSearchInput'
 import LiteratureSummaryPreview from '@components/literature/LiteratureSummaryPreview';
 import useLiteratureToPreview from '@components/literature/useLiteratureToPreview';
 import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from '@components/ui/tooltip';
+import {
 	ReferenceSection,
 	useLiteratureReferenceStore,
 } from '@context/literatureReference.store';
@@ -16,7 +21,7 @@ import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useGetReference } from '@resources/editor-page';
 import { useGetLiterature } from '@resources/literature.api';
 import { ArrowUpRight } from 'lucide-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { ReferenceSource } from 'types/literatureReference.type';
 export enum ReferenceSourceFilter {
 	ALL = 'ALL',
@@ -79,7 +84,7 @@ const LiteratureSearchSection = () => {
 
 	if (literaturePreview) {
 		return (
-			<div className="">
+			<div>
 				<LiteratureSummaryPreview
 					onClose={() => setTargetDOI(undefined)}
 					{...literaturePreview}
@@ -90,26 +95,31 @@ const LiteratureSearchSection = () => {
 
 	return (
 		<div className="flex flex-col h-full overflow-y-scroll scrollbar-hide">
-			{/* HEADER */}
 			<div className="flex justify-between items-top p-3">
 				<p className="font-semibold mb-2 text-sm flex gap-2 items-center">
 					Literature Search
 				</p>
 				<>
-					<ArrowUpRight
-						size={20}
-						onClick={() => {
-							openDocument({
-								type: TabType.LiteratureSearch,
-								source:
-									literatureSearchPayload?.keyword ||
-									UniqueTabSources.NEW_LIT_SEARCH,
-								label: literatureSearchPayload?.keyword || 'Search Literature',
-							});
-						}}
-						className="text-gray-600 hover:text-isaac cursor-pointer hidden md:block"
-						strokeWidth={1}
-					/>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<ArrowUpRight
+								size={20}
+								onClick={() => {
+									openDocument({
+										type: TabType.LiteratureSearch,
+										source:
+											literatureSearchPayload?.keyword ||
+											UniqueTabSources.NEW_LIT_SEARCH,
+										label:
+											literatureSearchPayload?.keyword || 'Search Literature',
+									});
+								}}
+								className="text-gray-600 hover:text-isaac cursor-pointer hidden md:block"
+								strokeWidth={1}
+							/>
+						</TooltipTrigger>
+						<TooltipContent side="right">Open in new tab</TooltipContent>
+					</Tooltip>
 				</>
 			</div>
 			{/* INPUT */}
@@ -123,6 +133,8 @@ const LiteratureSearchSection = () => {
 
 			{(litSearchFetching || litSearchLoading) && (
 				<div className="flex-col flex px-3 gap-2">
+					<LiteratureCardSkeleton />
+					<LiteratureCardSkeleton />
 					<LiteratureCardSkeleton />
 					<LiteratureCardSkeleton />
 					<LiteratureCardSkeleton />
