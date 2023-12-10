@@ -23,10 +23,10 @@ export default function ChatSessionCard({
 	onDeleteClick?: () => void;
 }) {
 	const { ref, hovered } = useHover();
-	const { isAboveMd, isBelowMd } = useBreakpoint('md');
+	const { isBelowMd } = useBreakpoint('md');
 
 	return (
-		<div className=" border rounded p-2 flex justify-between gap-1" ref={ref}>
+		<div className="border rounded p-2 flex justify-between gap-1 select-none" ref={ref}>
 			<div
 				className="flex gap-2 items-center overflow-clip hover:text-isaac cursor-pointer"
 				onClick={onClick}
