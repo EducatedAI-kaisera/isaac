@@ -1,4 +1,3 @@
-import RetroGrid from '@components/ui/retro-grid';
 import Ripple from '@components/ui/ripple';
 import { useUser } from '@context/user';
 import clsx from 'clsx';
