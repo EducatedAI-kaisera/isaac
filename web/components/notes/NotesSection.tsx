@@ -13,7 +13,6 @@ import { CLEAR_EDITOR_COMMAND, EditorState, LexicalEditor } from 'lexical';
 import {
 	AlertCircle,
 	ArrowLeft,
-	ChevronLeft,
 	Loader2,
 	Plus,
 	Save,
@@ -121,18 +120,17 @@ const Notes = () => {
 					)}
 				>
 					{notes && notes.length === 0 ? (
-						<div className="mt-24 text-center">
-							<StickyNote className="w-12 h-12 mx-auto text-muted-foreground" />
-							<h3 className="mt-2 text-sm font-semibold text-muted-foreground">
-								No Notes
+						<div className="flex flex-col items-center justify-center h-full">
+							<StickyNote strokeWidth={1.2} size={50} className=" mx-auto text-muted-foreground" />
+							<h3 className="mt-4 text-lg font-semibold text-muted-foreground">
+								You don&apos;t have any notes yet
 							</h3>
-							<p className="mt-1 text-sm text-muted-foreground">
-								Notes help you keep track of your thoughts and ideas. Get
-								started by creating a new note.
+							<p className="mt-2 text-sm text-muted-foreground max-w-xs text-center">
+								Notes are a great way to keep track of your thoughts and ideas. Click the button below to create your first note.
 							</p>
 							<div className="mt-6">
-								<Button onClick={handleCreateClick}>
-									<Plus className="w-4 h-4 mr-2" /> Create Note
+								<Button onClick={handleCreateClick} className="bg-isaac hover:bg-white hover:text-isaac hover:border hover:border-isaac">
+									<Plus className="w-5 h-5 mr-2" /> Create Note
 								</Button>
 							</div>
 						</div>
