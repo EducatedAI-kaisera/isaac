@@ -221,19 +221,17 @@ create table user_integrations (
 cd web
 ```
 
+2. Create .env file 
+
+Please refer to the .env.example in the /web directory.
+
 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-3. For production (build)
-
-```bash
-npm run build
-```
-
-4. For development (dev)
+3. Run the app
 
 ```bash
 npm run dev
