@@ -16,26 +16,19 @@ const deleteDocument = async (docId: string) => {
 
 const useDeleteDocument = () => {
 	const queryClient = useQueryClient();
-	const { closeTab, activeDocument } = useDocumentTabs();
+	const { closeTab } = useDocumentTabs();
 	return useMutation(deleteDocument, {
 		mutationKey: 'delete-document',
 		onSuccess: (data: TextDocument) => {
 			toast.success('Document deleted successfully!');
-			queryClient.invalidateQueries(['get-documents']);
 
 			// Close tab if opened
-			if (
-				activeDocument.type === 'Document' &&
-				activeDocument.source === data.id
-			) {
-				closeTab(data.id);
-			}
+			closeTab(data.id, data.projectId);
 
-			//TODO: need to close model
+			queryClient.invalidateQueries(['get-documents']);
 		},
 		onError: error => {
 			console.log({ error });
-			//TODO: need to show a more clearer message
 			toast.error('There is something wrong. Please try again.');
 		},
 	});

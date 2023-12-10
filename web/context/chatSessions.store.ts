@@ -47,6 +47,7 @@ type ChatSessionStore = {
 			chunk: string,
 		) => void;
 		streamChatSidebarTitle: (cumulativeChunk: string) => void;
+		resetStateOnError: (sessionId: string) => void;
 	};
 };
 
@@ -72,7 +73,7 @@ const useChatSessions = create<ChatSessionStore>((set, get) => ({
 			const chatSessionData: ChatSessionData = {
 				chatContext: 'project',
 				promptInput: '',
-				isHandling: false,
+				isHandling: true,
 				chatSearchInput: '',
 				messages: [userMessage, assistantMessage],
 				activeFileReference: undefined,
@@ -225,6 +226,21 @@ const useChatSessions = create<ChatSessionStore>((set, get) => ({
 					[sessionId]: {
 						...targetChatSession,
 						activeFileReference: fileReference,
+					},
+				},
+			});
+		},
+		resetStateOnError: sessionId => {
+			const _chatSessions = get().chatSessions;
+			const targetChatSession = _chatSessions[sessionId];
+			const updatedMessaged = _chatSessions[sessionId].messages?.slice(0, -1);
+			set({
+				chatSessions: {
+					..._chatSessions,
+					[sessionId]: {
+						...targetChatSession,
+						isHandling: false,
+						messages: updatedMessaged,
 					},
 				},
 			});
