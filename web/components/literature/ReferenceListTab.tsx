@@ -82,10 +82,13 @@ const ReferenceListTab = ({ active }: Props) => {
 						<Table className="">
 							<TableHeader>
 								<TableRow>
-									<TableHead className="w-[40%]">References</TableHead>
+									<TableHead className="w-[54%]">References</TableHead>
+									<TableHead className="w-[42%]">Abstract</TableHead>
+									<TableHead className="w-[4%]"></TableHead>
+									{/* <TableHead className="w-[40%]">References</TableHead>
 									<TableHead className="w-[32%]">Abstract</TableHead>
 									<TableHead className="w-[25%]">TLDR</TableHead>
-									<TableHead className="w-[4%]"></TableHead>
+									<TableHead className="w-[4%]"></TableHead> */}
 								</TableRow>
 							</TableHeader>
 							<TableBody>
@@ -203,7 +206,7 @@ const ReferenceListTab = ({ active }: Props) => {
 													}
 												/>
 											</TableCell>
-											<TableCell className="max-w-[300px] align-top">
+											{/* <TableCell className="max-w-[300px] align-top">
 												<ClampedParagraph
 													text={item.tldr}
 													EmptyText={
@@ -212,7 +215,7 @@ const ReferenceListTab = ({ active }: Props) => {
 														</span>
 													}
 												/>
-											</TableCell>
+											</TableCell> */}
 											<TableCell className="align-top ">
 												{item._source === 'reference' && (
 													<Bookmark
