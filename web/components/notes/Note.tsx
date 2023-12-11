@@ -69,16 +69,7 @@ const Note = ({
 						</DropdownMenu>
 					</div>
 
-					{/* TODO: Reconsider if/how to include in component */}
-					{/* {createdAt && (
-            <div
-              className={clsx('bg-card', 'absolute bottom-1 right-4 w-max ')}
-            >
-              <p className="text-right mr-2 my-2 text-sm text-gray-500">
-                {getRelativeDate(createdAt)}
-              </p>
-            </div>
-          )} */}
+
 				</>
 			)}
 		</div>

@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { getDbInstance } from '@utils/pgClient';
 import { getServiceSupabase } from '../../utils/supabase';
+import { createEmbedding } from '@utils/create_embedding';
 
 export type CitationSearchRequest = {
 	query: string;
@@ -73,31 +74,13 @@ export default async function handler(
 ) {
 	const body = req.body as CitationSearchRequest;
 
-	const apiUrl = 'https://api.openai.com/v1/embeddings';
-
 	const requestData = {
 		input: body.query,
 		model: 'text-embedding-ada-002',
 	};
 
-	const headers = {
-		'Content-Type': 'application/json',
-		Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-	};
-
 	try {
-		const response = await fetch(apiUrl, {
-			method: 'POST',
-			headers: headers,
-			body: JSON.stringify(requestData),
-		});
-
-		if (!response.ok) {
-			throw new Error(`HTTP error! Status: ${response.status}`);
-		}
-
-		const { data } = await response.json();
-		const embedding = data[0]?.embedding || [];
+		const embedding = await createEmbedding(requestData);
 
 		const pgClient = getDbInstance();
 

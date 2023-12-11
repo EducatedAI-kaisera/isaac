@@ -1,12 +1,7 @@
 import { getDbInstance } from '@utils/pgClient';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Configuration, OpenAIApi } from 'openai';
 import { getServiceSupabase } from '../../utils/supabase';
-
-const configuration = new Configuration({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+import { createEmbedding } from '@utils/create_embedding';
 
 function toSql(value) {
 	if (!Array.isArray(value)) {
@@ -43,8 +38,7 @@ export default async function handler(
 			// Handle the error
 		} else {
 			const projectReferencesIds = projectReferences.map(item => item.id);
-			const completion = await openai.createEmbedding(input);
-			const embedding = completion.data.data[0].embedding;
+			const embedding = await createEmbedding(input);
 			const documents = await db.query(
 				`
 				SELECT *

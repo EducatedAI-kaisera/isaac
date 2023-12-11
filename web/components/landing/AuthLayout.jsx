@@ -23,7 +23,7 @@ function BackgroundIllustration(props) {
 
 export function AuthLayout({ title, subtitle, children }) {
 	return (
-		<main className="flex min-h-full h-screen overflow-hidden pt-16 sm:py-28 relative bg-gray-50">
+		<main className="flex pt-16 sm:py-28 bg-gray-50 items-center justify-center">
 			<div className="mx-auto flex items-center w-full max-w-2xl min-w-2xl flex-col px-4 sm:px-6">
 				<Link href="/" aria-label="Home">
 					<Logo className="h-10 max-w-min" />

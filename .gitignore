@@ -1,6 +1,10 @@
 # General global ignores (applicable to all subdirectories)
 *.log
-*.env
+.env
+.env.production
+.env.development
+.env.test
+
 .DS_Store
 
 # Node.js dependencies for 'web' subdirectory

@@ -38,8 +38,10 @@ const LiteratureSearchInput = ({ onSubmit }: Props) => {
 					<Input
 						id="literature-search-input"
 						className="bg-white dark:bg-inherit"
-						placeholder="Explore the scientific literature..."
+						placeholder="Search more than 200 million scientific papers"
 						{...register('keyword', { required: true, minLength: 3 })}
+						spellCheck={false}
+						autoComplete="off"
 					/>
 					<div className="absolute right-2 flex">
 						<button type="submit">
@@ -50,7 +52,7 @@ const LiteratureSearchInput = ({ onSubmit }: Props) => {
 
 				<div className="">
 					{errors.keyword && (
-						<p className="text-sm text-red-500 mb-1">
+						<p className="text-sm text-destructive mb-1">
 							*Please enter at least 3 characters
 						</p>
 					)}
@@ -75,7 +77,6 @@ const LiteratureSearchInput = ({ onSubmit }: Props) => {
 								max={currentYear}
 								step={1}
 								defaultValue={[getValues('startYear'), getValues('endYear')]}
-								// value={[getValues('startYear'), getValues('endYear')]}
 								onValueChange={value => {
 									setValue('startYear', value[0]);
 									setValue('endYear', value[1]);

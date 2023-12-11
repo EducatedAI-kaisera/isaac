@@ -22,74 +22,65 @@ import { commandKey } from '@lexical/utils/meta';
 export const LinePlaceholderPlugin = () => {
 	const [editor] = useLexicalComposerContext();
 
-	const updateCursorPosition = useCallback((): boolean => {
-		const selection = $getSelection();
-
-		if (selection && $isRangeSelection(selection)) {
-			const rangeSelection = selection as RangeSelection;
-			const node = getSelectedNode(rangeSelection);
-
-			if (node) {
-				const isParagraph = $isParagraphNode(node) || $isTextNode(node);
-
-				if (isParagraph) {
-					displayPlaceholder(node);
-				}
-			}
-		}
-
-		return false;
-	}, [editor]);
-
-	// Helper function to display placeholder
-	const displayPlaceholder = (node: ElementNode | TextNode) => {
+	const displayPlaceholder = useCallback((node: ElementNode | TextNode) => {
 		const text = node.getTextContent();
 		const element = editor.getElementByKey(node.getKey());
-		const placeholder = document.querySelector(
-			'.editor-placeholder',
-		) as HTMLElement;
+		const placeholder = document.querySelector('.editor-placeholder') as HTMLElement;
 		const parentNode = node.getParent();
 		const parentIsRoot = $isRootNode(parentNode);
-		// inspecting image
 		let childHasImageNode = false;
+
 		if ($isElementNode(node)) {
-			const childNodes = node?.getChildren() || [];
-			childHasImageNode = !!childNodes.find(node => $isImageNode(node));
+			childHasImageNode = node.getChildren()?.some(node => $isImageNode(node)) || false;
 		}
+
 		if (!text && parentIsRoot && !childHasImageNode) {
 			positionPlaceholder(placeholder, element);
 		} else {
 			hidePlaceholder(placeholder);
 		}
-	};
+	}, [editor]);
 
-	// Helper function to position the placeholder
-	const positionPlaceholder = (placeholder, element) => {
-		const rect = element.getBoundingClientRect();
-		const parentRect = placeholder.parentElement.getBoundingClientRect();
-		const top = rect.y - parentRect.y;
-		const left = rect.x - parentRect.x;
+	const positionPlaceholder = useCallback((placeholder, element) => {
+		const { y: rectY, x: rectX } = element.getBoundingClientRect();
+		const { y: parentRectY, x: parentRectX } = placeholder.parentElement.getBoundingClientRect();
 
-		placeholder.style.top = `${top}px`;
-		placeholder.style.left = `${left}px`;
-		placeholder.style.opacity = '1';
-	};
+		Object.assign(placeholder.style, {
+			top: `${rectY - parentRectY}px`,
+			left: `${rectX - parentRectX}px`,
+			opacity: '1',
+		});
+	}, []);
 
-	// Helper function to hide the placeholder
-	const hidePlaceholder = placeholder => {
-		placeholder.style.top = '-10000px';
-		placeholder.style.left = '-10000px';
-		placeholder.style.opacity = '0';
-	};
+	const hidePlaceholder = useCallback(placeholder => {
+		Object.assign(placeholder.style, {
+			top: '-10000px',
+			left: '-10000px',
+			opacity: '0',
+		});
+	}, []);
 
-	// Change current editor content
+	const updateCursorPosition = useCallback(() => {
+		const selection = $getSelection();
+
+		if (selection && $isRangeSelection(selection)) {
+			const node = getSelectedNode(selection as RangeSelection);
+
+			if (node && ($isParagraphNode(node) || $isTextNode(node))) {
+				displayPlaceholder(node);
+			}
+		}
+
+		return false;
+	}, [displayPlaceholder]);
+
 	useEffect(() => {
 		return editor.registerCommand(
 			SELECTION_CHANGE_COMMAND,
 			updateCursorPosition,
 			COMMAND_PRIORITY_LOW,
 		);
-	}, [editor]);
+	}, [editor, updateCursorPosition]);
 
 	return (
 		<div className="editor-placeholder">
@@ -97,3 +88,4 @@ export const LinePlaceholderPlugin = () => {
 		</div>
 	);
 };
+
