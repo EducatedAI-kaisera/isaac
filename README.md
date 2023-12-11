@@ -29,7 +29,12 @@ You've stumbled upon the most exciting thing since sliced bread in the world of 
 
 We're on a mission to make Isaac the go-to tool for researchers, scientists, and knowledge workers - basically anyone who loves to blend coffee with groundbreaking ideas.
 
-## Installation
+## Prerequisites
+
+- Python 3.x
+- Supabase Account
+
+## Installation Steps
 
 1. Fork the repo from [here](https://github.com/aietal/isaac/fork)
 
@@ -39,26 +44,38 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 git clone https://github.com/aietal/isaac.git
 ```
 
-### Setting up Docker image
+### Setting up the API
 
-1. Install [Docker Engine](https://docs.docker.com/engine/install/)
-
-2. Go to api directory
+**Step 1: Go to api directory**
 
 ```bash
 cd api
 ```
 
-3. Build docker image
+**Step 2: Create and activate Python virtual environment**
 
+For Mac/Linux:
 ```bash
-docker build -t isaac-api .
+python3 -m venv env
+source env/bin/activate
 ```
 
-4. Run docker image
+For Windows:
+```bash
+py -m venv env
+.\env\Scripts\activate
+```
+
+**Step 3: Install dependencies**
 
 ```bash
-docker run -p 8000:8000 isaac-api
+pip3 install --no-cache-dir -r requirements.txt "unstructured[all-docs]==0.10.10" "psycopg2-binary"
+```
+
+**Step 4: Run api**
+
+```bash
+OPENAI_API_KEY=sk-... python3 -m uvicorn app.main:app --host 0.0.0.0 --port 5001 --reload
 ```
 
 ### Setting up the web app
@@ -67,7 +84,7 @@ docker run -p 8000:8000 isaac-api
 
 **Step 1: Set Up Your Supabase Account**
 
-To use Isaac, you first need a Supabase account. If you don't have one, sign up at Supabase. After signing up, create a new project in your Supabase account.
+To use Isaac, you first need a Supabase account. If you don't have one, sign up at [Supabase](https://supabase.com/). After signing up, create a new project in your Supabase account.
 
 **Step 2: Create Database Schema**
 
