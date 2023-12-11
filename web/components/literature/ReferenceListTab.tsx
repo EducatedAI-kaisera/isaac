@@ -93,7 +93,7 @@ const ReferenceListTab = ({ active }: Props) => {
 									const title =
 										item._source === 'reference'
 											? (item as ReferenceLiterature).title
-											: (item as UploadedFile).custom_citation.title ||
+											: (item as UploadedFile).custom_citation?.title ||
 											  (item as UploadedFile).file_name;
 
 									const authors =
@@ -108,7 +108,7 @@ const ReferenceListTab = ({ active }: Props) => {
 									const year =
 										item._source === 'reference'
 											? (item as ReferenceLiterature).year
-											: (item as UploadedFile).custom_citation.year;
+											: (item as UploadedFile).custom_citation?.year;
 
 									const hasPdf =
 										item._source === 'reference'
@@ -125,7 +125,7 @@ const ReferenceListTab = ({ active }: Props) => {
 											: {
 													source: (item as UploadedFile).id,
 													label:
-														(item as UploadedFile).custom_citation.title ||
+														(item as UploadedFile).custom_citation?.title ||
 														(item as UploadedFile).file_name,
 													type: TabType.UserUpload,
 											  };
