@@ -149,7 +149,22 @@ const AIFunctionsDropdown = () => {
 
 						<DropdownMenuItem
 							onClick={() =>
-								manipulateText(selectedText, ManipulateTextMethods.EXPLAIN)
+								manipulateText(
+									selectedText,
+									ManipulateTextMethods.TEXT_TO_BULLET,
+								)
+							}
+							aria-label="Bullets to Text"
+						>
+							<List size={16} className="mr-2 h-4 w-4" />
+							Text to Bullet
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() =>
+								manipulateText(
+									selectedText,
+									ManipulateTextMethods.BULLET_TO_TEXT,
+								)
 							}
 							aria-label="Bullets to Text"
 						>
