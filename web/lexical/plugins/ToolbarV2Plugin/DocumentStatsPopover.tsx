@@ -12,37 +12,39 @@ type Props = {
 	children: ReactNode;
 };
 
-const DocumentInfoPopover = ({ children }: Props) => {
-	const [wordCount, setWordCount] = useState(0);
-	const [characterCount, setCharacterCount] = useState(0);
-	const [citationCount, setCitationCount] = useState(0);
+const DocumentStatsPopover = ({ children }: Props) => {
+	const [stats, setStats] = useState({ wordCount: 0, characterCount: 0, citationCount: 0 });
+	const [open, setOpen] = useState(false);
 	const [editor] = useLexicalComposerContext();
+	console.log("ballio", open)
 
 	useEffect(() => {
 		return editor.registerUpdateListener(({ editorState }) => {
 			editorState.read(() => {
 				const text = $getRoot().getTextContent();
-				setCharacterCount(text.length);
-				setWordCount(text.split(' ').length);
 				const citationNodes = $nodesOfType(CitationNode);
-				setCitationCount(citationNodes.length);
+				setStats({
+					wordCount: text.split(' ').length,
+					characterCount: text.length,
+					citationCount: citationNodes.length,
+				});
 			});
 		});
 	}, []);
 
 	return (
-		<Popover>
+		<Popover onOpenChange={() => setOpen(!open)}>
 			<PopoverTrigger>{children}</PopoverTrigger>
 			<PopoverContent side="left" className="text-sm w-[200px]">
-				<p className="font-bold mb-2">Document Info</p>
+				<p className="font-bold mb-2">Document Statistics</p>
 				<div className="flex flex-col gap-1">
-					<p className="">Word Count: {wordCount}</p>
-					<p>Character Count: {characterCount}</p>
-					<p>Citations: {citationCount}</p>
+					<p className="">Word Count: {stats.wordCount}</p>
+					<p>Character Count: {stats.characterCount}</p>
+					<p>Citations: {stats.citationCount}</p>
 				</div>
 			</PopoverContent>
 		</Popover>
 	);
 };
 
-export default DocumentInfoPopover;
+export default DocumentStatsPopover;

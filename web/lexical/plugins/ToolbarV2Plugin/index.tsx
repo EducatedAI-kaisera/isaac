@@ -56,7 +56,7 @@ import {
 	useMemo,
 	useState,
 } from 'react';
-import DocumentInfoPopover from './DocumentInfoPopover';
+import DocumentStatsPopover from './DocumentStatsPopover';
 
 type BlockTypeData = {
 	name: string;
@@ -121,9 +121,9 @@ export default function ToolbarV2Plugin() {
 			<BlockTypeButtons />
 			<FormatButtons />
 			<InsertButtons />
-			<DocumentInfoPopover>
-				<ToolbarButton label="Info" Icon={Info} />
-			</DocumentInfoPopover>
+			<DocumentStatsPopover>
+				<ToolbarButton label="Document statistics" Icon={Info} />
+			</DocumentStatsPopover>
 		</div>
 	);
 }
