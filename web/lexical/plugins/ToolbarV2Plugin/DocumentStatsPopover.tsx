@@ -14,9 +14,7 @@ type Props = {
 
 const DocumentStatsPopover = ({ children }: Props) => {
 	const [stats, setStats] = useState({ wordCount: 0, characterCount: 0, citationCount: 0 });
-	const [open, setOpen] = useState(false);
 	const [editor] = useLexicalComposerContext();
-	console.log("ballio", open)
 
 	useEffect(() => {
 		return editor.registerUpdateListener(({ editorState }) => {
@@ -33,7 +31,7 @@ const DocumentStatsPopover = ({ children }: Props) => {
 	}, []);
 
 	return (
-		<Popover onOpenChange={() => setOpen(!open)}>
+		<Popover>
 			<PopoverTrigger>{children}</PopoverTrigger>
 			<PopoverContent side="left" className="text-sm w-[200px]">
 				<p className="font-bold mb-2">Document Statistics</p>
