@@ -38,7 +38,8 @@ const OutlinesGeneratorPlugin = () => {
 			let isFirstWord = false;
 
 			source.addEventListener('message', function (e) {
-				const eventMessage = atob(e.data)
+				const binaryString = atob(e.data);
+				const eventMessage = decodeURIComponent(escape(binaryString))
 				if (eventMessage === '[DONE]') {
 					editor.update(() => {
 						const selection = $getSelection();

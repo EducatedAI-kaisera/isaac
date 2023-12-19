@@ -61,7 +61,8 @@ const ResearchQuestionPlugin = () => {
 		sseSourceRef.current = source;
 
 		source.addEventListener('message', e => {
-			const eventMessage = atob(e.data)
+			const binaryString = atob(e.data);
+				const eventMessage = decodeURIComponent(escape(binaryString))
 			if (eventMessage === '[DONE]') {
 				source.close();
 			} else {

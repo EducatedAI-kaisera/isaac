@@ -46,7 +46,8 @@ const useStreamChatMessage = () => {
 
 			// Start Streaming
 			source.addEventListener('message', async function (e) {
-				const eventMessage = atob(e.data)
+				const binaryString = atob(e.data);
+				const eventMessage = decodeURIComponent(escape(binaryString))
 				if (eventMessage === '[DONE]') {
 					source.close();
 					onComplete(cumulativeChunk);
