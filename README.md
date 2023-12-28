@@ -55,12 +55,14 @@ cd api
 **Step 2: Create and activate Python virtual environment**
 
 For Mac/Linux:
+
 ```bash
 python3 -m venv env
 source env/bin/activate
 ```
 
 For Windows:
+
 ```bash
 py -m venv env
 .\env\Scripts\activate
@@ -90,6 +92,7 @@ To use Isaac, you first need a Supabase account. If you don't have one, sign up 
 
 Once your project is set up, you'll need to create a specific database schema for Isaac to work correctly. To do this, go to the SQL editor in your Supabase project and run the following scripts:
 
+```sql
 create table projects (
   id uuid default uuid_generate_v4() primary key,
   created_at timestamp default now(),
@@ -228,9 +231,9 @@ create table user_integrations (
   zotero jsonb,
   mendeley jsonb
 );
+```
 
 #### Runing the web app
-
 
 1. Go to web directory
 
@@ -238,7 +241,7 @@ create table user_integrations (
 cd web
 ```
 
-2. Create .env file 
+2. Create .env file
 
 Please refer to the .env.example in the /web directory.
 
@@ -269,5 +272,3 @@ Join our [Discord Community](https://discord.gg/sJBSV4Fh5k), if you're intereste
 Isaac is open-source under GNU Affero General Public License Version 3 [(AGPLv3)](https://github.com/aietal/isaac/blob/main/LICENSE)
 
 ---
-
-
