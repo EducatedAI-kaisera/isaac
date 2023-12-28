@@ -90,6 +90,7 @@ To use Isaac, you first need a Supabase account. If you don't have one, sign up 
 
 Once your project is set up, you'll need to create a specific database schema for Isaac to work correctly. To do this, go to the SQL editor in your Supabase project and run the following scripts:
 
+```sql
 create table projects (
   id uuid default uuid_generate_v4() primary key,
   created_at timestamp default now(),
@@ -228,6 +229,7 @@ create table user_integrations (
   zotero jsonb,
   mendeley jsonb
 );
+```
 
 #### Runing the web app
 
