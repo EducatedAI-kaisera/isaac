@@ -1,8 +1,6 @@
-import BottomLeftFab from '@components/BottomLeftFab';
 import AppMenuBar from '@components/editor/AppMenuBar';
-import EditorBottomRightFab from '@components/editor/EditorBottomRightFab';
 import { EquationModal } from '@components/editor/EquationModal';
-import { SideBarWidth, useUIStore } from '@context/ui.store';
+import { useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
 import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import useAuthRedirect from '@hooks/useAuthRedirect';
@@ -166,7 +164,7 @@ const EditorLayout = ({ children }: Props) => {
 											)}
 										>
 											{isAboveMd && hasProjects && <EditorTabs />}
-											<EditorBottomRightFab />
+
 											<div
 												id="scrollable-editor-container"
 												onScroll={e => {
