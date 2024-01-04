@@ -4,7 +4,6 @@ import EditorEmptyState from '@components/editor/EditorEmptyState';
 import AppLayout from '@components/editor/EditorLayout';
 import LiteratureSearchTab from '@components/literature/LiteratureSearchTab';
 import ReferenceListTab from '@components/literature/ReferenceListTab';
-import { Grammarly } from '@grammarly/editor-sdk-react';
 import useHandleToastQuery from '@hooks/misc/useHandleToastQuery';
 import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
 import dynamic from 'next/dynamic';
@@ -38,7 +37,6 @@ const EditorPage = () => {
       `}</style>
 
 			<AppLayout>
-				<Grammarly clientId="client_3nkkHEbfsZ3j6Gh7QGNRts">
 					{!currentProjectTabs?.length && <EditorEmptyState />}
 					{currentProjectTabs?.map((tab, idx) => {
 						if (tab.type === 'Document') {
@@ -93,7 +91,6 @@ const EditorPage = () => {
 							);
 						}
 					})}
-				</Grammarly>
 			</AppLayout>
 		</>
 	);
