@@ -55,12 +55,14 @@ cd api
 **Step 2: Create and activate Python virtual environment**
 
 For Mac/Linux:
+
 ```bash
 python3 -m venv env
 source env/bin/activate
 ```
 
 For Windows:
+
 ```bash
 py -m venv env
 .\env\Scripts\activate
@@ -233,14 +235,13 @@ create table user_integrations (
 
 #### Runing the web app
 
-
 1. Go to web directory
 
 ```bash
 cd web
 ```
 
-2. Create .env file 
+2. Create .env file
 
 Please refer to the .env.example in the /web directory.
 
@@ -271,5 +272,3 @@ Join our [Discord Community](https://discord.gg/sJBSV4Fh5k), if you're intereste
 Isaac is open-source under GNU Affero General Public License Version 3 [(AGPLv3)](https://github.com/aietal/isaac/blob/main/LICENSE)
 
 ---
-
-
