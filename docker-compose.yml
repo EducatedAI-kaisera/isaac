@@ -8,6 +8,8 @@ services:
     env_file:
       - ./web/.env.example
     container_name: isaac-web
+    networks:
+      - default
     ports:
       - 3000:3000
 
@@ -18,5 +20,11 @@ services:
       args:
         - OPENAI_API_KEY= # your openai api key
     container_name: isaac-api
+    networks:
+      - default
     ports:
       - 5001:5001
+
+networks:
+  default:
+    name: isaac-network
