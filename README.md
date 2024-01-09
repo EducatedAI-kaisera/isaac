@@ -41,10 +41,10 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 2. Setup Supabase locally and migrate database schema by running the following command
 
 ```bash
-supabase start
+npx supabase start
 ```
 
-3. Add the following environment variables to `api/app/.env.example`, `web/.env.example` and `web/Dockerfile`. The values can be found in the output of `supabase start` command.
+3. Add the following environment variables to `api/app/.env.example`, `web/.env.example` and `web/Dockerfile`. The values can be found in the output of `npx supabase start` command.
 
 | Variable Name            | Value              |
 | ------------------------ | ------------------ |
@@ -52,7 +52,7 @@ supabase start
 | NEXT_PUBLIC_SUPABASE_KEY | `anon key`         |
 | SUPABASE_SERVICE_KEY     | `service role key` |
 
-4. `supabase status` can be used to check the status of the local Supabase instance.
+4. `npx supabase status` can be used to check the status of the local Supabase instance.
 
 5. Fork the repo from [here](https://github.com/aietal/isaac/fork)
 
