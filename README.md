@@ -34,7 +34,27 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 - Python 3.x
 - Supabase Account
 
-## Installation Steps
+## Installation Steps (Docker)
+
+1. Fork the repo from [here](https://github.com/aietal/isaac/fork)
+
+2. Clone the forked repo to your local machine
+
+```bash
+git clone https://github.com/aietal/isaac.git
+```
+
+3. Add required environment variables in `web/.env.example`
+
+4. Add required environment variables to `web/Dockerfile`
+
+5. Start the `web` and `api` containers with compose remove `-d` flag to see logs
+
+```bash
+   docker-compose up -d
+```
+
+## Installation Steps (Manual)
 
 1. Fork the repo from [here](https://github.com/aietal/isaac/fork)
 
