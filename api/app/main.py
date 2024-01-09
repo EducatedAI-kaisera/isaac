@@ -21,6 +21,7 @@ from litellm import completion, embedding
 
 # Environment variables
 EMBEDDINGS_DATABASE_HOST = os.environ.get("EMBEDDINGS_DATABASE_HOST", "default_host")
+EMBEDDINGS_DATABASE_PORT = os.environ.get("EMBEDDINGS_DATABASE_PORT", "default_port")
 EMBEDDINGS_DATABASE_NAME = os.environ.get("EMBEDDINGS_DATABASE_NAME", "default_database")
 EMBEDDINGS_DATABASE_USER = os.environ.get("EMBEDDINGS_DATABASE_USER", "default_user")
 EMBEDDINGS_DATABASE_PASSWORD = os.environ.get("EMBEDDINGS_DATABASE_PASSWORD", "default_password")
@@ -267,10 +268,11 @@ async def create_item(req: UploadDocumentRequest):
         print(f"Embeddings obtained: {len(embeddings)}")
 
         conn = psycopg2.connect(
-            host=EMBEDDINGS_DATABASE_HOST,
-            database=EMBEDDINGS_DATABASE_NAME,
+            dbname=EMBEDDINGS_DATABASE_NAME,
             user=EMBEDDINGS_DATABASE_USER,
             password=EMBEDDINGS_DATABASE_PASSWORD
+            host=EMBEDDINGS_DATABASE_HOST,
+            port=EMBEDDINGS_DATABASE_PORT
         )
         cursor = conn.cursor()
 

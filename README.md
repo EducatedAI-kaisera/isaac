@@ -36,19 +36,35 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 
 ## Installation Steps (Docker)
 
-1. Fork the repo from [here](https://github.com/aietal/isaac/fork)
+1. Install Supabase CLI from [here](https://supabase.com/docs/guides/cli/getting-started)
 
-2. Clone the forked repo to your local machine
+2. Setup Supabase locally and migrate database schema by running the following command
+
+```bash
+supabase start
+```
+
+3. Add the following environment variables to `api/app/.env.example`, `web/.env.example` and `web/Dockerfile`. The values can be found in the output of `supabase start` command.
+
+| Variable Name            | Value              |
+| ------------------------ | ------------------ |
+| SUPABASE_KEY             | `anon key`         |
+| NEXT_PUBLIC_SUPABASE_KEY | `anon key`         |
+| SUPABASE_SERVICE_KEY     | `service role key` |
+
+4. `supabase status` can be used to check the status of the local Supabase instance.
+
+5. Fork the repo from [here](https://github.com/aietal/isaac/fork)
+
+6. Clone the forked repo to your local machine
 
 ```bash
 git clone https://github.com/aietal/isaac.git
 ```
 
-3. Add required environment variables in `web/.env.example`
+7. Add the other required environment variables to `api/app/.env.example`, `web/.env.example` and `web/Dockerfile`
 
-4. Add required environment variables to `web/Dockerfile`
-
-5. Start the `web` and `api` containers with compose remove `-d` flag to see logs
+8. Start the `isaac-web` and `isaac-api` containers with compose and remove `-d` flag to see logs if needed
 
 ```bash
    docker-compose up -d
@@ -209,6 +225,10 @@ create table comments (
   created_at timestamp default now() not null,
   updated_at timestamp default now()
 );
+
+CREATE TYPE upload_processing_status AS ENUM ('pending', 'processing', 'completed');
+
+create extension vector with schema extensions;
 
 create table uploads (
   id uuid default uuid_generate_v4() primary key,
