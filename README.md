@@ -34,9 +34,9 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 - Python 3.x
 - Supabase Account
 
-## Installation Steps (Docker)
+## Installation Steps Docker (Recommended)
 
-1. Install Supabase CLI from [here](https://supabase.com/docs/guides/cli/getting-started)
+1. Install the Supabase CLI following the instructions [here](https://supabase.com/docs/guides/cli/getting-started)
 
 2. Setup Supabase locally and migrate database schema by running the following command
 
@@ -44,7 +44,7 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 npx supabase start
 ```
 
-3. Add the following environment variables to `api/app/.env.example`, `web/.env.example` and `web/Dockerfile`. The values can be found in the output of `npx supabase start` command.
+3. Add the following environment variables to `api/.env.example`, `web/.env.example` and `web/Dockerfile`. The values can be found in the output of `npx supabase start` command.
 
 | Variable Name            | Value              |
 | ------------------------ | ------------------ |
@@ -62,7 +62,7 @@ npx supabase start
 git clone https://github.com/aietal/isaac.git
 ```
 
-7. Add the other required environment variables to `api/app/.env.example`, `web/.env.example` and `web/Dockerfile`
+7. Add the other required environment variables to `api/.env.example`, `web/.env.example` and `web/Dockerfile`
 
 8. Start the `isaac-web` and `isaac-api` containers with compose and remove `-d` flag to see logs if needed
 

@@ -20,7 +20,7 @@ services:
       args:
         - OPENAI_API_KEY= # your openai api key
     env_file:
-      - ./api/app/.env.example
+      - ./api/.env.example
     container_name: isaac-api
     networks:
       - default
