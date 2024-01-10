@@ -34,7 +34,42 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 - Python 3.x
 - Supabase Account
 
-## Installation Steps
+## Installation using Docker (Recommended)
+1. Install the Supabase CLI following the instructions [here](https://supabase.com/docs/guides/cli/getting-started)
+
+2. Setup Supabase locally and migrate database schema by running the following command
+
+```bash
+npx supabase start
+```
+
+3. Add the following environment variables to `api/.env.example`, `web/.env.example` and `web/Dockerfile`. The values can be found in the output of `npx supabase start` command.
+
+| Variable Name            | Value              |
+| ------------------------ | ------------------ |
+| SUPABASE_KEY             | `anon key`         |
+| NEXT_PUBLIC_SUPABASE_KEY | `anon key`         |
+| SUPABASE_SERVICE_KEY     | `service role key` |
+
+4. `npx supabase status` can be used to check the status of the local Supabase instance.
+
+5. Fork the repo from [here](https://github.com/aietal/isaac/fork)
+
+6. Clone the forked repo to your local machine
+
+```bash
+git clone https://github.com/aietal/isaac.git
+```
+
+7. Add the other required environment variables to `api/.env.example`, `web/.env.example` and `web/Dockerfile`
+
+8. Start the `isaac-web` and `isaac-api` containers with compose and remove `-d` flag to see logs if needed
+
+```bash
+   docker-compose up -d
+```
+
+## Installation Steps (Manual)
 
 1. Fork the repo from [here](https://github.com/aietal/isaac/fork)
 
@@ -189,6 +224,10 @@ create table comments (
   created_at timestamp default now() not null,
   updated_at timestamp default now()
 );
+
+CREATE TYPE upload_processing_status AS ENUM ('pending', 'processing', 'completed');
+
+create extension vector with schema extensions;
 
 create table uploads (
   id uuid default uuid_generate_v4() primary key,
