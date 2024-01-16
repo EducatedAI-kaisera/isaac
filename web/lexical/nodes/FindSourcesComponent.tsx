@@ -128,6 +128,8 @@ const AISearchSourceComponent = ({
 		s => s.setLiteratureDOIPreview,
 	);
 
+	console.log(literatures)
+
 	return (
 		<motion.div
 			onClick={e => e.stopPropagation()}
@@ -146,9 +148,17 @@ const AISearchSourceComponent = ({
 					<div className="flex flex-col gap-2 pt-3 rounded-md border-none">
 						<div className="flex justify-between">
 							{!isLoading && (
-								<span className="font-semibold text-xs">
-									Suggested sources:
-								</span>
+								<>
+									{!literatures ? (
+										<span className="font-semibold text-xs">
+											Isaac couldn&apos;t find any sources for this text.
+										</span>
+									) : (
+										<span className="font-semibold text-xs">
+											Suggested sources:
+										</span>
+									)}
+								</>
 							)}
 							<button className="" onClick={discard}>
 								<X strokeWidth={1} size={16} />

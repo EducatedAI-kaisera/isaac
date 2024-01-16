@@ -35,9 +35,6 @@ const useFindTextSources = () => {
 		insertAIOutputComponent();
 		setOpen(true);
 
-		// TODO: consider language
-		// const prompt = manipulateTextMap[method]?.promptBuilder(text);
-
 		const response = await fetch('/api/find-sources', {
 			method: 'POST',
 			headers: {

@@ -20,6 +20,7 @@
 		"@dnd-kit/sortable": "^7.0.2",
 		"@dnd-kit/utilities": "^3.2.1",
 		"@headlessui/react": "^1.7.14",
+		"@langchain/openai": "^0.0.12",
 		"@lexical/react": "^0.12.4",
 		"@mantine/hooks": "^5.10.0",
 		"@mozilla/readability": "^0.4.4",
