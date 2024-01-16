@@ -46,7 +46,7 @@ export default async function (req, res) {
 				{
 					method: 'GET',
 					headers: {
-						'x-api-key': process.env.SEMANTIC_SCHOLAR_KEY,
+						'x-api-key': process.env.SEMANTIC_SCHOLAR_API_KEY,
 					},
 				},
 			);
