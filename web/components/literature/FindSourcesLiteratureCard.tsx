@@ -7,6 +7,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from '@components/ui/tooltip';
+import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import { useHover } from '@mantine/hooks';
 import clsx from 'clsx';
 import { capitalize, startCase } from 'lodash';
@@ -43,6 +44,8 @@ const FindSourcesLiteratureCard = ({
 	const { hovered, ref } = useHover();
 
 	const Icon = ReferenceTypeIconsMap[type] || Book;
+	const { isAboveMd, isBelowMd } = useBreakpoint('md');
+	const { isAboveLg } = useBreakpoint('lg');
 
 	return (
 		<div
@@ -55,13 +58,13 @@ const FindSourcesLiteratureCard = ({
 					{source === 'Search' && (
 						<Icon
 							strokeWidth={1.2}
-							className="mt-1 text-neutral-700 dark:text-inherit"
+							className=" text-neutral-700 dark:text-inherit"
 							size={18}
 						/>
 					)}
 				</div>
 				<div>
-					<p className="my-0 font-semibold text-neutral-700 dark:text-inherit text-xs">
+					<p className="my-0 font-semibold text-neutral-700 dark:text-inherit text-xs truncate max-w-lg">
 						{title}
 					</p>
 					<div className="leading-7 break-words text-neutral-700 dark:text-neutral-400 line-clamp-1 text-xs">
@@ -94,10 +97,11 @@ const FindSourcesLiteratureCard = ({
 							e.stopPropagation();
 							onApply();
 						}}
+						className="shrink-0"
 					>
 						{' '}
 						<FileSymlink className="mr-1 h-4 w-4" size={20} strokeWidth={1.2} />
-						Insert citation{' '}
+						{isAboveLg && <span>Insert citation </span>}
 					</Button>
 				)}
 				<Tooltip>
