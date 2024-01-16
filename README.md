@@ -63,7 +63,9 @@ git clone https://github.com/aietal/isaac.git
 
 7. Add the other required environment variables to `api/.env.example`, `web/.env.example` and `web/Dockerfile`
 
-8. Start the `isaac-web` and `isaac-api` containers with compose and remove `-d` flag to see logs if needed
+8. Remove the "_local" suffix from the Dockerfile inside of the `web` directory.
+
+9. Start the `isaac-web` and `isaac-api` containers with compose and remove `-d` flag to see logs if needed
 
 ```bash
    docker-compose up -d
