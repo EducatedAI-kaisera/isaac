@@ -20,8 +20,8 @@ const ToggleButton = classed.button(
 		base: 'text-xs font-medium leading-none flex items-center gap-1 px-2.5 py-1.5 rounded-md w-full whitespace-nowrap',
 		variants: {
 			isActive: {
-				true: 'text-primary-foreground',
-				false: 'text-primary hover:bg-secondary opacity-70',
+				true: 'text-accent-foreground',
+				false: 'text-secondary-foreground hover:bg-secondary opacity-70',
 			},
 		},
 	}),
@@ -79,7 +79,7 @@ export default function AIModelToggle() {
 						</ToggleButton>
 					))}
 					<div
-						className="rounded-md bg-primary absolute transition-all duration-500 ease-out-expo -z-10"
+						className="rounded-md bg-accent absolute transition-all duration-500 ease-out-expo -z-10"
 						style={{
 							height: currentButtonRect.height + 'px',
 							width: currentButtonRect.width + 'px',
