@@ -4,7 +4,6 @@ import type {
   NodeSelection,
   RangeSelection,
 } from 'lexical';
-
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {$isAtNodeEnd} from '@lexical/selection';
 import {mergeRegister} from '@lexical/utils';
@@ -98,27 +97,31 @@ export default function CopilotPlugin(): JSX.Element | null {
       if (searchPromise !== refSearchPromise || newSuggestion === null) {
         return;
       }
-      editor.update(
-        () => {
-          const selection = $getSelection();
-          const [hasMatch, match] = $search(selection);
-          if (
-            !hasMatch ||
-            match !== lastMatch ||
-            !$isRangeSelection(selection)
-          ) {
-            return;
-          }
-          const selectionCopy = selection.clone();
-          const node = $createAutocompleteNode(uuid);
-          autocompleteNodeKey = node.getKey();
-          selection.insertNodes([node]);
-          $setSelection(selectionCopy);
-          lastSuggestion = newSuggestion;
-          setSuggestion(newSuggestion);
-        },
-        {tag: 'history-merge'},
-      );
+      try {
+        editor.update(
+          () => {
+            const selection = $getSelection();
+            const [hasMatch, match] = $search(selection);
+            if (
+              !hasMatch ||
+              match !== lastMatch ||
+              !$isRangeSelection(selection)
+            ) {
+              return;
+            }
+            const selectionCopy = selection.clone();
+            const node = $createAutocompleteNode(uuid);
+            autocompleteNodeKey = node.getKey();
+            selection.insertNodes([node]);
+            $setSelection(selectionCopy);
+            lastSuggestion = newSuggestion;
+            setSuggestion(newSuggestion);
+          },
+          {tag: 'history-merge'},
+        );
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     function handleAutocompleteNodeTransform(node: AutocompleteNode) {
@@ -128,29 +131,33 @@ export default function CopilotPlugin(): JSX.Element | null {
       }
     }
     function handleUpdate() {
-      editor.update(() => {
-        const selection = $getSelection();
-        const [hasMatch, match] = $search(selection);
-        if (!hasMatch) {
+      try {
+        editor.update(() => {
+          const selection = $getSelection();
+          const [hasMatch, match] = $search(selection);
+          if (!hasMatch) {
+            $clearSuggestion();
+            return;
+          }
+          if (match === lastMatch) {
+            return;
+          }
           $clearSuggestion();
-          return;
-        }
-        if (match === lastMatch) {
-          return;
-        }
-        $clearSuggestion();
-        searchPromise = query(match);
-        searchPromise.promise
-          .then((newSuggestion) => {
-            if (searchPromise !== null) {
-              updateAsyncSuggestion(searchPromise, newSuggestion);
-            }
-          })
-          .catch((e) => {
-            console.error(e);
-          });
-        lastMatch = match;
-      });
+          searchPromise = query(match);
+          searchPromise.promise
+            .then((newSuggestion) => {
+              if (searchPromise !== null) {
+                updateAsyncSuggestion(searchPromise, newSuggestion);
+              }
+            })
+            .catch((e) => {
+              console.error(e);
+            });
+          lastMatch = match;
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
     function $handleAutocompleteIntent(): boolean {
       if (lastSuggestion === null || autocompleteNodeKey === null) {
@@ -181,9 +188,13 @@ export default function CopilotPlugin(): JSX.Element | null {
       });
     }
     function unmountSuggestion() {
-      editor.update(() => {
-        $clearSuggestion();
-      });
+      try {
+        editor.update(() => {
+          $clearSuggestion();
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     const rootElem = editor.getRootElement();
@@ -209,7 +220,7 @@ export default function CopilotPlugin(): JSX.Element | null {
         : []),
       unmountSuggestion,
     );
-  }, [editor, query, setSuggestion]);
+  }, [query, setSuggestion]);
 
   return null;
 }
@@ -244,12 +255,17 @@ class AutocompleteServer {
 					},
 					body: JSON.stringify({
 						model: 'gpt-3.5-turbo-instruct',
-						prompt: "Continue the following paragraph:" + searchText,
+						prompt: "Continue the following paragraph. Make sure to use proper punctuation:" + searchText,
 						max_tokens: 12,
 						temperature: 0.3
 					})
 				})
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
 				.then(data => {
 					if (data.choices && data.choices.length > 0) {
 						let result = data.choices[0].text.trim();
