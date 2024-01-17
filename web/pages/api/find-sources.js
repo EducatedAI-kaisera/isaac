@@ -2,14 +2,18 @@
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { Configuration, OpenAIApi } from 'openai';
+import usearch from 'usearch';
 
 const configuration = new Configuration({
 	apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
+
+
 export default async function (req, res) {
 	console.time('Function Execution Time');
+
 
 	try {
 		const completion = await openai.createChatCompletion({

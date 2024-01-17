@@ -28,6 +28,14 @@ const AddReferenceDropdown = ({ displayAsButtons }: Props) => {
 	// const { isOpen: tutorialMode, setCurrentStep } = useTour();
 	const { user } = useUser();
 
+	const showRAGDisabledToast = () => {
+		toast('Document upload is temporarily unavailable due to system upgrades. \n\n  We apologize for the inconvenience and appreciate your patience. ', {
+			icon: 'ℹ️',
+		});
+	}
+
+
+
 	const setShowMendeleyModal = useLiteratureReferenceStore(
 		s => s.setShowMendeleyModal,
 	);
@@ -84,17 +92,19 @@ const AddReferenceDropdown = ({ displayAsButtons }: Props) => {
 					size="xs"
 					disabled={isUploading}
 					className="relative"
+					onClick={showRAGDisabledToast}
 				>
 					<FileUp size={18} strokeWidth={1.2} className="mr-1.5" />
 					Upload
-					<input
+					{/* RAG Disabled */}
+					{/* <input
 						onChange={handleUploadOptionClick}
 						onClick={e => e.stopPropagation()}
 						className="absolute top-0 block w-full opacity-0 cursor-pointer pin-r pin-t"
 						type="file"
 						name="documents[]"
 						accept=".docx,.doc,.odt,.pptx,.xlsx,.csv,.tsv,.eml,.msg,.rtf,.epub,.html,.xml,.pdf,.png,.jpg"
-					/>
+					/> */}
 				</Button>
 				<Button variant="ghost" size="xs" onClick={handleMendeleyImportClick}>
 					<FolderInput size={18} strokeWidth={1.2} className="mr-1.5" />
@@ -122,17 +132,18 @@ const AddReferenceDropdown = ({ displayAsButtons }: Props) => {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent side="bottom" align="start">
-				<DropdownMenuItem className="relative">
+				<DropdownMenuItem className="relative" onClick={showRAGDisabledToast}>
 					<FileUp size={18} strokeWidth={1.6} className="mr-2" />
 					Upload document
-					<input
+					{/* RAG disabled */}
+					{/* <input
 						onChange={handleUploadOptionClick}
 						onClick={e => e.stopPropagation()}
 						className="absolute top-0 block w-full opacity-0 cursor-pointer pin-r pin-t"
 						type="file"
 						name="documents[]"
 						accept=".docx,.doc,.odt,.pptx,.xlsx,.csv,.tsv,.eml,.msg,.rtf,.epub,.html,.xml,.pdf,.png,.jpg"
-					/>
+					/> */}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleMendeleyImportClick}>
 					<FolderInput size={18} strokeWidth={1.6} className="mr-2" />

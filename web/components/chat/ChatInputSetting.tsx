@@ -27,6 +27,7 @@ import clsx from 'clsx';
 import { BookUp, Globe2, Library, RefreshCw, Search } from 'lucide-react';
 import React, { memo } from 'react';
 import { FaStopCircle } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 type Props = {
 	sessionId: string;
@@ -61,6 +62,12 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 	const rightPanelWidth = useUIStore(s => s.rightPanelWidth);
 	const isRegenerateSeen = false; // TODO
 
+	const showRAGDisabledToast = () => {
+		toast('Chatting with your documents is temporarily unavailable due to system upgrades. \n\n  We apologize for the inconvenience and appreciate your patience. ', {
+			icon: 'ℹ️',
+		});
+	}
+
 	return (
 		<div className="flex justify-between pt-2 pb-2 text-xs">
 			<div className="flex  max-w-full gap-2  ">
@@ -77,6 +84,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 								: 'Default'}
 						</InputSettingButton>
 					</DropdownMenuTrigger>
+
 					<DropdownMenuContent
 						side="top"
 						align="start"
@@ -98,7 +106,20 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 								</div>
 							</div>
 						</DropdownMenuItem>
-						<DropdownMenuSub>
+						<DropdownMenuItem
+							onClick={showRAGDisabledToast}
+							className="py-2"
+						>
+						<Library className="h-5 w-5 mr-3.5 ml-1.5 shrink-0" />
+								<div>
+									<div className="font-bold">References</div>
+									<div className="text-xs">
+										All your uploaded papers & documents. Or just a single file.
+									</div>
+								</div>
+						</DropdownMenuItem>
+						{/* RAG disabled*/}
+						{/* <DropdownMenuSub>
 							<DropdownMenuSubTrigger className="py-2.5">
 								<Library className="h-5 w-5 mr-3.5 ml-1.5 shrink-0" />
 								<div>
@@ -191,7 +212,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 									)}
 								</DropdownMenuSubContent>
 							</DropdownMenuPortal>
-						</DropdownMenuSub>
+						</DropdownMenuSub> */}
 						<DropdownMenuItem
 							onClick={() => setChatContext(sessionId, 'realtime')}
 							className="py-2"
