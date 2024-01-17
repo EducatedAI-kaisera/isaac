@@ -7,7 +7,7 @@ import { useTour } from '@reactour/tour';
 import { isDocumentEmpty } from '@utils/misc';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { File, FileText, Folder, FolderOpen, Plus } from 'lucide-react';
+import { File, FileText, Folder, FolderOpen } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useMemo } from 'react';
 
@@ -16,11 +16,6 @@ import EditProjectContextMenu from '@components/core/EditProjectContextMenu';
 import DocumentTableOfContent from '@components/DocumentTableOfContent';
 import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from '@components/ui/tooltip';
 import EditProjectDropdown from './core/EditProjectDropdown';
 
 const folderVariants = {
@@ -205,10 +200,12 @@ const ProjectGroup = () => {
 					</div>
 				))
 			) : (
-				<span className="text-xs text-muted-foreground mb-px h-8 leading-none block p-2  w-full">
-					{' '}
-					Create your first project{' '}
-				</span>
+				<div className="flex flex-col items-center justify-center p-3 text-center">
+					<span className="text-xs text-muted-foreground mb-px h-8 leading-none block p-2  w-full">
+						{' '}
+						Create your first project{' '}
+					</span>
+				</div>
 			)}
 		</ScrollArea>
 	);

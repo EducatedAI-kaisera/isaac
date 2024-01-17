@@ -27,6 +27,7 @@ import clsx from 'clsx';
 import { BookUp, Globe2, Library, RefreshCw, Search } from 'lucide-react';
 import React, { memo } from 'react';
 import { FaStopCircle } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 type Props = {
 	sessionId: string;
@@ -47,8 +48,12 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 	const activeFileReference = useChatSessions(
 		s => s.chatSessions[sessionId]?.activeFileReference,
 	);
-	const { setChatContext, setChatSearchInput, setActiveFileReference } =
-		useChatSessions(s => s.actions);
+	const {
+		setChatContext,
+		setChatSearchInput,
+		setActiveFileReference,
+		resetStateOnError,
+	} = useChatSessions(s => s.actions);
 
 	const { projectId } = useGetEditorRouter();
 	const { data: uploadFiles } = useGetUserUploads(user?.id, projectId);
@@ -57,12 +62,18 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 	const rightPanelWidth = useUIStore(s => s.rightPanelWidth);
 	const isRegenerateSeen = false; // TODO
 
+	const showRAGDisabledToast = () => {
+		toast('Chatting with your documents is temporarily unavailable due to system upgrades. \n\n  We apologize for the inconvenience and appreciate your patience. ', {
+			icon: 'ℹ️',
+		});
+	}
+
 	return (
 		<div className="flex justify-between pt-2 pb-2 text-xs">
 			<div className="flex  max-w-full gap-2  ">
 				<DropdownMenu>
 					<DropdownMenuTrigger>
-						<div className="px-2 py-1 transition-all duration-100 ease-in-out bg-white rounded-md border hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer dark:bg-neutral-950 ">
+						<InputSettingButton>
 							Context:{' '}
 							{chatContext === 'file'
 								? 'PDF'
@@ -71,8 +82,9 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 								: chatContext === 'references'
 								? activeFileReference?.name || 'All Documents'
 								: 'Default'}
-						</div>
+						</InputSettingButton>
 					</DropdownMenuTrigger>
+
 					<DropdownMenuContent
 						side="top"
 						align="start"
@@ -94,7 +106,20 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 								</div>
 							</div>
 						</DropdownMenuItem>
-						<DropdownMenuSub>
+						<DropdownMenuItem
+							onClick={showRAGDisabledToast}
+							className="py-2"
+						>
+						<Library className="h-5 w-5 mr-3.5 ml-1.5 shrink-0" />
+								<div>
+									<div className="font-bold">References</div>
+									<div className="text-xs">
+										All your uploaded papers & documents. Or just a single file.
+									</div>
+								</div>
+						</DropdownMenuItem>
+						{/* RAG disabled*/}
+						{/* <DropdownMenuSub>
 							<DropdownMenuSubTrigger className="py-2.5">
 								<Library className="h-5 w-5 mr-3.5 ml-1.5 shrink-0" />
 								<div>
@@ -187,7 +212,7 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 									)}
 								</DropdownMenuSubContent>
 							</DropdownMenuPortal>
-						</DropdownMenuSub>
+						</DropdownMenuSub> */}
 						<DropdownMenuItem
 							onClick={() => setChatContext(sessionId, 'realtime')}
 							className="py-2"
@@ -205,8 +230,8 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 
 				{/* // TODO: Figure out how to stop generation */}
 				{isHandling && (
-					<InputSettingButton onClick={() => alert('cancel')}>
-						Stop Generation{' '}
+					<InputSettingButton className="inline-flex items-center" onClick={() => resetStateOnError(sessionId)}>
+						<span className="mr-0.5"> Stop generation</span>
 						<FaStopCircle size="10" className="inline-block animate-pulse" />
 					</InputSettingButton>
 				)}
@@ -220,9 +245,9 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 				<>
 					<Popover>
 						<PopoverTrigger asChild>
-							<div className="flex text-xs items-center gap-1 px-2 py-1 transition-all duration-100 ease-in-out bg-white rounded-md border hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer dark:bg-neutral-950">
+							<InputSettingButton>
 								<Search size="10" className="inline-block" /> Search
-							</div>
+							</InputSettingButton>
 						</PopoverTrigger>
 						<PopoverContent
 							side="top"

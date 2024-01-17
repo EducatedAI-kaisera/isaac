@@ -38,7 +38,9 @@ const OutlinesGeneratorPlugin = () => {
 			let isFirstWord = false;
 
 			source.addEventListener('message', function (e) {
-				if (e.data === '[DONE]') {
+				const binaryString = atob(e.data);
+				const eventMessage = decodeURIComponent(escape(binaryString))
+				if (eventMessage === '[DONE]') {
 					editor.update(() => {
 						const selection = $getSelection();
 						const paragraphNode = $createParagraphNode();
@@ -50,10 +52,8 @@ const OutlinesGeneratorPlugin = () => {
 					queryClient.invalidateQueries([QKFreeAIToken]);
 					push(`/editor/${projectId}`);
 				} else {
-					const payload = JSON.parse(e.data);
-
 					// remove two line breaks after another from the text
-					const text = payload.choices[0].delta.content?.replace(
+					const text = eventMessage.replace(
 						/\n\n/g,
 						'',
 					) as string;

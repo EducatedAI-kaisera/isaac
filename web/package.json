@@ -1,6 +1,6 @@
 {
 	"name": "@isaac/web",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
@@ -19,8 +19,8 @@
 		"@dnd-kit/modifiers": "^6.0.1",
 		"@dnd-kit/sortable": "^7.0.2",
 		"@dnd-kit/utilities": "^3.2.1",
-		"@grammarly/editor-sdk-react": "^2.3.8",
 		"@headlessui/react": "^1.7.14",
+		"@langchain/openai": "^0.0.12",
 		"@lexical/react": "^0.12.4",
 		"@mantine/hooks": "^5.10.0",
 		"@mozilla/readability": "^0.4.4",
@@ -54,6 +54,7 @@
 		"@supabase/auth-helpers-nextjs": "^0.8.1",
 		"@supabase/supabase-js": "^1.35.6",
 		"@tailwindcss/forms": "^0.5.2",
+		"@types/sse": "^0.0.0",
 		"allotment": "^1.19.0",
 		"axios": "^0.27.2",
 		"cheerio": "^1.0.0-rc.12",
@@ -77,6 +78,7 @@
 		"micro": "^10.0.1",
 		"mixpanel-browser": "^2.45.0",
 		"next": "^14.0.3",
+		"node-fetch": "^3.3.2",
 		"oauth": "^0.10.0",
 		"openai": "^3.2.1",
 		"pg-promise": "^11.5.0",

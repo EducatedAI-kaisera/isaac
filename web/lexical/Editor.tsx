@@ -1,5 +1,4 @@
 import { useUIStore } from '@context/ui.store';
-import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-react';
 import { useGetDocumentById } from '@hooks/api/useGetDocumentById';
 import useUpdateDocument from '@hooks/api/useUpdateDocument';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
@@ -253,19 +252,15 @@ const EditorLexical = ({ documentId, active }: Props) => {
 									id="editor-content"
 								>
 									<ToolbarV2Plugin />
-									<GrammarlyEditorPlugin
+									<div
 										className={clsx(
 											'grow w-full prose  px-4 md:px-6 pb-28 relative dark:prose-invert',
 											showDocumentComments ? 'max-w-3xl' : 'max-w-5xl',
 										)}
-										config={{
-											documentDomain: 'academic',
-											introText:
-												'Isaac integrates with Grammarly to help you write better.',
-										}}
+
 									>
 										<ContentEditable className="focus:outline-none" />
-									</GrammarlyEditorPlugin>
+									</div>
 									{active && <CommentPlugin documentId={document?.id || ''} />}
 								</div>
 							</div>

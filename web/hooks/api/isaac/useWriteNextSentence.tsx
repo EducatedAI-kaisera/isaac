@@ -121,12 +121,12 @@ const useWriteNextSentence = (editor: LexicalEditor) => {
 			}
 
 			source.addEventListener('message', function (e) {
-				if (e.data === '[DONE]') {
+				const binaryString = atob(e.data);
+				const eventMessage = decodeURIComponent(escape(binaryString))
+				if (eventMessage === '[DONE]') {
 					source.close();
 				} else {
-					const payload = JSON.parse(e.data);
-
-					const text = payload.choices[0].delta.content;
+					const text = eventMessage;
 
 					editor.update(() => {
 						const selection = $getSelection();

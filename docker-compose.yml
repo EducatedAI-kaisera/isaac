@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    env_file:
+      - ./web/.env.example
+    container_name: isaac-web
+    networks:
+      - default
+    ports:
+      - 3000:3000
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      args:
+        - OPENAI_API_KEY= # your openai api key
+    env_file:
+      - ./api/.env.example
+    container_name: isaac-api
+    networks:
+      - default
+    ports:
+      - 5001:5001
+
+networks:
+  default:
+    name: isaac-network

@@ -10,14 +10,14 @@ import {
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import { useDeleteDocument, useRenameDocument } from '@resources/editor-page';
-import { CornerDownRight, Pencil, Trash } from 'lucide-react';
+import useDeleteDocument from '@hooks/api/useDeleteDocument';
+import { useRenameDocument } from '@resources/editor-page';
+import { Pencil, Trash } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
 type Props = {

@@ -1,6 +1,7 @@
 import UserProvider from '@context/user';
 import 'focus-visible';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { QueryClientProvider } from 'react-query';
 import { IntercomProvider } from 'react-use-intercom';
@@ -42,19 +43,24 @@ function MyApp({ Component, pageProps }) {
 	}
 
 	return (
-		<ErrorBoundary>
-			<QueryClientProvider client={queryClient}>
-				{/* //TODO: Remove user provider  */}
-				<UserProvider>
-					<IntercomProvider appId={INTERCOM_APP_ID}>
-						<TooltipProvider delayDuration={400}>
-							<Component {...pageProps} />
-							<Toaster position="top-center" />
-						</TooltipProvider>
-					</IntercomProvider>
-				</UserProvider>
-			</QueryClientProvider>
-		</ErrorBoundary>
+		<>
+			<Head>
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+			</Head>
+			<ErrorBoundary>
+				<QueryClientProvider client={queryClient}>
+					{/* //TODO: Remove user provider  */}
+					<UserProvider>
+						<IntercomProvider appId={INTERCOM_APP_ID}>
+							<TooltipProvider delayDuration={400}>
+								<Component {...pageProps} />
+								<Toaster position="top-center" />
+							</TooltipProvider>
+						</IntercomProvider>
+					</UserProvider>
+				</QueryClientProvider>
+			</ErrorBoundary>
+		</>
 	);
 }
 

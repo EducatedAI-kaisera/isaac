@@ -1,11 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es6",
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"esnext"
-		],
+		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": false,
@@ -20,30 +16,14 @@
 		"jsx": "preserve",
 		"baseUrl": ".",
 		"paths": {
-			"@components/*": [
-				"components/*"
-			],
-			"@pages/*": [
-				"pages/*"
-			],
-			"@utils/*": [
-				"utils/*"
-			],
-			"@context/*": [
-				"context/*"
-			],
-			"@hooks/*": [
-				"hooks/*"
-			],
-			"@lexical/*": [
-				"lexical/*"
-			],
-			"@styles/*": [
-				"styles/*"
-			],
-			"@resources/*": [
-				"resources/*"
-			]
+			"@components/*": ["components/*"],
+			"@pages/*": ["pages/*"],
+			"@utils/*": ["utils/*"],
+			"@context/*": ["context/*"],
+			"@hooks/*": ["hooks/*"],
+			"@lexical/*": ["lexical/*"],
+			"@styles/*": ["styles/*"],
+			"@resources/*": ["resources/*"]
 		},
 		"plugins": [
 			{
@@ -62,7 +42,5 @@
 		"lexical/plugins/InlinePromptPlugin.jsx",
 		".next/types/**/*.ts"
 	],
-	"exclude": [
-		"node_modules"
-	]
+	"exclude": ["node_modules"]
 }

@@ -30,6 +30,7 @@ import clsx from 'clsx';
 import {
 	ArrowDownLeft,
 	Book,
+	Bookmark,
 	BookUp,
 	ChevronRight,
 	FileText,
@@ -38,7 +39,7 @@ import {
 	Search,
 	X,
 } from 'lucide-react';
-import React from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 
 const minimizableTabItem = [TabType.Chat, TabType.LiteratureSearch];
 
@@ -47,26 +48,25 @@ const EditorTabs = () => {
 	const { currentProjectTabs, closeTab, openDocument, handleTabOnSort } =
 		useDocumentTabs();
 	const { currentProjectDocuments } = useGetProjectWithDocuments();
-	const rightPanelWidth = useUIStore(s => s.rightPanelWidth);
 
-	const transformDocumentsToTabs = currentProjectDocuments => {
+	const transformDocumentsToTabs = useCallback((currentProjectDocuments) => {
 		return currentProjectDocuments?.documents.map(document => ({
 			active: false,
-			label: document.title, // Replace with the appropriate property from the document if 'title' is not correct
+			label: document.title,
 			source: document.id,
 			type: 'Document',
 		}));
-	};
+	}, []);
 
-	const filterByType = tabs => {
+	const filterByType = useCallback((tabs) => {
 		return tabs?.filter(
 			tab => tab.type === 'SemanticScholar' || tab.type === 'UserUpload',
 		);
-	};
+	}, []);
 
-	const filteredFileTabs = filterByType(currentProjectTabs);
+	const filteredFileTabs = useMemo(() => filterByType(currentProjectTabs), [filterByType, currentProjectTabs]);
 
-	const allDocuments = transformDocumentsToTabs(currentProjectDocuments);
+	const allDocuments = useMemo(() => transformDocumentsToTabs(currentProjectDocuments), [transformDocumentsToTabs, currentProjectDocuments]);
 
 	const [open, setOpen] = React.useState(false);
 	const [value, setValue] = React.useState('');
@@ -75,8 +75,6 @@ const EditorTabs = () => {
 	const setLiteratureSearch = useLiteratureReferenceStore(
 		s => s.setLiteratureSearch,
 	);
-
-	const maxWidth = activeSidebar ? 310 : 10 + rightPanelWidth;
 
 	return (
 		<div className="flex">
@@ -204,7 +202,7 @@ const EditorTabs = () => {
 	);
 };
 
-export default EditorTabs;
+export default React.memo(EditorTabs);
 
 type TabItemProps = {
 	idx: number;
@@ -217,7 +215,7 @@ type TabItemProps = {
 	activeSidebar?: boolean;
 };
 
-const TabItem = ({
+const TabItem = memo(({
 	idx,
 	type,
 	onCloseClick,
@@ -233,7 +231,7 @@ const TabItem = ({
 		<div
 			ref={ref}
 			className={clsx(
-				'flex items-center w-[150px] h-8 gap-2 cursor-pointer hover:bg-accent px-2 transition-width',
+				'flex items-center w-[150px] h-8 gap-2 cursor-pointer hover:bg-accent px-2 transition-width select-none',
 				active
 					? 'border-t border-r border-t-isaac bg-transparent border-b border-b-transparent'
 					: 'border-b border-r border-t border-t-transparent',
@@ -247,6 +245,7 @@ const TabItem = ({
 				{type === 'Document' && <FileText strokeWidth={1.4} size={18} />}
 				{type === 'LiteratureSearch' && <Search strokeWidth={1.4} size={18} />}
 				{type === 'Chat' && <MessageSquare strokeWidth={1.4} size={18} />}
+				{type === 'SavedReference' && <Bookmark strokeWidth={1.4} size={18} />}
 			</div>
 
 			<Tooltip>
@@ -292,4 +291,4 @@ const TabItem = ({
 			</div>
 		</div>
 	);
-};
+});

@@ -8,8 +8,6 @@ import {
 } from 'types/literatureReference.type';
 import { Project } from 'types/project';
 
-// TODO: Refactor all these to its own hook then remove the file
-
 // types
 type User = {
 	id: string;
@@ -104,12 +102,6 @@ export const updateDocument = async (document: DocumentPayload) => {
 	return data;
 };
 
-const deleteProject = async (projectId: string) => {
-	const { data } = await supabase.from('projects').delete().eq('id', projectId);
-
-	return data;
-};
-
 const renameProject = async ({
 	projectId,
 	newTitle,
@@ -128,37 +120,10 @@ const renameProject = async ({
 const getReference = async (projectId: string) => {
 	const { data } = await supabase
 		.from('references')
-		.select()
+		.select('*')
 		.filter('projectId', 'eq', projectId);
 
 	return data as ReferenceLiterature[];
-};
-
-type ReferencePayload = {
-	title: string;
-	authors: { name: string; authorId: string }[];
-	year: number;
-	doi: string;
-};
-
-const addReference = async ({
-	paper,
-	projectId,
-}: {
-	paper: ReferencePayload;
-	projectId: string;
-}) => {
-	const { data } = await supabase.from('references').insert([
-		{
-			title: paper?.title,
-			authors: paper?.authors,
-			year: paper?.year,
-			doi: paper.doi,
-			projectId,
-		},
-	]);
-
-	return data;
 };
 
 const deleteReference = async id => {
@@ -283,21 +248,6 @@ export const useDeleteDocument = () => {
 	});
 };
 
-export const useDeleteProject = () => {
-	const queryClient = useQueryClient();
-	return useMutation(deleteProject, {
-		mutationKey: 'delete-project',
-		onSuccess: () => {
-			toast.success('Project deleted successfully!');
-			queryClient.invalidateQueries(['get-projects']);
-		},
-		onError: error => {
-			console.log({ error });
-			toast.error('There is something wrong. Please try again.');
-		},
-	});
-};
-
 export const useRenameProject = ({
 	onSuccessCb,
 }: {
@@ -375,26 +325,6 @@ export const useGetUserUploads = (
 		},
 	);
 };
-
-// export const useAddReference = (options?: {
-// 	onSuccess?: () => void;
-// 	onMutate?: () => void;
-// }) => {
-// 	const queryClient = useQueryClient();
-// 	return useMutation(addReference, {
-// 		mutationKey: 'add-reference',
-// 		onMutate: options?.onMutate,
-// 		onSuccess: () => {
-// 			queryClient.invalidateQueries(['get-reference']);
-// 			toast.success('Added to References!');
-// 			options?.onSuccess?.();
-// 		},
-// 		onError: error => {
-// 			console.log({ error });
-// 			toast.error('There is something wrong. Please try again.');
-// 		},
-// 	});
-// };
 
 export const useDeleteReference = () => {
 	const queryClient = useQueryClient();

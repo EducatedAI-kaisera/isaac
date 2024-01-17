@@ -1,4 +1,3 @@
-import RetroGrid from '@components/ui/retro-grid';
 import Ripple from '@components/ui/ripple';
 import { useUser } from '@context/user';
 import clsx from 'clsx';
@@ -25,17 +24,17 @@ export function Hero() {
 		<div className="overflow-hidden py-4 md:py-40	 lg:pb-32 xl:pb-36">
 			{/* <RetroGrid /> */}
 			<Container>
-				<Ripple/>
+				<Ripple />
 
 				<div className="flex flex-col items-center justify-center">
 					<div className="text-center max-w-2xl">
 						<h1 className="text-5xl font-bold tracking-tight text-gray-900">
-							Research, write, edit. <br />
+							Research, edit, write. <br />
 							With AI at your side.
 						</h1>
 
 						<p className="mt-4 text-2xl text-gray-600">
-							The AI-powered workspace for <br className="sm:hidden" />
+							The AI-native workspace for <br className="sm:hidden" />
 							<TypedText />
 						</p>
 
@@ -59,7 +58,7 @@ export function Hero() {
 
 					<div className="mt-8 md:mt-20 text-center">
 						<p className="text-sm mt-2 font-semibold text-gray-900">
-							Join more than +23,735 researchers & students
+							Join more than +25,179 researchers & students
 						</p>
 						<ul
 							role="list"

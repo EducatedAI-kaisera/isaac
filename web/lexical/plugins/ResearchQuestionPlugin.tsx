@@ -61,11 +61,12 @@ const ResearchQuestionPlugin = () => {
 		sseSourceRef.current = source;
 
 		source.addEventListener('message', e => {
-			if (e.data === '[DONE]') {
+			const binaryString = atob(e.data);
+				const eventMessage = decodeURIComponent(escape(binaryString))
+			if (eventMessage === '[DONE]') {
 				source.close();
 			} else {
-				const payload = JSON.parse(e.data);
-				setAnswer(prev => prev + payload.choices[0].delta.content);
+				setAnswer(prev => prev + eventMessage);
 				setShowModal(true);
 			}
 		});

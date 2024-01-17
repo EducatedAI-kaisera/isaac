@@ -15,5 +15,3 @@ RUN pip install --no-cache-dir -r requirements.txt "unstructured[all-docs]==0.10
 
 # Copy project
 COPY . .
-
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
