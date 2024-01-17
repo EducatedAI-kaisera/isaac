@@ -92,7 +92,7 @@ function AutocompleteComponent(): JSX.Element {
   // TODO Move to theme
   return (
     <span className="text-isaac/50" spellCheck="false">
-     {suggestion} {isMobile ? '(SWIPE \u2B95)' : '⇥'}
+     {suggestion} {isMobile ? '(SWIPE \u2B95)' : '[TAB]'}
     </span>
   );
 }
