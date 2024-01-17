@@ -2,7 +2,6 @@
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 import { Configuration, OpenAIApi } from 'openai';
-import usearch from 'usearch';
 
 const configuration = new Configuration({
 	apiKey: process.env.OPENAI_API_KEY,
