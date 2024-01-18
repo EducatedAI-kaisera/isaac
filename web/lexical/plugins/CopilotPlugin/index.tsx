@@ -238,7 +238,7 @@ class AutocompleteServer {
 			// Check if Autocomplete is off in the url params
 			const { autocompleteOff } = useLexicalEditorStore.getState();
 
-			if (autocompleteOff === false) {
+			if (autocompleteOff) {
 				// If Autocomplete is off, do nothing
 				return resolve(null);
 			}
