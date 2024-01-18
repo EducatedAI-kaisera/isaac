@@ -24,6 +24,8 @@ type ProjectStore = {
 	setFloatingInputActive: (payload: FloatingInputProps) => void;
 	setTableOfContents: (tableOfContents: TableOfContent[]) => void;
 	tableOfContents: TableOfContent[];
+	autocompleteOff: boolean;
+	setAutocompleteOff: (autocompleteOff: boolean) => void;
 };
 
 const useLexicalEditorStore = create<ProjectStore>(set => ({
@@ -32,11 +34,13 @@ const useLexicalEditorStore = create<ProjectStore>(set => ({
 	editorFocused: false,
 	floatingInputActive: undefined,
 	tableOfContents: [],
+	autocompleteOff: false,
 	setActiveEditor: editor => set({ activeEditor: editor }),
 	setActiveSelectionText: text => set({ activeSelectionText: text }),
 	setEditorFocused: focus => set({ editorFocused: focus }),
 	setFloatingInputActive: payload => set({ floatingInputActive: payload }),
 	setTableOfContents: tableOfContents => set({ tableOfContents }),
+	setAutocompleteOff: autocompleteOff => set({ autocompleteOff }),
 }));
 
 export default useLexicalEditorStore;
