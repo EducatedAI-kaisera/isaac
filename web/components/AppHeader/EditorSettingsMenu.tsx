@@ -119,8 +119,8 @@ const SettingsMenu = memo(() => {
 				align={isBelowMd ? 'start' : 'center'}
 			>
 				<MenubarItem onClick={toggleAutocompleteParam}>
-					<span>
-					{autocompleteOff === false ? 'Turn on' : 'Turn off'} autocomplete </span> <span className="text-isaac ml-0.5 mb-0.5 text-[11px]"> New </span>
+					<span>{autocompleteOff ? 'Turn on' : 'Turn off'} autocomplete </span>{' '}
+					<span className="text-isaac ml-0.5 mb-0.5 text-[11px]"> New </span>
 				</MenubarItem>
 
 				<MenubarItem onClick={() => setCustomInstructionsModalOpen(true)}>
