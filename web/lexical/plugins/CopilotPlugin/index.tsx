@@ -52,7 +52,7 @@ function $search(
 	}
 	const text = node.getTextContent();
 	const sentences = text.split('.').slice(-3); // get the last three sentences
-	const prompt = sentences.join('. ').trim() + '.';
+	const prompt = sentences.join('. ').trim();
 	return prompt.length > 0 ? [true, prompt] : [false, ''];
 }
 
@@ -139,7 +139,8 @@ export default function CopilotPlugin(): JSX.Element | null {
 						$clearSuggestion();
 						return;
 					}
-					if (match === lastMatch) {
+
+					if (match === lastMatch || match === lastMatch + ' ' || match === lastMatch + ',' || match === lastMatch + '.' || match === lastMatch + ';') {
 						return;
 					}
 					$clearSuggestion();
@@ -159,6 +160,7 @@ export default function CopilotPlugin(): JSX.Element | null {
 				console.error(e);
 			}
 		}
+
 		function $handleAutocompleteIntent(): boolean {
 			if (lastSuggestion === null || autocompleteNodeKey === null) {
 				return false;
