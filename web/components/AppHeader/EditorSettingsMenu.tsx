@@ -29,16 +29,20 @@ import {
 import { useIntercom } from 'react-use-intercom';
 
 import { useUser } from '@context/user';
+import { useRouter } from 'next/router';
 
 import AIModelMenu from '@components/core/AIModelToggle';
 import { Icons } from '@components/landing/icons';
+import useLexicalEditorStore from '@context/lexicalEditor.store';
 import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import { useUpdateEditorLanguage } from '@resources/user';
-import { appHeaderMenuTitle } from '@styles/className';
 import { discordInviteLink, twitterLink } from 'data/externalLinks';
 import mixpanel from 'mixpanel-browser';
-import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+
+const appHeaderMenuTitle =
+	'px-2 !ml-0 text-xs text-accent-foreground w-full md:w-auto gap-0.5 ';
 
 const EditorSettingsMenu = memo(() => {
 	return (
@@ -57,6 +61,8 @@ const SettingsMenu = memo(() => {
 		s => s.setCustomInstructionsModalOpen,
 	);
 	const { isAboveMd, isBelowMd } = useBreakpoint('md');
+	const autocompleteOff = useLexicalEditorStore(s => s.autocompleteOff);
+	const setAutocompleteOff = useLexicalEditorStore(s => s.setAutocompleteOff);
 
 	const { citationStyle, setCitationStyle } = useCitationStyle();
 	const { user } = useUser();
@@ -92,15 +98,31 @@ const SettingsMenu = memo(() => {
 		toggleDocumentComment();
 	}, [toggleDocumentComment]);
 
+	function toggleAutocompleteParam() {
+		setAutocompleteOff(!autocompleteOff);
+		mixpanel.track('Autocomplete Toggled', {
+			autocompleteOff: !autocompleteOff,
+		});
+		toast.success(
+			`Autocomplete has been ${autocompleteOff ? 'turned on' : 'turned off'}`,
+		);
+	}
+
 	return (
 		<MenubarMenu>
 			<MenubarTrigger className={appHeaderMenuTitle}>
 				<span className="mx-auto">Settings</span>
+				<span className="text-isaac ml-0.5 mb-0.5 text-[11px]"> New </span>
 			</MenubarTrigger>
 			<MenubarContent
 				side={isBelowMd ? 'left' : 'bottom'}
 				align={isBelowMd ? 'start' : 'center'}
 			>
+				<MenubarItem onClick={toggleAutocompleteParam}>
+					<span>{autocompleteOff ? 'Turn on' : 'Turn off'} autocomplete </span>{' '}
+					<span className="text-isaac ml-0.5 mb-0.5 text-[11px]"> New </span>
+				</MenubarItem>
+
 				<MenubarItem onClick={() => setCustomInstructionsModalOpen(true)}>
 					Custom Instructions
 				</MenubarItem>
@@ -185,7 +207,6 @@ const HelpMenu = memo(() => {
 
 	const { boot, show } = useIntercom();
 	const { user } = useUser();
-	const { push } = useRouter();
 
 	function openIntercom() {
 		boot({
