@@ -1,6 +1,5 @@
 import {
 	Menubar,
-	MenubarCheckboxItem,
 	MenubarContent,
 	MenubarItem,
 	MenubarLabel,
@@ -34,14 +33,16 @@ import { useRouter } from 'next/router';
 
 import AIModelMenu from '@components/core/AIModelToggle';
 import { Icons } from '@components/landing/icons';
+import useLexicalEditorStore from '@context/lexicalEditor.store';
 import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import { useUpdateEditorLanguage } from '@resources/user';
-import { appHeaderMenuTitle } from '@styles/className';
 import { discordInviteLink, twitterLink } from 'data/externalLinks';
 import mixpanel from 'mixpanel-browser';
 import { memo, useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import useLexicalEditorStore from '@context/lexicalEditor.store';
+
+const appHeaderMenuTitle =
+	'px-2 !ml-0 text-xs text-accent-foreground w-full md:w-auto gap-0.5 ';
 
 const EditorSettingsMenu = memo(() => {
 	return (
@@ -111,13 +112,15 @@ const SettingsMenu = memo(() => {
 		<MenubarMenu>
 			<MenubarTrigger className={appHeaderMenuTitle}>
 				<span className="mx-auto">Settings</span>
+				<span className="text-isaac ml-0.5 mb-0.5 text-[11px]"> New </span>
 			</MenubarTrigger>
 			<MenubarContent
 				side={isBelowMd ? 'left' : 'bottom'}
 				align={isBelowMd ? 'start' : 'center'}
 			>
 				<MenubarItem onClick={toggleAutocompleteParam}>
-					{autocompleteOff === false ? 'Turn on' : 'Turn off'} autocomplete
+					<span>
+					{autocompleteOff === false ? 'Turn on' : 'Turn off'} autocomplete </span> <span className="text-isaac ml-0.5 mb-0.5 text-[11px]"> New </span>
 				</MenubarItem>
 
 				<MenubarItem onClick={() => setCustomInstructionsModalOpen(true)}>
