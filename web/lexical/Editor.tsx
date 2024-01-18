@@ -33,7 +33,10 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import clsx from 'clsx';
 import { $getRoot, EditorState } from 'lexical';
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
+import { SharedAutocompleteContext } from './context/SharedAutocompleteContext';
+import { AutocompleteNode } from './nodes/AutocompleteNode';
 import { CitationNode } from './nodes/CitationNode';
 import AutoLinkPlugin from './plugins/AutoLinkPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
@@ -44,8 +47,6 @@ import { LinePlaceholderPlugin } from './plugins/LinePlaceholderPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import DefaultTheme from './themes/DefaultTheme';
-import {SharedAutocompleteContext} from './context/SharedAutocompleteContext';
-import { AutocompleteNode } from './nodes/AutocompleteNode';
 
 type Props = {
 	documentId: string;
@@ -233,103 +234,107 @@ const EditorLexical = ({ documentId, active }: Props) => {
 					],
 				}}
 			>
-				   <SharedAutocompleteContext>
-					 <TableContext>
-				<div
-					className={clsx(
-						!active ? 'hidden h-0' : 'h-full',
-						'dark:bg-black bg-white editor-pdf flex flex-col items-center relative w-full  pr-6',
-					)}
-				>
-					<RichTextPlugin
-						ErrorBoundary={LexicalErrorBoundary}
-						placeholder={null}
-						contentEditable={
-							<div className="editor-scroller">
-								<div
-									ref={onRef}
-									className="editor flex justify-between relative"
-									id="editor-content"
-								>
-									<ToolbarV2Plugin />
-									<div
-										className={clsx(
-											'grow w-full prose  px-4 md:px-6 pb-28 relative dark:prose-invert',
-											showDocumentComments ? 'max-w-3xl' : 'max-w-5xl',
-										)}
-
-									>
-										<ContentEditable className="focus:outline-none" />
+				<SharedAutocompleteContext>
+					<TableContext>
+						<div
+							className={clsx(
+								!active ? 'hidden h-0' : 'h-full',
+								'dark:bg-black bg-white editor-pdf flex flex-col items-center relative w-full  pr-6',
+							)}
+						>
+							<RichTextPlugin
+								ErrorBoundary={LexicalErrorBoundary}
+								placeholder={null}
+								contentEditable={
+									<div className="editor-scroller">
+										<div
+											ref={onRef}
+											className="editor flex justify-between relative"
+											id="editor-content"
+										>
+											<ToolbarV2Plugin />
+											<div
+												className={clsx(
+													'grow w-full prose  px-4 md:px-6 pb-28 relative dark:prose-invert',
+													showDocumentComments ? 'max-w-3xl' : 'max-w-5xl',
+												)}
+											>
+												<ContentEditable className="focus:outline-none" />
+											</div>
+											{active && (
+												<CommentPlugin documentId={document?.id || ''} />
+											)}
+										</div>
 									</div>
-									{active && <CommentPlugin documentId={document?.id || ''} />}
-								</div>
-							</div>
-						}
-					/>
+								}
+							/>
 
-					<MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-					<RestoreStatePlugin document={document} saveDocument={saveDocument} />
+							<MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+							<RestoreStatePlugin
+								document={document}
+								saveDocument={saveDocument}
+							/>
 
-					{active && (
-						<>
-							<TabIndentationPlugin />
-							<TabFocusPlugin />
-							{/* <FloatingToolbarPlugin /> */}
-							<FloatingTextInputPlugin />
-							<FloatingToolbarPlugin />
-							<CommandPlugin />
-							<AutoFocusPlugin />
-							<LinePlaceholderPlugin />
-							<FocusStatePlugin />
-							<CodeHighlightPlugin />
-							<HistoryPlugin />
-							<ListPlugin />
-							<LinkPlugin />
-							<AutoLinkPlugin />
-							<EquationsPlugin />
-							<ResearchQuestionPlugin />
-							<ListMaxIndentLevelPlugin maxDepth={7} />
-							<HotkeyPlugin />
-							<DragDropPaste />
-							<CollapsiblePlugin />
-							<ImagesPlugin />
-							<HorizontalRulePlugin />
-							<TableOfContentPlugin />
-							<InlinePromptPlugin />
-							<CitationPlugin />
-							<OutlinesGeneratorPlugin />
-							<CopilotPlugin />
-
+							{active && (
 								<>
-									<TablePlugin />
-									{<TableCellResizer />}
-									{floatingAnchorElem && (
-										<TableCellActionMenuPlugin
-											anchorElem={floatingAnchorElem}
-										/>
-									)}
+									<TabIndentationPlugin />
+									<TabFocusPlugin />
+									{/* <FloatingToolbarPlugin /> */}
+									<FloatingTextInputPlugin />
+									<FloatingToolbarPlugin />
+									<CommandPlugin />
+									<AutoFocusPlugin />
+									<LinePlaceholderPlugin />
+									<FocusStatePlugin />
+									<CodeHighlightPlugin />
+									<HistoryPlugin />
+									<ListPlugin />
+									<LinkPlugin />
+									<AutoLinkPlugin />
+									<EquationsPlugin />
+									<ResearchQuestionPlugin />
+									<ListMaxIndentLevelPlugin maxDepth={7} />
+									<HotkeyPlugin />
+									<DragDropPaste />
+									<CollapsiblePlugin />
+									<ImagesPlugin />
+									<HorizontalRulePlugin />
+									<TableOfContentPlugin />
+									<InlinePromptPlugin />
+									<CitationPlugin />
+									<OutlinesGeneratorPlugin />
+									<CopilotPlugin />
+
+									<>
+										<TablePlugin />
+										{<TableCellResizer />}
+										{floatingAnchorElem && (
+											<TableCellActionMenuPlugin
+												anchorElem={floatingAnchorElem}
+											/>
+										)}
+									</>
+
+									<AutoSavePlugin saveDocument={saveDocument} />
 								</>
+							)}
 
-							<AutoSavePlugin saveDocument={saveDocument} />
-						</>
-					)}
-
-					{floatingAnchorElem && active && (
-						<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-					)}
-					{floatingAnchorElem && !isSmallWidthViewport && (
-						<>
-							<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-							{/*
+							{floatingAnchorElem && active && (
+								<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+							)}
+							{floatingAnchorElem && !isSmallWidthViewport && (
+								<>
+									<DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+									{/*
                 <TableCellActionMenuPlugin
                   anchorElem={floatingAnchorElem}
                   cellMerge={true}
                 /> */}
-						</>
-					)}
-					{/* {process.env.NODE_ENV === 'development' && <DevPlaygroundPlugin />} */}
-				</div>
-				</TableContext>
+								</>
+							)}
+							{/* {process.env.NODE_ENV === 'development' && <DevPlaygroundPlugin />} */}
+						</div>
+					</TableContext>
 				</SharedAutocompleteContext>
 			</LexicalComposer>
 		</>
