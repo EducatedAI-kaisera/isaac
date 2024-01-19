@@ -59,6 +59,7 @@ const CustomInstructionsModal = () => {
 			console.error('Failed to update custom instructions:', error);
 		}
 	};
+
 	return (
 		<DialogContent className="sm:max-w-[725px]">
 			<DialogHeader className="mb-4">
@@ -136,7 +137,12 @@ const CustomInstructionsModal = () => {
 			</div>
 
 			<DialogFooter>
-				<Button variant="outline">Cancel</Button>
+				<Button
+					onClick={() => setCustomInstructionsModalOpen(false)}
+					variant="outline"
+				>
+					Cancel
+				</Button>
 				<Button onClick={submitUpdateCustomInstructions}>Save</Button>
 			</DialogFooter>
 		</DialogContent>
