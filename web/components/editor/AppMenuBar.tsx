@@ -8,7 +8,6 @@ import {
 import { Panel, useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
-import useToggle from '@hooks/useToggle';
 import classed from '@utils/classed';
 import 'allotment/dist/style.css';
 import clsx from 'clsx';
@@ -19,7 +18,6 @@ import {
 	LucideIcon,
 	MessageSquareIcon,
 	SearchIcon,
-	SettingsIcon,
 	StickyNoteIcon,
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -27,10 +25,10 @@ import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 const TabButton = classed.button(
 	cva({
-		base: 'w-10 h-10 flex justify-center items-center text-gray-400 transition-colors hover:text-isaac dark:text-gray-500 hover:dark:text-isaac rounded-md',
+		base: 'w-12 h-12 flex justify-center items-center text-gray-400 transition-colors hover:text-isaac dark:text-gray-500 hover:dark:text-isaac rounded-md',
 		variants: {
 			active: {
-				true: 'bg-accent  dark:bg-gray-900  text-isaac dark:text-isaac',
+				true: 'bg-accent dark:bg-gray-900  text-isaac dark:text-isaac',
 			},
 		},
 	}),
@@ -55,10 +53,6 @@ const CustomInstructionsModal = dynamic(
 		ssr: false,
 	},
 );
-
-const UserMenu = dynamic(() => import('../../components/core/UserMenu'), {
-	ssr: false,
-});
 
 export default function AppMenuBar() {
 	const openPanel = useUIStore(s => s.openPanel);
@@ -91,10 +85,18 @@ export default function AppMenuBar() {
 		[Panel.NOTES]: 'Notes',
 	};
 
+	const panelButtonNames = {
+		[Panel.FILE_EXPLORER]: 'Projects',
+		[Panel.CHAT_SESSIONS]: 'Chat',
+		[Panel.LITERATURE_SEARCH]: 'Search',
+		[Panel.REFERENCES]: 'Refs',
+		[Panel.NOTES]: 'Notes',
+	};
+
 	return (
 		<div
 			className={clsx(
-				'p-3  py-3 flex flex-row md:flex-col gap-2 sm:gap-4 md:gap-2 justify-center md:justify-start bg-white dark:bg-black border-t md:border-t-0',
+				'p-3 py-3 flex flex-row md:flex-col gap-2 sm:gap-4 md:gap-2 justify-center md:justify-start bg-white dark:bg-black border-t md:border-t-0',
 				activePanel && ' md:border-r',
 			)}
 		>
@@ -109,11 +111,14 @@ export default function AppMenuBar() {
 									active={isActive}
 									onClick={() => handlePanelClick(btn.tab)}
 								>
-									{isActive && btn.ActiveIcon ? (
-										<btn.ActiveIcon size={22} strokeWidth={1.4} />
-									) : (
-										<btn.Icon size={22} strokeWidth={1.4} />
-									)}
+									<div className="flex flex-col items-center justify-center gap-0.5">
+										{isActive && btn.ActiveIcon ? (
+											<btn.ActiveIcon size={22} strokeWidth={1.4} />
+										) : (
+											<btn.Icon size={22} strokeWidth={1.4} />
+										)}
+										<span className="text-[9.5px] truncate"> {panelButtonNames[btn.tab]} </span>
+									</div>
 								</TabButton>
 							</TooltipTrigger>
 							<TooltipContent side="right">
