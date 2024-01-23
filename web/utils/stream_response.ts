@@ -1,6 +1,11 @@
 import fetch from 'node-fetch';
 
+export const config = {
+	runtime: "edge",
+};
+
 export async function performCompletion(res, body, inPlace = false) {
+
 	const completion = await fetch(
 		`${process.env.NEXT_PUBLIC_API_HOST}/api/completion`,
 		{
@@ -9,7 +14,6 @@ export async function performCompletion(res, body, inPlace = false) {
 			headers: {
 				'Content-Type': 'application/json',
 				'X-API-KEY': process.env.NEXT_PUBLIC_API_ROUTE_SECRET,
-				'Content-Encoding': 'none',
 			},
 		},
 	);
