@@ -9,6 +9,7 @@ export async function performCompletion(res, body, inPlace = false) {
 			headers: {
 				'Content-Type': 'application/json',
 				'X-API-KEY': process.env.NEXT_PUBLIC_API_ROUTE_SECRET,
+				'Content-Encoding': 'none',
 			},
 		},
 	);
