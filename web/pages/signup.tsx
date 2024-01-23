@@ -57,10 +57,6 @@ export default function Signup() {
 			router.push('/editor');
 		}
 
-		// // Reload the page if url query params include refresh=true
-		// if (router.query.refresh) {
-		// 	setTimeout(router.reload, 500);
-		// }
 	}, [router, user]);
 
 	return (

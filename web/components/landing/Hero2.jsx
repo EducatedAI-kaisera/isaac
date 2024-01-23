@@ -17,12 +17,11 @@ import logoRWTH from '@components/images/logos/rwth.svg';
 
 import TypedText from './TypedText';
 
-export function Hero() {
+export function Hero({ userCount }) {
 	const { user } = useUser();
 
 	return (
 		<div className="overflow-hidden py-4 md:py-40	 lg:pb-32 xl:pb-36">
-			{/* <RetroGrid /> */}
 			<Container>
 				<Ripple />
 
@@ -58,7 +57,7 @@ export function Hero() {
 
 					<div className="mt-8 md:mt-20 text-center">
 						<p className="text-sm mt-2 font-semibold text-gray-900">
-							Join more than +25,179 researchers & students
+							Join more than {userCount} researchers & students
 						</p>
 						<ul
 							role="list"

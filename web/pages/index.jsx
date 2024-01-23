@@ -6,11 +6,24 @@ import { Footer } from '@components/landing/Footer';
 import { Header } from '@components/landing/Header';
 import { Hero } from '@components/landing/Hero2';
 import { Pricing } from '@components/landing/Pricing';
-// import { PrimaryFeatures } from '@components/landing/PrimaryFeatures';
 import { Reviews } from '@components/landing/Reviews';
 import { SecondaryFeatures } from '@components/landing/SecondaryFeatures';
+import { supabase } from '@utils/supabase';
 
-export default function Home() {
+export async function getStaticProps() {
+	const { error, count } = await supabase
+		.from('profile')
+		.select('id', { count: 'exact', head: true });
+
+	if (error) {
+		console.error('Error fetching user count:', error);
+		return { props: { userCount: 0 } };
+	}
+
+	return { props: { userCount: count } };
+}
+
+export default function Home({ userCount }) {
 	return (
 		<>
 			<Head>
@@ -31,8 +44,7 @@ export default function Home() {
 			</Head>
 			<Header />
 			<main className="bg-gray-50">
-				<Hero />
-				{/* <PrimaryFeatures /> */}
+				<Hero userCount={userCount} />
 				<SecondaryFeatures />
 				<CallToAction />
 				<Reviews />
