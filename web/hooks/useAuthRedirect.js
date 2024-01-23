@@ -9,7 +9,9 @@ const useAuthRedirect = () => {
 		const user = supabase.auth.user();
 
 		if (!user) {
-			router.push('/signup?refresh=true');
+			setTimeout(() => {
+				router.push('/signup');
+			}, 1000); // 5000 milliseconds = 5 seconds
 			return;
 		}
 
@@ -21,7 +23,9 @@ const useAuthRedirect = () => {
 			.then(result => {
 				// If user isn't logged in (no profile data), redirect to signup page
 				if (!result.data) {
-					router.push('/signup?refresh=true');
+					setTimeout(() => {
+						router.push('/signup');
+					}, 1000); // 5000 milliseconds = 5 seconds
 				}
 			});
 	}, [router.pathname]);
