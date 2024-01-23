@@ -2,8 +2,24 @@ import fetch from 'node-fetch';
 import { ChatContext } from 'types/chat';
 import { AIModels } from 'data/aiModels.data';
 import { ChatCompletionRequestMessage } from 'openai';
-import { performCompletion } from '@utils/stream_response';
+// import { performCompletion } from '@utils/stream_response';
 import { updateTokenUsageForFreeTier } from '@resources/user';
+
+const encoder = new TextEncoder();
+
+// Function to create and return a custom readable stream
+function createCustomReadableStream() {
+    let controller;
+    // Create a stream
+    const customReadable = new ReadableStream({
+        start(_controller) {
+            controller = _controller;
+            // Initial data, if any
+            controller.enqueue(encoder.encode("data: ok\n\n"));
+        },
+    });
+    return { stream: customReadable, controller };
+}
 
 // Can be 'nodejs', but Vercel recommends using 'edge'
 export const runtime = 'nodejs'
@@ -107,13 +123,54 @@ export async function POST(req: Request) {
                 )}\nCurrent date:${dateString}\n\nInstructions:Using the provided web search results, write a comprehensive reply to the given query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject.\nQuery:${prompt} `,
             });
         }
-        return await performCompletion(undefined, {
-            model: llmModel || 'gpt-3.5-turbo',
-            messages,
-            temperature,
-            max_tokens,
-            top_p: 1,
-            stream: true,
+        const completion = await fetch(
+            `${process.env.NEXT_PUBLIC_API_HOST}/api/completion`,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    model: llmModel || 'gpt-3.5-turbo',
+                    messages,
+                    temperature,
+                    max_tokens,
+                    top_p: 1,
+                    stream: true,
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-API-KEY': process.env.NEXT_PUBLIC_API_ROUTE_SECRET,
+                },
+            },
+        );
+        // return await performCompletion(undefined, {
+        //     model: llmModel || 'gpt-3.5-turbo',
+        //     messages,
+        //     temperature,
+        //     max_tokens,
+        //     top_p: 1,
+        //     stream: true,
+        // })
+        const { stream, controller } = createCustomReadableStream();
+        // Forward the data from the completion request to the client
+        completion.body.on('data', chunk => {
+            if (controller) {
+                controller.enqueue(encoder.encode(`data: ${chunk.toString('base64')}\n\n`));
+            }
+        });
+        // Handle completion request completion
+        completion.body.on('end', () => {
+            // Send a final chunk to the frontend that says [DONE]
+            if (controller) {
+                controller.enqueue(encoder.encode(`data: ${Buffer.from('[DONE]').toString('base64')}\n\n`));
+            }
+            // Close the SSE connection when the completion request is complete
+            if (controller) {
+                controller.close();
+            }
+        });
+        // Return the stream and try to keep the connection alive
+        return new Response(stream, {
+            // Set headers for Server-Sent Events (SSE) / stream from the server
+            headers: { 'Content-Type': 'text/event-stream; charset=utf-8', Connection: 'keep-alive', 'Cache-Control': 'no-cache, no-transform', 'Content-Encoding': 'none' },
         })
     } catch (error) {
         console.error(error);
