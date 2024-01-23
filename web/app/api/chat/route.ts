@@ -2,7 +2,6 @@ import fetch from 'node-fetch';
 import { ChatContext } from 'types/chat';
 import { AIModels } from 'data/aiModels.data';
 import { ChatCompletionRequestMessage } from 'openai';
-// import { performCompletion } from '@utils/stream_response';
 import { updateTokenUsageForFreeTier } from '@resources/user';
 
 const encoder = new TextEncoder();
@@ -141,14 +140,6 @@ export async function POST(req: Request) {
                 },
             },
         );
-        // return await performCompletion(undefined, {
-        //     model: llmModel || 'gpt-3.5-turbo',
-        //     messages,
-        //     temperature,
-        //     max_tokens,
-        //     top_p: 1,
-        //     stream: true,
-        // })
         const { stream, controller } = createCustomReadableStream();
         // Forward the data from the completion request to the client
         completion.body.on('data', chunk => {
