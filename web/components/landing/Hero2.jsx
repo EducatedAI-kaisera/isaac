@@ -57,7 +57,8 @@ export function Hero({ userCount }) {
 
 					<div className="mt-8 md:mt-20 text-center">
 						<p className="text-sm mt-2 font-semibold text-gray-900">
-							Join more than {userCount} researchers & students
+							Join more than {userCount.toLocaleString('en-US')} researchers &
+							students
 						</p>
 						<ul
 							role="list"
