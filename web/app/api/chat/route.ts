@@ -107,7 +107,7 @@ export async function POST(req: Request) {
                 )}\nCurrent date:${dateString}\n\nInstructions:Using the provided web search results, write a comprehensive reply to the given query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject.\nQuery:${prompt} `,
             });
         }
-        await performCompletion(undefined, {
+        return await performCompletion(undefined, {
             model: llmModel || 'gpt-3.5-turbo',
             messages,
             temperature,
