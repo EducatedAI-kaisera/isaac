@@ -18,7 +18,7 @@ function createCustomReadableStream() {
 }
 
 // Can be 'nodejs', but Vercel recommends using 'edge'
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 
 // Prevents this route's response from being cached
 export const dynamic = 'force-dynamic';
