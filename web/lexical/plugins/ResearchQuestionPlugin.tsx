@@ -23,7 +23,6 @@ import { ArrowDownSquare, Clipboard, Save } from 'lucide-react';
 import React, { useCallback, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import toast from 'react-hot-toast';
-import { SSE } from 'sse.js';
 
 const ResearchQuestionPlugin = () => {
 	const [editor] = useLexicalComposerContext();
@@ -41,14 +40,6 @@ const ResearchQuestionPlugin = () => {
 	const [isQuestionSubmitted, setIsQuestionSubmitted] =
 		useState<boolean>(false);
 
-	const sseSourceRef = useRef(null); // Ref to store the SSE source
-
-	const abortFetchResearchResponse = () => {
-		if (sseSourceRef.current) {
-			sseSourceRef.current.close(); // Close the SSE connection
-			sseSourceRef.current = null;
-		}
-	};
 
 	const {
 		completion,
@@ -67,8 +58,7 @@ const ResearchQuestionPlugin = () => {
 	});
 
 	const onModalClose = cleanUp => {
-		stop();
-		abortFetchResearchResponse(); // Call abort function when closing the modal
+		stop();// Call abort function when closing the modal
 		setAnswer('');
 		setIsQuestionSubmitted(false);
 		cleanUp();
