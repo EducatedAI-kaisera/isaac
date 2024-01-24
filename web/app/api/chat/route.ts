@@ -14,7 +14,7 @@ function createCustomReadableStream() {
         start(_controller) {
             controller = _controller;
             // Initial data, if any
-            controller.enqueue(encoder.encode("data: ok\n\n"));
+            // controller.enqueue(encoder.encode("data: ok\n\n"));
         },
     });
     return { stream: customReadable, controller };
