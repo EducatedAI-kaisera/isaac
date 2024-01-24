@@ -140,7 +140,13 @@ export default function CopilotPlugin(): JSX.Element | null {
 						return;
 					}
 
-					if (match === lastMatch || match === lastMatch + ' ' || match === lastMatch + ',' || match === lastMatch + '.' || match === lastMatch + ';') {
+					if (
+						match === lastMatch ||
+						match === lastMatch + ' ' ||
+						match === lastMatch + ',' ||
+						match === lastMatch + '.' ||
+						match === lastMatch + ';'
+					) {
 						return;
 					}
 					$clearSuggestion();
@@ -245,6 +251,37 @@ class AutocompleteServer {
 				return resolve(null);
 			}
 
+			const url = 'https://api.together.xyz/v1/chat/completions';
+			const apiKey = process.env.NEXT_PUBLIC_TOGETHERAI_API_KEY;
+
+			const headers = new Headers({
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${apiKey}`,
+			});
+
+			const data = {
+				model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+				max_tokens: 12,
+				messages: [
+					{
+						role: 'system',
+						content: 'You are an AI assistant',
+					},
+					{
+						role: 'user',
+						content:
+							'Continue the following paragraph. Make sure to use proper punctuation:' +
+							searchText,
+					},
+				],
+			};
+
+			const options = {
+				method: 'POST',
+				headers,
+				body: JSON.stringify(data),
+			};
+
 			// Randomize the delay so that the suggestions feel a bit more natural.
 			const delay = Math.random() * this.LATENCY + 1500;
 
@@ -257,41 +294,20 @@ class AutocompleteServer {
 					return resolve(null);
 				}
 
-				fetch('https://api.openai.com/v1/completions', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
-					},
-					body: JSON.stringify({
-						model: 'gpt-3.5-turbo-instruct',
-						prompt:
-							'Continue the following paragraph. Make sure to use proper punctuation:' +
-							searchText,
-						max_tokens: 12,
-						temperature: 0.3,
-					}),
-				})
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! status: ${response.status}`);
-						}
-						return response.json();
-					})
-					.then(data => {
-						if (data.choices && data.choices.length > 0) {
-							let result = data.choices[0].text.trim();
-							if (result.charAt(0) !== ' ') {
-								result = ' ' + result;
+				fetch(url, options)
+					.then(response => response.json())
+					.then(result => {
+						if (result.choices && result.choices.length > 0) {
+							let completion = result.choices[0].message.content.trim();
+							if (completion.charAt(0) !== ' ') {
+								completion = ' ' + completion;
 							}
-							resolve(result);
-						} else {
-							resolve(null);
+							resolve(completion);
 						}
 					})
 					.catch(error => {
-						console.error('Error:', error);
 						resolve(null);
+						console.error('Error:', error);
 					});
 			}, delay);
 		});
@@ -302,3 +318,4 @@ class AutocompleteServer {
 		};
 	};
 }
+
