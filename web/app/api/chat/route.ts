@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { ChatContext } from 'types/chat';
 import { AIModels } from 'data/aiModels.data';
 import { ChatCompletionRequestMessage } from 'openai';
-import { updateTokenUsageForFreeTier } from '@resources/user';
+import { updateTokenUsageForFreeTier } from '@resources/updateTokenUsageForFreeTier';
 
 const encoder = new TextEncoder();
 

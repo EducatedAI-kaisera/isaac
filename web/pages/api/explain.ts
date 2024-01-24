@@ -1,4 +1,4 @@
-import { updateTokenUsageForFreeTier } from '@resources/user';
+import { updateTokenUsageForFreeTier } from '@resources/updateTokenUsageForFreeTier';
 import { AIModels } from 'data/aiModels.data';
 import { performCompletion } from '../../utils/stream_response'
 
