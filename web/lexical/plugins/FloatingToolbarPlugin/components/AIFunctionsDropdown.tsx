@@ -1,6 +1,6 @@
 import ToolbarButton from '@lexical/plugins/FloatingToolbarPlugin/components/FloatingToolbarButton';
 import { useTour } from '@reactour/tour';
-import { $getSelection } from 'lexical';
+import { $getSelection, $isRangeSelection } from 'lexical';
 import {
 	HelpCircle,
 	List,
@@ -14,7 +14,7 @@ import {
 	Wand2,
 	Zap,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
 	DropdownMenu,
@@ -23,16 +23,27 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
+import useAIAssistantStore from '@context/aiAssistant.store';
 import useLexicalEditorStore from '@context/lexicalEditor.store';
+import { useUser } from '@context/user';
 import useAIDetector from '@hooks/api/isaac/useAIDetector';
 import useFindTextSources from '@hooks/api/isaac/useFindTextSources';
 import useManipulationText from '@hooks/api/isaac/useManipulateText';
+import { $createAIOutputNode } from '@lexical/nodes/AIOutputNode';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { ManipulateTextMethods } from '@utils/manipulateTextMap';
+import { useLocalStorage } from '@mantine/hooks';
+import {
+	manipulateTextMap,
+	ManipulateTextMethods,
+} from '@utils/manipulateTextMap';
+import { useCompletion } from 'ai/react';
+import { AIModelLocalStorageKey } from 'data/aiModels.data';
 import { Sparkles } from 'lucide-react';
 
 const AIFunctionsDropdown = () => {
 	const [editor] = useLexicalComposerContext();
+	const { user } = useUser();
+	const language = user?.editor_language;
 	const setFloatingInputActive = useLexicalEditorStore(
 		s => s.setFloatingInputActive,
 	);
@@ -54,13 +65,75 @@ const AIFunctionsDropdown = () => {
 	const { manipulateText } = useManipulationText();
 	const { findSources } = useFindTextSources();
 	const { sendToAIDetector } = useAIDetector();
+	const { setAITextOutput, setCachedSelection, setOpen, setAIOperation } =
+		useAIAssistantStore(state => state.actions);
+
+	const [method, setMethod] = useState<ManipulateTextMethods>(null);
+	const [customInstructions, setCustomInstructions] = useState<string>(null);
+	console.log('customInstructions', customInstructions);
+
+	// Update the method when a dropdown menu item is clicked
+	const handleDropdownClick = (selectedMethod: ManipulateTextMethods) => {
+		setMethod(selectedMethod);
+	};
 
 	const tooLong = (selectedText?.length || 0) > 1000;
 
+	const [llmModel] = useLocalStorage({ key: AIModelLocalStorageKey });
+
+	const insertAIOutputComponent = useCallback(() => {
+		editor.update(() => {
+			const selection = $getSelection();
+
+			if (!$isRangeSelection(selection)) {
+				return;
+			}
+
+			setCachedSelection(selection.clone());
+			const aiOutputNode = $createAIOutputNode('text');
+			const focusedNode = selection.focus.getNode();
+			focusedNode.insertAfter(aiOutputNode, true);
+			setOpen(true);
+		});
+	}, [editor]);
+
+	const {
+		completion,
+		complete,
+		input,
+		stop,
+		isLoading,
+		handleInputChange,
+		handleSubmit,
+	} = useCompletion({
+		api: method ? `${manipulateTextMap[method].endpoint}` : '/api/explain',
+		body: {
+			llmModel: `${llmModel || 'gpt-3.5-turbo'}`,
+			userId: user.id,
+			editorLanguage: language,
+		},
+		onResponse: () => {
+			insertAIOutputComponent();
+		},
+	});
+
+	useEffect(() => {
+		if (method === null) {
+			return;
+		}
+
+		complete(
+			manipulateTextMap[method]?.promptBuilder({
+				selection: selectedText,
+				editorLanguage: language,
+			}),
+		);
+	}, [method]);
+
+	setAITextOutput(completion);
+
 	return (
 		<DropdownMenu
-			// TODO: fix this tutorial mode open state
-			// closeOnClickOutside={tutorialMode ? false : true}
 			onOpenChange={handleOnOpen}
 			{...(!tutorialMode
 				? { transition: 'scale-y', transitionDuration: 300 }
@@ -169,7 +242,6 @@ const AIFunctionsDropdown = () => {
 								setFloatingInputActive({
 									documentId: '',
 									onSubmit: text => {
-										console.log({ selectedText, text });
 										manipulateText(
 											selectedText,
 											ManipulateTextMethods.CUSTOM,
@@ -179,7 +251,7 @@ const AIFunctionsDropdown = () => {
 									placeholder: 'Write a custom prompt',
 								})
 							}
-							aria-label="Bullets to Text"
+							aria-label="custom-prompt"
 						>
 							<Pencil size={16} className="mr-2 h-4 w-4" />
 							Custom prompt
@@ -207,9 +279,7 @@ const AIFunctionsDropdown = () => {
 
 						<DropdownMenuItem
 							id={'manipulate-text'}
-							onClick={() =>
-								manipulateText(selectedText, ManipulateTextMethods.EXPLAIN)
-							}
+							onClick={() => handleDropdownClick(ManipulateTextMethods.EXPLAIN)}
 							aria-label="manipulate-text"
 							disabled={tooLong}
 						>
