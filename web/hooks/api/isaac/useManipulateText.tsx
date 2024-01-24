@@ -6,7 +6,6 @@ import useAIAssistantStore from '@context/aiAssistant.store';
 import useLexicalEditorStore from '@context/lexicalEditor.store';
 import { useUser } from '@context/user';
 import useIsaacSystemPrompt from '@hooks/api/isaac/useIsaacSystemPrompt';
-import useAIOutput from '@hooks/api/useAIOutput';
 import { QKFreeAIToken } from '@hooks/api/useFreeTierLimit.get';
 import { $createAIOutputNode } from '@lexical/nodes/AIOutputNode';
 import { useLocalStorage } from '@mantine/hooks';
@@ -22,6 +21,7 @@ import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
 import { SSE } from 'sse.js';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 
 const useManipulationText = () => {
 	const { user } = useUser();
@@ -30,9 +30,9 @@ const useManipulationText = () => {
 	const [llmModel] = useLocalStorage({ key: AIModelLocalStorageKey });
 	const editor = useLexicalEditorStore(s => s.activeEditor);
 	const systemPrompt = useIsaacSystemPrompt();
-	const { createNewAIOutput } = useAIOutput();
 	const { setAITextOutput, setCachedSelection, setOpen, setAIOperation } =
 		useAIAssistantStore(state => state.actions);
+
 
 	const insertAIOutputComponent = useCallback(() => {
 		editor.update(() => {
@@ -76,14 +76,13 @@ const useManipulationText = () => {
 			additionalContext,
 		});
 
-		const aiOutputEntry = createNewAIOutput(method, text);
 		const source = new SSE(
 			`${manipulateTextMap[method].endpoint}?userId=${
 				user?.id
 			}&systemPrompt=${systemPrompt}&llmModel=${llmModel || 'gpt-3.5-turbo'}`,
 
 			{
-				payload: prompt,
+				payload: JSON.stringify(prompt),
 			},
 		);
 
@@ -92,8 +91,9 @@ const useManipulationText = () => {
 		// Start Streaming
 		try {
 			source.addEventListener('message', async function (e) {
-				const binaryString = atob(e.data);
-				const eventMessage = decodeURIComponent(escape(binaryString))
+				const uint8Array = base64ToUint8Array(e.data);
+				const eventMessage = new TextDecoder('utf-8').decode(uint8Array);
+
 
 				if (eventMessage === '[DONE]') {
 					source.close();

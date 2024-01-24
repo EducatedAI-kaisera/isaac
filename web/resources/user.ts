@@ -1,6 +1,4 @@
 import { supabase } from '@utils/supabase';
-import { freePlanLimits } from 'data/pricingPlans';
-// import { ceil } from 'lodash';
 import type { CustomInstructions } from '@context/user';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
@@ -154,30 +152,6 @@ export const useUpdateEditorLanguage = () => {
 			toast.error('Failed to update editor language');
 		},
 	});
-};
-
-// only when user is on free tier
-export const updateTokenUsageForFreeTier = async (userId: string) => {
-	const { data: user } = await supabase
-		.from('profile')
-		.select('*')
-		.eq('id', userId)
-		.single();
-
-	if (!user) {
-		throw new Error('user profile not found');
-	}
-	if (!user.is_subscribed) {
-		if (user.daily_free_token >= freePlanLimits.dailyFreeToken) {
-			throw new Error('OUT_OF_TOKEN');
-		}
-		await supabase
-			.from('profile')
-			.update({ daily_free_token: user.daily_free_token + 1 })
-			.eq('id', userId);
-	}
-
-	return user;
 };
 
 export const getUserStorageSize = async (userId: string) => {

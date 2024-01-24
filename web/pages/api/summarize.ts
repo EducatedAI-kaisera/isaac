@@ -1,4 +1,4 @@
-import { updateTokenUsageForFreeTier } from '@resources/user';
+import { updateTokenUsageForFreeTier } from '@resources/updateTokenUsageForFreeTier';
 import { performCompletion } from '../../utils/stream_response';
 
 // eslint-disable-next-line import/no-anonymous-default-export

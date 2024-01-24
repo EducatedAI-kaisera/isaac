@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
 import { SSE } from 'sse.js';
 import { ChatContext } from 'types/chat';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 
 const useStreamChatMessage = () => {
 	const { user } = useUser();
@@ -39,15 +40,10 @@ const useStreamChatMessage = () => {
 			const source = new SSE('/api/chat', { payload });
 			let cumulativeChunk = '';
 
-			source.addEventListener('error', e => {
-				onError(JSON.parse(e.data).error);
-				source.close();
-			});
-
 			// Start Streaming
 			source.addEventListener('message', async function (e) {
-				const binaryString = atob(e.data);
-				const eventMessage = decodeURIComponent(escape(binaryString))
+				const uint8Array = base64ToUint8Array(e.data);
+				const eventMessage = new TextDecoder('utf-8').decode(uint8Array);
 				if (eventMessage === '[DONE]') {
 					source.close();
 					onComplete(cumulativeChunk);

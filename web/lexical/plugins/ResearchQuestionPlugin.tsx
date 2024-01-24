@@ -13,13 +13,16 @@ import {
 	LexicalTypeaheadMenuPlugin,
 	useBasicTypeaheadTriggerMatch,
 } from '@lexical/react/LexicalTypeaheadMenuPlugin';
+import { ReloadIcon } from '@radix-ui/react-icons';
 import useCreateNote from '@resources/notes';
+import { updateTokenUsageForFreeTier } from '@resources/updateTokenUsageForFreeTier';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
+import { useCompletion } from 'ai/react';
 import { $createTextNode, $getSelection } from 'lexical';
 import { ArrowDownSquare, Clipboard, Save } from 'lucide-react';
 import React, { useCallback, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import toast from 'react-hot-toast';
-import { SSE } from 'sse.js';
 
 const ResearchQuestionPlugin = () => {
 	const [editor] = useLexicalComposerContext();
@@ -37,41 +40,29 @@ const ResearchQuestionPlugin = () => {
 	const [isQuestionSubmitted, setIsQuestionSubmitted] =
 		useState<boolean>(false);
 
-	const sseSourceRef = useRef(null); // Ref to store the SSE source
 
-	const abortFetchResearchResponse = () => {
-		if (sseSourceRef.current) {
-			sseSourceRef.current.close(); // Close the SSE connection
-			sseSourceRef.current = null;
-		}
-	};
+	const {
+		completion,
+		input,
+		stop,
+		isLoading,
+		handleInputChange,
+		handleSubmit,
+	} = useCompletion({
+		api: '/api/answer-research-question',
+		body: { userId: user.id, editorLanguage: language },
+		onResponse: () => {
+			setShowModal(true);
+			setIsQuestionSubmitted(true);
+		},
+	});
 
 	const onModalClose = cleanUp => {
-		abortFetchResearchResponse(); // Call abort function when closing the modal
+		stop();// Call abort function when closing the modal
 		setAnswer('');
 		setIsQuestionSubmitted(false);
 		cleanUp();
 	};
-
-	async function fetchResearchResponse() {
-		const queryParams = new URLSearchParams({ editorLanguage: language });
-		const source = new SSE(`/api/research-question?${queryParams.toString()}`, {
-			payload: researchQuestion,
-		});
-		sseSourceRef.current = source;
-
-		source.addEventListener('message', e => {
-			const binaryString = atob(e.data);
-				const eventMessage = decodeURIComponent(escape(binaryString))
-			if (eventMessage === '[DONE]') {
-				source.close();
-			} else {
-				setAnswer(prev => prev + eventMessage);
-				setShowModal(true);
-			}
-		});
-		source.stream();
-	}
 
 	const onSelectOption = useCallback(
 		(selectedOption, nodeToRemove, closeMenu, matchingString) => {
@@ -90,20 +81,14 @@ const ResearchQuestionPlugin = () => {
 		toast.success('Copied');
 	};
 
-	const onCopyClick = useCallback(() => copyToClipboard(answer), [answer]);
+	const onCopyClick = useCallback(
+		() => copyToClipboard(completion),
+		[completion],
+	);
 
 	const saveToNotes = async cleanup => {
-		createNote(answer);
+		createNote(completion);
 		onModalClose(cleanup);
-	};
-
-	const submitQuestion = async event => {
-		event.preventDefault();
-		if (researchQuestion) {
-			setShowModal(true);
-			setIsQuestionSubmitted(true);
-			await fetchResearchResponse();
-		}
 	};
 
 	return (
@@ -128,16 +113,26 @@ const ResearchQuestionPlugin = () => {
 										{!isQuestionSubmitted ? (
 											<DialogContent>
 												<DialogTitle>Ask a research question</DialogTitle>
-												<form onSubmit={submitQuestion}>
+												<form onSubmit={handleSubmit}>
 													<Input
-														onChange={e => setResearchQuestion(e.target.value)}
+														onChange={e => {
+															setResearchQuestion(e.target.value),
+																handleInputChange(e);
+														}}
 														placeholder="Type your research question here..."
 													/>
 												</form>
 												<DialogFooter>
-													<Button variant="outline" onClick={submitQuestion}>
-														Ask question
-													</Button>
+													{isLoading ? (
+														<Button disabled>
+															<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+															Loading...
+														</Button>
+													) : (
+														<Button variant="outline" type="submit">
+															Ask question
+														</Button>
+													)}
 												</DialogFooter>
 											</DialogContent>
 										) : (
@@ -150,7 +145,7 @@ const ResearchQuestionPlugin = () => {
 												</DialogDescription>
 
 												<div className="overflow-y-auto prose max-h-[400px] w-full whitespace-pre-wrap">
-													{answer}
+													{completion}
 												</div>
 
 												<DialogFooter>
@@ -161,7 +156,7 @@ const ResearchQuestionPlugin = () => {
 																	editor.update(() => {
 																		const selection = $getSelection();
 																		selection.insertNodes([
-																			$createTextNode(answer),
+																			$createTextNode(completion),
 																		]);
 																	}),
 																		onModalClose(selectOptionAndCleanUp);
