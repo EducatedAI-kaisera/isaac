@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { ChatContext } from 'types/chat';
 import { AIModels } from 'data/aiModels.data';
-import { ChatCompletionRequestMessage } from 'openai';
+import { ChatCompletionMessageParam } from 'openai/resources';
 import { updateTokenUsageForFreeTier } from '@resources/updateTokenUsageForFreeTier';
 
 const encoder = new TextEncoder();
@@ -29,7 +29,7 @@ export const dynamic = 'force-dynamic'
 type Payload = {
     userId: string;
     context: ChatContext;
-    messages: ChatCompletionRequestMessage[];
+    messages: any;
     max_tokens: number;
     projectId: string;
     uploadId: string;
