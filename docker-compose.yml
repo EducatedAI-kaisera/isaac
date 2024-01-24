@@ -6,26 +6,27 @@ services:
       context: ./web
       dockerfile: Dockerfile
     env_file:
-      - ./web/.env.example
+      - ./web/.env
     container_name: isaac-web
     networks:
       - default
     ports:
       - 3000:3000
-
+    volumes:
+      - ./web:/app
   api:
     build:
       context: ./api
       dockerfile: Dockerfile
-      args:
-        - OPENAI_API_KEY= # your openai api key
     env_file:
-      - ./api/.env.example
+      - ./api/.env
     container_name: isaac-api
     networks:
       - default
     ports:
       - 5001:5001
+    volumes:
+        - ./api:/app
 
 networks:
   default:
