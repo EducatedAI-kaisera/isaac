@@ -104,7 +104,7 @@ export const manipulateTextMap: ManipulateTextMap = {
 		userManipulationTitle: 'Please modify the following text:',
 		assistantManipulationTitle:
 			'Here is the modified version of your highlighted text:',
-		endpoint: '/api/explain',
+		endpoint: '/api/custom-prompt',
 		promptBuilder: customPrompt,
 	},
 };
