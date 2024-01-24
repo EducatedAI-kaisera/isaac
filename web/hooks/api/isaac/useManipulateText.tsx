@@ -6,7 +6,6 @@ import useAIAssistantStore from '@context/aiAssistant.store';
 import useLexicalEditorStore from '@context/lexicalEditor.store';
 import { useUser } from '@context/user';
 import useIsaacSystemPrompt from '@hooks/api/isaac/useIsaacSystemPrompt';
-import useAIOutput from '@hooks/api/useAIOutput';
 import { QKFreeAIToken } from '@hooks/api/useFreeTierLimit.get';
 import { $createAIOutputNode } from '@lexical/nodes/AIOutputNode';
 import { useLocalStorage } from '@mantine/hooks';

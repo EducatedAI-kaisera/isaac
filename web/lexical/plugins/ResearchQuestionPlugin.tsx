@@ -14,6 +14,7 @@ import {
 	useBasicTypeaheadTriggerMatch,
 } from '@lexical/react/LexicalTypeaheadMenuPlugin';
 import useCreateNote from '@resources/notes';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 import { $createTextNode, $getSelection } from 'lexical';
 import { ArrowDownSquare, Clipboard, Save } from 'lucide-react';
 import React, { useCallback, useRef, useState } from 'react';
@@ -54,15 +55,15 @@ const ResearchQuestionPlugin = () => {
 	};
 
 	async function fetchResearchResponse() {
-		const queryParams = new URLSearchParams({ editorLanguage: language });
-		const source = new SSE(`/api/research-question?${queryParams.toString()}`, {
-			payload: researchQuestion,
+		const queryParams = new URLSearchParams({ editorLanguage: language, userId: user.id });
+		const source = new SSE(`/api/answer-research-question?${queryParams.toString()}`, {
+			payload: JSON.stringify(researchQuestion),
 		});
 		sseSourceRef.current = source;
 
 		source.addEventListener('message', e => {
-			const binaryString = atob(e.data);
-				const eventMessage = decodeURIComponent(escape(binaryString))
+			const uint8Array = base64ToUint8Array(e.data);
+				const eventMessage = new TextDecoder('utf-8').decode(uint8Array);
 			if (eventMessage === '[DONE]') {
 				source.close();
 			} else {
