@@ -6,6 +6,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from '@components/ui/tooltip';
+import { TabType } from '@hooks/useDocumentTabs';
 import { mergeRegister } from '@lexical/utils';
 import {
 	$getRoot,
@@ -18,11 +19,14 @@ import {
 import { Download, Redo, Undo } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
-const EditorToolbar = () => {
+type EditorToolbarProps = {
+  activeTabType: TabType;
+};
+
+const EditorToolbar: React.FC<EditorToolbarProps> = ({ activeTabType }) => {
 	const { activeEditor } = useLexicalEditorStore();
 	const [canUndo, setCanUndo] = useState(false);
 	const [canRedo, setCanRedo] = useState(false);
-
 
 	const exportAsText = () => {
 		const rawTextContent = activeEditor
@@ -45,7 +49,7 @@ const EditorToolbar = () => {
 	};
 
 	useEffect(() => {
-		if (!activeEditor) return;
+		if (!activeEditor) 	return;
 		return mergeRegister(
 			activeEditor?.registerCommand(
 				CAN_UNDO_COMMAND,
@@ -66,12 +70,12 @@ const EditorToolbar = () => {
 		);
 	}, [activeEditor]);
 	return (
-		<>
+		<div className="border-b border-r h-8 px-2">
 			<Button
 				variant="ghost"
 				size="icon"
-				className="relative h-8 w-8 text-accent-foreground"
-				disabled={!canUndo}
+				className="relative h-6 w-6 text-accent-foreground"
+				disabled={!canUndo || activeTabType != 'Document'}
 				onClick={() => {
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
@@ -84,7 +88,7 @@ const EditorToolbar = () => {
 			<Button
 				variant="ghost"
 				size="icon"
-				disabled={!canRedo}
+				disabled={!canRedo || activeTabType != 'Document'}
 				onClick={() => {
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
@@ -102,7 +106,8 @@ const EditorToolbar = () => {
 						variant="ghost"
 						size="icon"
 						onClick={exportAsText}
-						className="relative h-8 w-8 text-accent-foreground"
+						disabled={activeTabType!="Document"}
+						className="relative h-6 w-6 text-accent-foreground"
 					>
 						<Download size={20} strokeWidth={1.2} />
 					</Button>
@@ -111,7 +116,7 @@ const EditorToolbar = () => {
 					<p>Download document as .txt file</p>
 				</TooltipContent>
 			</Tooltip>
-		</>
+		</div>
 	);
 };
 

@@ -1,5 +1,4 @@
 import EditorSettingsMenu from '@components/AppHeader/EditorSettingsMenu';
-import EditorToolbar from '@components/AppHeader/EditorToolbar';
 
 import { ToggleLeftPanel } from '@components/AppHeader/LayoutTogglerButtons';
 import {
@@ -26,7 +25,6 @@ const AppHeader = () => {
 		>
 			<div className="inline-flex items-center z-20">
 				<ToggleLeftPanel />
-				<EditorToolbar />
 			</div>
 
 			<div className="hidden md:inline-flex items-center z-20">
