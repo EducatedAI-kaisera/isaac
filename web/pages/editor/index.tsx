@@ -113,7 +113,7 @@ const EditorPage = () => {
 		[sortedProjects],
 	);
 
-	const projectsLoadedAndEmpty = useMemo(() => !isGetProjectsLoading && projects?.length === 0, [
+	const projectsLoadedAndEmpty = useMemo(() => !isGetProjectsLoading && !projects?.length, [
 		isGetProjectsLoading,
 		projects,
 	]);
