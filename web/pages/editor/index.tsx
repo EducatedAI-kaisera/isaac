@@ -10,14 +10,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@components/ui/select';
-import { Skeleton } from '@components/ui/skeleton';
 import { useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
 import useHandleToastQuery from '@hooks/misc/useHandleToastQuery';
-import {} from '@radix-ui/react-select';
 import { useGetProjects } from '@resources/editor-page';
 import clsx from 'clsx';
-import { FolderPlus, Loader2 } from 'lucide-react';
+import { FolderPlus } from 'lucide-react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -173,19 +171,6 @@ const EditorPage = () => {
 			</EditorLayout>
 		</>
 	);
-};
-
-const LoadingPlaceholder = () => {
-	const placeholderItems = Array.from({ length: 12 }).map((_, index) => (
-		<div
-			key={index}
-			className="w-full h-[200px] p-3 border-t border-gray-100 rounded-md shadow-lg"
-		>
-			<Skeleton className="w-full h-full" />
-		</div>
-	));
-
-	return <>{placeholderItems}</>;
 };
 
 export default EditorPage;
