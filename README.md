@@ -135,10 +135,10 @@ create table projects (
   created_at timestamp default now(),
   title text,
   updated_at timestamp default now(),
-  userId uuid,
+  "userId" uuid,
   description text,
   emoji text,
-  sortingOrder smallint
+  "sortingOrder" smallint
 );
 
 create table chat_sessions (
@@ -154,7 +154,7 @@ create table documents (
   created_at timestamp default now(),
   text json,
   type text,
-  userId text,
+  "userId" text,
   title text not null,
   id uuid default uuid_generate_v4() primary key,
   projectId uuid,
@@ -164,8 +164,8 @@ create table documents (
 create table isaac_messages (
   id bigint not null primary key,
   created_at timestamp default now(),
-  userId uuid,
-  projectId uuid,
+  "userId" uuid,
+  "projectId" uuid,
   type character,
   content jsonb,
   updated_at timestamp default now()
@@ -193,7 +193,7 @@ create table profile (
 
 create table notes (
   id uuid default uuid_generate_v4() primary key,
-  projectId uuid references projects (id),
+  "projectId" uuid references projects (id),
   text json,
   created_at timestamp default now(),
   updated_at timestamp default now()
@@ -206,7 +206,7 @@ create table "references" (
   authors json,
   year text,
   doi text,
-  projectId uuid default uuid_generate_v4(),
+  "projectId" uuid default uuid_generate_v4(),
   tldr text,
   pdf text,
   updated_at timestamp default now(),
@@ -222,7 +222,7 @@ create table comments (
   quote text,
   type text,
   comments json[],
-  documentId text,
+  "documentId" text,
   created_at timestamp default now() not null,
   updated_at timestamp default now()
 );
