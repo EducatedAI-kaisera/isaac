@@ -57,7 +57,7 @@ export const ToggleLeftPanel = () => {
 					}
 					variant="ghost"
 					size="icon"
-					className="relative h-8 w-8"
+					className="relative h-8 w-10 hover:text-isaac hover:bg-transparent ml-2"
 				>
 					{activeSidebar ? (
 						<PanelLeftClose strokeWidth={1.2} size={20} />
