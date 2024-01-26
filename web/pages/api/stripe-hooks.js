@@ -42,25 +42,8 @@ const handler = async (req, res) => {
 				.from('profile')
 				.update({
 					is_subscribed: false,
-					interval: null,
-					plan: null,
 				})
 				.eq('stripe_customer', event.data.object.customer);
-			break;
-
-		case 'payment_intent.succeeded':
-			if (event.data.object.amount === 1000) {
-				await supabase
-					.from('profile')
-					.update({
-						is_subscribed: true,
-						// set expiration_date to today + 7 days
-						expiration_date: expirationDate,
-						plan: 'weekly',
-					})
-					.eq('stripe_customer', event.data.object.customer);
-			}
-
 			break;
 	}
 
