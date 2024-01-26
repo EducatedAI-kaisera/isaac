@@ -14,6 +14,7 @@ import {
 import { ArrowRightIcon, SparklesIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import toast from 'react-hot-toast'
 
 const ToggleButton = classed.button(
 	cva({
@@ -32,6 +33,12 @@ export default function AIModelToggle() {
 		key: AIModelLocalStorageKey,
 		defaultValue: AIModels.GPT_3_5,
 	});
+
+	const handleModelSelection = (model) => {
+    setSelectedModel(model);
+    toast.success(`New model ${model} has been selected`);
+  };
+
 	const [models, setModels] = useState(aiModelList);
 	const { user } = useUser();
 	useEffect(() => {
@@ -68,9 +75,9 @@ export default function AIModelToggle() {
 							key={model}
 							ref={el => (buttons.current[model] = el)}
 							onClick={useCallback(
-								() => (disabled ? openUpgrade() : setSelectedModel(model)),
-								[disabled, model],
-							)}
+          () => (disabled ? openUpgrade() : handleModelSelection(model)),
+          [disabled, model],
+        )}
 							isActive={model === selectedModel}
 							className="transition-color duration-200 ease-out-expo"
 						>
