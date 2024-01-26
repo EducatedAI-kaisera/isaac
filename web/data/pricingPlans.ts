@@ -3,19 +3,16 @@ export const freePlanLimits = {
 	uploadStorage: 100,
 };
 
-const weeklyId =
-	process.env.NODE_ENV === 'development'
-		? 'price_1NPa8JK2peOePDsbKvkI67oi'
-		: 'price_1NTOgCK2peOePDsbsBsU8bgr';
+
 const monthlyId =
 	process.env.NODE_ENV === 'development'
 		? 'price_1NPj0LK2peOePDsbxRe4OJAw'
-		: 'price_1NY8QnK2peOePDsbTE1LuTrT';
+		: 'price_1OcwmXK2peOePDsbgNvAdhB7';
 
 const yearlyId =
 	process.env.NODE_ENV === 'development'
 		? 'price_1NPj0LK2peOePDsbxRe4OJAw'
-		: 'price_1NY8RIK2peOePDsbANwbErOS';
+		: 'price_1OcwnkK2peOePDsbCJMSqqTK';
 
 export const pricingPlans = [
 	{
@@ -28,7 +25,7 @@ export const pricingPlans = [
 			`${freePlanLimits.dailyFreeToken} daily tokens generative AI & chat`,
 			`${freePlanLimits.uploadStorage} MB of file upload storage`,
 			'AI-assisted writing',
-			`Upload and Chat with your documents`,
+			`Upload and chat with your documents`,
 			'Literature Search',
 			'Community Support',
 		],
@@ -38,14 +35,14 @@ export const pricingPlans = [
 		name: 'Monthly',
 		featured: false,
 		priceId: monthlyId,
-		oldPrice: '$25/mo ',
-		price: '$11/mo',
+		oldPrice: '$30/mo ',
+		price: '$20/mo',
 		description: 'Monthly Subscription',
 		features: [
 			'Unlimited generative AI & Chat',
 			'Unlimited file upload storage',
 			'AI-assisted writing',
-			'Upload and Chat with your documents',
+			'Upload and chat with your documents',
 			'Literature Search',
 			'Premium Support',
 		],
@@ -55,14 +52,14 @@ export const pricingPlans = [
 		name: 'Yearly',
 		featured: false,
 		priceId: yearlyId,
-		oldPrice: '$19/mo',
-		price: '$7/mo',
+		oldPrice: '$25/mo',
+		price: '$16.66/mo',
 		description: 'Yearly Subscription',
 		features: [
 			'Unlimited generative AI & Chat',
 			'Unlimited file upload storage',
 			'AI-assisted writing',
-			'Upload and Chat with your documents',
+			'Upload and chat with your documents',
 			'Literature Search',
 			'Premium Support',
 		],

@@ -20,7 +20,7 @@ import useDocumentTabs, {
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useGetReference } from '@resources/editor-page';
 import { useGetLiterature } from '@resources/literature.api';
-import { ArrowUpRight } from 'lucide-react';
+import { Maximize2 } from 'lucide-react';
 import React, { useCallback } from 'react';
 import {
 	ReferenceSource,
@@ -108,7 +108,7 @@ const LiteratureSearchSection = () => {
 				<>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<ArrowUpRight
+							<Maximize2
 								size={20}
 								onClick={() => {
 									openDocument({

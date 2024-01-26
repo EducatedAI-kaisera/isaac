@@ -1,7 +1,7 @@
 import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import { useHover } from '@mantine/hooks';
 import {
-	ArrowUpRight,
+	Maximize2,
 	MessageSquareIcon,
 	MessageSquarePlusIcon,
 	X,
@@ -53,7 +53,7 @@ export default function ChatSessionCard({
 						strokeWidth={1}
 					/>
 				)}
-				<ArrowUpRight
+				<Maximize2
 					size={20}
 					onClick={onOpenTabClick}
 					className="text-gray-600 hover:text-isaac cursor-pointer hidden md:block"

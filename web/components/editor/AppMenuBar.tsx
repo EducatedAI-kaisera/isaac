@@ -25,10 +25,10 @@ import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 const TabButton = classed.button(
 	cva({
-		base: 'w-12 h-12 flex justify-center items-center text-gray-400 transition-colors hover:text-isaac dark:text-gray-500 hover:dark:text-isaac rounded-md',
+		base: 'w-10 h-10 flex justify-center items-center text-gray-400 transition-colors hover:text-isaac dark:text-gray-500 hover:dark:text-isaac rounded-md',
 		variants: {
 			active: {
-				true: 'bg-accent dark:bg-gray-900  text-isaac dark:text-isaac',
+				true: 'text-isaac dark:text-isaac',
 			},
 		},
 	}),
@@ -96,7 +96,7 @@ export default function AppMenuBar() {
 	return (
 		<div
 			className={clsx(
-				'p-3 py-3 flex flex-row md:flex-col gap-2 sm:gap-4 md:gap-2 justify-center md:justify-start bg-white dark:bg-black border-t md:border-t-0',
+				'p-3 py-3 flex flex-row md:flex-col gap-2 sm:gap-4 md:gap-4justify-center md:justify-start bg-white dark:bg-black border-t md:border-t-0',
 				activePanel && ' md:border-r',
 			)}
 		>
