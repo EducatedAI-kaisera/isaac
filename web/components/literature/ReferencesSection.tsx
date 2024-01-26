@@ -8,7 +8,7 @@ import useReferenceListOperation, {
 	ReferenceSourceFilter,
 } from '@hooks/api/useReferenceListOperation';
 import { TabType, UniqueTabSources } from '@hooks/useDocumentTabs';
-import { ArrowUpRight, Search } from 'lucide-react';
+import { Maximize2} from 'lucide-react';
 import React, { useState } from 'react';
 import AddReferenceDropdown from './AddReferenceDropdown';
 import ReferenceExportButton from './ReferenceExportButton';
@@ -49,7 +49,7 @@ const References = () => {
 					Saved References
 				</p>
 				<div>
-					<ArrowUpRight
+					<Maximize2
 						size={20}
 						onClick={() => {
 							openDocument({

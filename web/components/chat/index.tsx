@@ -1,16 +1,10 @@
 import ChatPanel from '@components/chat/ChatPanel';
 import ChatSessionList from '@components/chat/ChatSessionList';
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from '@components/ui/tooltip';
 import useChatStoreV2 from '@context/chatSessions.store';
 import useDocumentTabs, {
-	TabType,
-	UniqueTabSources,
+	TabType
 } from '@hooks/useDocumentTabs';
-import { ArrowLeft, ArrowUpRight, MessageSquarePlusIcon } from 'lucide-react';
+import { ArrowLeft, Maximize2} from 'lucide-react';
 import React from 'react';
 
 const ChatSessions = () => {
@@ -42,27 +36,10 @@ const ChatSessions = () => {
 				</p>
 
 				{/* TOP RIGHT ICON */}
-				{/* {chatSidebar[0] === 'LIST' && (
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<MessageSquarePlusIcon
-								size={18}
-								onClick={() => {
-									setChatSidebar('DETAIL', {
-										title: 'New Chat',
-										sessionId: UniqueTabSources.NEW_CHAT,
-									});
-								}}
-								className="m-1 hover:text-isaac cursor-pointer"
-								strokeWidth={1.5}
-							/>
-						</TooltipTrigger>
-						<TooltipContent>New Chat Session</TooltipContent>
-					</Tooltip>
-				)} */}
+
 				{chatSidebar[0] === 'DETAIL' && (
 					<div className="md:flex gap-2 hidden">
-						<ArrowUpRight
+						<Maximize2
 							size={20}
 							onClick={() => {
 								openDocument({
