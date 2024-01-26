@@ -3,7 +3,6 @@ import useGetProjectWithDocuments from '@hooks/api/useGetProjectWithDocuments';
 import { useBreakpoint } from '@hooks/misc/useBreakPoint';
 import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
-import { useTour } from '@reactour/tour';
 import { isDocumentEmpty } from '@utils/misc';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -55,14 +54,11 @@ const documentVariants = {
 
 const ProjectGroup = () => {
 	const { push } = useRouter();
-	const { isOpen: tutorialMode, setCurrentStep, currentStep } = useTour();
 	const { projectId: activeProjectId } = useGetEditorRouter();
 	const { openDocument, activeDocument } = useDocumentTabs();
 	const { projectDocuments } = useGetProjectWithDocuments();
 
-	const setShowCreateDocumentModal = useUIStore(
-		s => s.setShowCreateDocumentModal,
-	);
+
 	const openPanel = useUIStore(s => s.openPanel);
 
 	// const [isDragging, setIsDraging] = useState(false);
@@ -101,7 +97,7 @@ const ProjectGroup = () => {
 								variant="ghost"
 								size="sm"
 								className={clsx(
-									'leading-none block pl-3 pr-2 text-sm cursor-pointer rounded-none w-full',
+									'leading-none block pl-3 pr-2 text-sm cursor-pointer rounded-none w-full'
 								)}
 							>
 								<div className="flex justify-left group items-center">
