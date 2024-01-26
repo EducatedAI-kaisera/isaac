@@ -117,7 +117,7 @@ def getCitation(docs):
     formatted_prompt = prompt_template.template.format(document=first_page)
 
     completion = openai.ChatCompletion.create(
-        model="gpt-4-1106-preview", messages=[{"role": "user", "content": formatted_prompt}])
+        model="gpt-4-0125-preview", messages=[{"role": "user", "content": formatted_prompt}])
 
     try:
         citation = json.loads(completion.choices[0].message.content)
