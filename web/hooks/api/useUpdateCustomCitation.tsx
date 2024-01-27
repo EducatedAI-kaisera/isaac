@@ -12,6 +12,7 @@ const updateCustomCitation = async (input: {
 		.from('uploads')
 		.update({ custom_citation: input.citation })
 		.eq('id', input.docId)
+		.select()
 		.single();
 
 	return data as TextDocument;

@@ -20,6 +20,7 @@ const deleteChatSession = async ({ sessionId }: { sessionId: string }) => {
 		.from('chat_sessions')
 		.delete()
 		.eq('id', sessionId)
+		.select()
 		.single();
 
 	return data;

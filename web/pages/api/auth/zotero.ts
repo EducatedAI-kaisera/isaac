@@ -69,7 +69,8 @@ const handleState1 = async (req, res, userId, projectId) => {
 						id: userId,
 						zotero: { accessToken, userID: results.userID },
 					},
-				]);
+				])
+				.select();
 
 			if (upsertError) {
 				console.log('upsertError:', upsertError);

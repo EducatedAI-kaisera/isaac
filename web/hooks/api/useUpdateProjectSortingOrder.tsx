@@ -12,7 +12,7 @@ const updateProjectSortingOrder = async ({
 		.map((id, idx) => ({ id, sortingOrder: idx }))
 		.reverse();
 
-	const { data } = await supabase.from('projects').upsert(toUpdate);
+	const { data } = await supabase.from('projects').upsert(toUpdate).select();
 
 	return data;
 };

@@ -15,6 +15,7 @@ const renameDocument = async ({
 		.from('documents')
 		.update({ title: newTitle })
 		.eq('id', docId)
+		.select()
 		.single();
 
 	return data as TextDocument;

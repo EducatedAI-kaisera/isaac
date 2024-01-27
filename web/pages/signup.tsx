@@ -25,7 +25,7 @@ export default function Signup() {
 		e.preventDefault();
 		setIsLoading(true);
 		mixpanel.track('Sign Up', { provider: 'email' });
-		const { user, error } = await supabase.auth.signUp({
+		const { error } = await supabase.auth.signUp({
 			email: email,
 			password: password,
 		});

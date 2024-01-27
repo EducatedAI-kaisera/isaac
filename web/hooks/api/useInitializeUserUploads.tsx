@@ -1,7 +1,7 @@
 import { useLiteratureReferenceStore } from '@context/literatureReference.store';
 import { useUser } from '@context/user';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
-import { SupabaseRealtimePayload } from '@supabase/supabase-js';
+import { RealtimePostgresChangesPayload } from '@supabase/realtime-js/src/RealtimeChannel';
 import { supabase } from '@utils/supabase';
 import { useEffect, useState } from 'react';
 import { UploadedFile } from 'types/literatureReference.type';
@@ -59,7 +59,7 @@ const useInitializeUserUploads = (targetProjectId?: string) => {
 		fetchInitialData();
 
 		const handleRealtimeUpdates = (
-			payload: SupabaseRealtimePayload<UploadedFile>,
+			payload: RealtimePostgresChangesPayload<UploadedFile>,
 		) => {
 			const { eventType, new: newRecord, old: oldRecord } = payload;
 			switch (eventType) {
@@ -73,10 +73,10 @@ const useInitializeUserUploads = (targetProjectId?: string) => {
 						currCitation.isAutoImport = false;
 						supabase.from('uploads').update({ custom_citation: currCitation });
 					}
-					updateUserUpload(newRecord.id, newRecord);
+					updateUserUpload(oldRecord.id, newRecord);
 					break;
 				case 'DELETE':
-					deleteUserUpload(newRecord.id);
+					deleteUserUpload(oldRecord.id);
 					break;
 				default:
 					break;
@@ -84,12 +84,21 @@ const useInitializeUserUploads = (targetProjectId?: string) => {
 		};
 
 		const subscription = supabase
-			.from(`uploads:user_id=eq.${userId}`)
-			.on('*', handleRealtimeUpdates)
+			.channel('public:uploads')
+			.on<UploadedFile>(
+				'postgres_changes',
+				{
+					event: '*',
+					schema: 'public',
+					table: 'uploads',
+					where: { user_id: userId },
+				},
+				handleRealtimeUpdates,
+			)
 			.subscribe();
 
 		return () => {
-			supabase.removeSubscription(subscription);
+			void supabase.removeChannel(subscription);
 		};
 	}, [userId, pathProjectId, targetProjectId]);
 

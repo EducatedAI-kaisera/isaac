@@ -12,7 +12,8 @@ const updateProjectEmoji = async ({
 	const { data } = await supabase
 		.from('projects')
 		.update({ emoji: newEmoji })
-		.eq('id', projectId);
+		.eq('id', projectId)
+		.select();
 
 	return data;
 };

@@ -14,16 +14,17 @@ const ResetPassword = () => {
 	async function updatePassword(e) {
 		e.preventDefault();
 
-		const { user, error } = await supabase.auth.update({ password: password });
+		const {
+			data: { user },
+			error,
+		} = await supabase.auth.updateUser({ password: password });
 
 		if (error) {
 			toast.error('Something went wrong');
 			return;
 		}
 
-		if (user) {
-			router.push(`/editor/` + user?.id);
-		}
+		if (user) await router.push(`/editor/` + user?.id);
 	}
 
 	return (

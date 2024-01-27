@@ -65,6 +65,7 @@ async function createAndUpload({
 			file_name: fileName,
 			project_id: projectId,
 		})
+		.select()
 		.single();
 
 	if (createUploadError) {

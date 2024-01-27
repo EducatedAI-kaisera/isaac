@@ -36,7 +36,7 @@ async function createAndUpload({
 		`${userId}/${fileName}`,
 		60 * 60,
 	);
-	return { fileName, filePath: data.signedURL };
+	return { fileName, filePath: data.signedUrl };
 }
 
 const useUploadDocumentImage = (options?: Options) => {

@@ -6,7 +6,10 @@ import { useMutation, useQueryClient } from 'react-query';
 import { ChatMessageV2, ChatSession, ChatSessionType } from 'types/chat';
 
 const createChatMessage = async (messages: ChatMessageV2[]) => {
-	const { data } = await supabase.from('chat_messages').insert(messages);
+	const { data } = await supabase
+		.from('chat_messages')
+		.insert(messages)
+		.select();
 
 	return data;
 };

@@ -20,6 +20,7 @@ const updateChatSessionTitle = async ({
 			},
 		])
 		.eq('id', sessionId)
+		.select()
 		.single();
 
 	return data;

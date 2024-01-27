@@ -18,7 +18,7 @@ import { memo, useState } from 'react';
 
 export const CreateNewProjectModal = memo(() => {
 	const [projectTitle, setProjectTitle] = useState('');
-	const { push} = useRouter();
+	const { push } = useRouter();
 	const setCreateProjectPopoverOpen = useUIStore(
 		s => s.setCreateProjectPopoverOpen,
 	);

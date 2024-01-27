@@ -33,6 +33,7 @@ const createThreadComment = async ({
 			],
 		})
 		.eq('id', threadId)
+		.select()
 		.single();
 
 	return data;

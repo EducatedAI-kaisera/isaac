@@ -10,6 +10,7 @@ const deleteProject = async (projectId: string) => {
 		.from('projects')
 		.delete()
 		.eq('id', projectId)
+		.select()
 		.single();
 
 	return data;

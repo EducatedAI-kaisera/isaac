@@ -19,14 +19,12 @@ export default function Signin() {
 
 	async function sendMagicLink(e: FormEvent) {
 		e.preventDefault();
-		const { error } = await supabase.auth.signIn(
-			{
-				email: email,
+		const { error } = await supabase.auth.signInWithOtp({
+			email: email,
+			options: {
+				emailRedirectTo: 'https://isaaceditor.com/reset-password/',
 			},
-			{
-				redirectTo: 'https://isaaceditor.com/reset-password/',
-			},
-		);
+		});
 
 		if (error) {
 			toast.error(error.message);

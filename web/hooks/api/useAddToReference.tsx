@@ -23,12 +23,15 @@ const addReference = async ({
 	papers: ReferencePayload[];
 	projectId: string;
 }) => {
-	const { data } = await supabase.from('references').insert(
-		papers.map(paper => ({
-			...paper,
-			projectId,
-		})),
-	);
+	const { data } = await supabase
+		.from('references')
+		.insert(
+			papers.map(paper => ({
+				...paper,
+				projectId,
+			})),
+		)
+		.select();
 	return data;
 };
 

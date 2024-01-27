@@ -1,14 +1,15 @@
 import { supabase } from '@utils/supabase';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 const useAuthRedirect = () => {
 	const router = useRouter();
 
-	useEffect(() => {
-		const user = supabase.auth.user();
-
-		if (!user) {
+	const redirectUser = useCallback(async () => {
+		const { data } = await supabase.auth.getUser();
+		if (!data.user) {
+			await router.push('/signup');
+			// FIXME: What is this additional router.push for?
 			setTimeout(() => {
 				router.push('/signup');
 			}, 1000); // 5000 milliseconds = 5 seconds
@@ -18,7 +19,7 @@ const useAuthRedirect = () => {
 		supabase
 			.from('profile')
 			.select('is_subscribed, expiration_date, plan')
-			.eq('id', user.id)
+			.eq('id', data.user.id)
 			.single()
 			.then(result => {
 				// If user isn't logged in (no profile data), redirect to signup page
@@ -28,7 +29,11 @@ const useAuthRedirect = () => {
 					}, 1000); // 5000 milliseconds = 5 seconds
 				}
 			});
-	}, [router.pathname]);
+	}, [router]);
+
+	useEffect(() => {
+		void redirectUser();
+	}, [redirectUser, router.pathname]);
 };
 
 export default useAuthRedirect;

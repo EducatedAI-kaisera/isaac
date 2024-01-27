@@ -1,8 +1,8 @@
 import { User } from '@supabase/supabase-js';
+import { supabase } from '@utils/supabase';
 import { useRouter } from 'next/router';
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { supabase } from '../utils/supabase';
 
 export type CustomInstructions = {
 	instructions: string;
@@ -50,7 +50,16 @@ const UserProvider = ({ children }) => {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const sessionUser = supabase.auth.user();
+	const [sessionUser, setSessionUser] = useState(null);
+
+	useEffect(() => {
+		const loadSession = async () => {
+			const { data, error } = await supabase.auth.getSession();
+			if (data.session) setSessionUser(data.session.user);
+			else console.error(error ?? 'No active session');
+		};
+		void loadSession();
+	}, []);
 
 	const { data: userProfile, isLoading } = useQuery(
 		['fetch-user-profile', sessionUser?.id],
@@ -77,17 +86,17 @@ const UserProvider = ({ children }) => {
 			userIsLoading: isLoading,
 			setUser: newData =>
 				queryClient.setQueryData(['userProfile', sessionUser?.id], newData),
-			login: data => supabase.auth.signIn(data),
+			login: data => supabase.auth.signInWithPassword(data),
 			logout: () => logoutMutation.mutate(),
 			loginWithGoogle: async () => {
 				const apiUrl =
 					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-				await supabase.auth.signIn(
-					{ provider: 'google' },
-					{
+				await supabase.auth.signInWithOAuth({
+					provider: 'google',
+					options: {
 						redirectTo: `${apiUrl}/editor?`,
 					},
-				);
+				});
 			},
 		}),
 		[userProfile, sessionUser, isLoading],
