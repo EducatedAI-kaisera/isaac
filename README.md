@@ -157,7 +157,7 @@ create table documents (
   "userId" text,
   title text not null,
   id uuid default uuid_generate_v4() primary key,
-  projectId uuid,
+  "projectId" uuid,
   updated_at timestamp default now()
 );
 
