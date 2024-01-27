@@ -1,7 +1,6 @@
 import { User } from '@supabase/supabase-js';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { supabase } from '../utils/supabase';
 
@@ -52,19 +51,6 @@ const UserProvider = ({ children }) => {
 	const queryClient = useQueryClient();
 
 	const sessionUser = supabase.auth.user();
-
-	useEffect(() => {
-		if (!sessionUser?.id) return;
-
-		import('axios')
-			.then(({ default: axios }) => {
-				return axios.post('/api/auth/set-supabase-cookie', {
-					event: sessionUser?.id ? 'SIGNED_IN' : 'SIGNED_OUT',
-					session: supabase.auth.session(),
-				});
-			})
-			.catch(error => console.error('Error loading axios', error));
-	}, [sessionUser?.id]);
 
 	const { data: userProfile, isLoading } = useQuery(
 		['fetch-user-profile', sessionUser?.id],
