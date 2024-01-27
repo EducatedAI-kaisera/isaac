@@ -3,6 +3,7 @@ import { supabase } from '@utils/supabase';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import type { SignInWithPasswordCredentials } from '@supabase/gotrue-js/src/lib/types';
 
 export type CustomInstructions = {
 	instructions: string;
@@ -55,8 +56,8 @@ const UserProvider = ({ children }) => {
 	useEffect(() => {
 		const loadSession = async () => {
 			const { data, error } = await supabase.auth.getSession();
-			if (data.session) setSessionUser(data.session.user);
-			else console.error(error ?? 'No active session');
+			if (error) console.error(error);
+			else setSessionUser(data.session?.user);
 		};
 		void loadSession();
 	}, []);
@@ -74,6 +75,12 @@ const UserProvider = ({ children }) => {
 		},
 	});
 
+	const login = async (credentials: SignInWithPasswordCredentials) => {
+		const result = await supabase.auth.signInWithPassword(credentials)
+		if (result.data.user) setSessionUser(result.data.user)
+		return result
+	}
+
 	const exposed = useMemo(
 		() => ({
 			user: userProfile
@@ -86,7 +93,7 @@ const UserProvider = ({ children }) => {
 			userIsLoading: isLoading,
 			setUser: newData =>
 				queryClient.setQueryData(['userProfile', sessionUser?.id], newData),
-			login: data => supabase.auth.signInWithPassword(data),
+			login,
 			logout: () => logoutMutation.mutate(),
 			loginWithGoogle: async () => {
 				const apiUrl =
