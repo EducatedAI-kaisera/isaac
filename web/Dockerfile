@@ -3,8 +3,7 @@ FROM node:21
 
 WORKDIR /app
 
-# Copy requirements first for better cache utilization
-COPY . .
+COPY . /app
 
 RUN npm install
 
