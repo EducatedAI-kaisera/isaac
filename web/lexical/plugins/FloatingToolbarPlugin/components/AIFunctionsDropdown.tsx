@@ -109,7 +109,7 @@ const AIFunctionsDropdown = () => {
 		api: method ? `${manipulateTextMap[method].endpoint}` : '/api/explain',
 		body: {
 			llmModel: `${llmModel || 'gpt-3.5-turbo'}`,
-			userId: user.id,
+			userId: user?.id,
 			editorLanguage: language,
 		},
 		onResponse: () => {
