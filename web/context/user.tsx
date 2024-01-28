@@ -99,7 +99,7 @@ const UserProvider = ({ children }) => {
 			loginWithGoogle: async () => {
 				const apiUrl =
 					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-				await supabase.auth.signInWithOAuth({
+				 return await supabase.auth.signInWithOAuth({
 					provider: 'google',
 					options: {
 						redirectTo: `${apiUrl}/editor?`,
