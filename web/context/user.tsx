@@ -1,9 +1,8 @@
-import { User } from '@supabase/supabase-js';
+import { SignInWithPasswordCredentials, User } from '@supabase/supabase-js';
 import { supabase } from '@utils/supabase';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import type { SignInWithPasswordCredentials } from '@supabase/gotrue-js/src/lib/types';
 
 export type CustomInstructions = {
 	instructions: string;
