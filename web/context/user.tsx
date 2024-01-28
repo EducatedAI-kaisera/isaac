@@ -56,8 +56,8 @@ const UserProvider = ({ children }) => {
 	useEffect(() => {
 		const loadSession = async () => {
 			const { data, error } = await supabase.auth.getSession();
-			if (data.session) setSessionUser(data.session.user);
-			else console.error(error ?? 'No active session');
+			if (error) console.error(error);
+			else setSessionUser(data.session?.user);
 		};
 		void loadSession();
 	}, []);
@@ -70,6 +70,7 @@ const UserProvider = ({ children }) => {
 
 	const logoutMutation = useMutation(() => supabase.auth.signOut(), {
 		onSuccess: () => {
+			setSessionUser(null)
 			queryClient.invalidateQueries('fetch-user-profile');
 			router.push('/');
 		},
@@ -98,7 +99,7 @@ const UserProvider = ({ children }) => {
 			loginWithGoogle: async () => {
 				const apiUrl =
 					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-				await supabase.auth.signInWithOAuth({
+				 return await supabase.auth.signInWithOAuth({
 					provider: 'google',
 					options: {
 						redirectTo: `${apiUrl}/editor?`,
