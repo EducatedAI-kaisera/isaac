@@ -12,7 +12,7 @@ const useAuthRedirect = () => {
 			// FIXME: What is this additional router.push for?
 			setTimeout(() => {
 				router.push('/signup');
-			}, 1000); // 5000 milliseconds = 5 seconds
+			}, 1000);
 			return;
 		}
 
@@ -26,7 +26,7 @@ const useAuthRedirect = () => {
 				if (!result.data) {
 					setTimeout(() => {
 						router.push('/signup');
-					}, 1000); // 5000 milliseconds = 5 seconds
+					}, 1000);
 				}
 			});
 	}, [router]);
