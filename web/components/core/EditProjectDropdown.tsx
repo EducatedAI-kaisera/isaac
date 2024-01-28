@@ -1,12 +1,5 @@
 import { Button } from '@components/ui/button';
 import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuLabel,
-	ContextMenuTrigger,
-} from '@components/ui/context-menu';
-import {
 	Dialog,
 	DialogContent,
 	DialogFooter,
@@ -23,7 +16,6 @@ import { Input } from '@components/ui/input';
 import { useUIStore } from '@context/ui.store';
 import { useRenameProject } from '@resources/editor-page';
 import {
-	CornerDownRight,
 	MoreVertical,
 	Pencil,
 	Plus,
