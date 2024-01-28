@@ -70,6 +70,7 @@ const UserProvider = ({ children }) => {
 
 	const logoutMutation = useMutation(() => supabase.auth.signOut(), {
 		onSuccess: () => {
+			setSessionUser(null)
 			queryClient.invalidateQueries('fetch-user-profile');
 			router.push('/');
 		},
