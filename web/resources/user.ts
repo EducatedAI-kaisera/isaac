@@ -175,7 +175,6 @@ export const getUserStorageSize = async (userId: string) => {
 
 	// Step 2: Get the size of each file and sum them up
 	for (const file of files) {
-		//@ts-expect-error
 		totalSize += file.metadata.size;
 	}
 	// Step 3: Total size in bytes
