@@ -1,10 +1,14 @@
-import { supabase } from '@utils/supabase';
 import type { CustomInstructions } from '@context/user';
+import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 
 const deleteUser = async (userId: string) => {
-	const { data } = await supabase.from('profile').delete().eq('id', userId);
+	const { data } = await supabase
+		.from('profile')
+		.delete()
+		.eq('id', userId)
+		.select();
 
 	return data;
 };
@@ -19,7 +23,8 @@ const updateUserEmail = async ({
 	const { data } = await supabase
 		.from('profile')
 		.update({ email })
-		.eq('id', userId);
+		.eq('id', userId)
+		.select();
 
 	return data;
 };
@@ -28,7 +33,8 @@ const updateUserFirstTime = async ({ userId }: { userId: string }) => {
 	const { data } = await supabase
 		.from('profile')
 		.update({ has_seen_tour: true })
-		.eq('id', userId);
+		.eq('id', userId)
+		.select();
 
 	return data;
 };
@@ -88,7 +94,8 @@ const updateCustomInstructions = async ({
 	const { data, error } = await supabase
 		.from('profile')
 		.update({ custom_instructions: customInstructions })
-		.eq('id', userId);
+		.eq('id', userId)
+		.select();
 
 	if (error) {
 		throw error;
@@ -126,7 +133,8 @@ const updateEditorLanguage = async ({
 	const { data, error } = await supabase
 		.from('profile')
 		.update({ editor_language: editorLanguage })
-		.eq('id', userId);
+		.eq('id', userId)
+		.select();
 
 	if (error) {
 		throw error;

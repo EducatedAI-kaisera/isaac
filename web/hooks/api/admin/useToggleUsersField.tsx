@@ -16,7 +16,8 @@ export const updateUserBoolField = async (payload: {
 	const { data } = await supabase
 		.from('profile')
 		.update({ [toUpdateField]: bool })
-		.eq('id', profileId);
+		.eq('id', profileId)
+		.select();
 
 	return data;
 };

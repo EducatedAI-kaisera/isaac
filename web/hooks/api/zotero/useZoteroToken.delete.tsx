@@ -12,7 +12,8 @@ export const deleteZoteroToken = async (userId: string) => {
 				zotero: null,
 			},
 		])
-		.eq('id', userId);
+		.eq('id', userId)
+		.select();
 
 	return { error, status };
 };

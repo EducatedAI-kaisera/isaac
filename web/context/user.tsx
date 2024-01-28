@@ -1,9 +1,9 @@
 import { User } from '@supabase/supabase-js';
-import dynamic from 'next/dynamic';
+import { supabase } from '@utils/supabase';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { supabase } from '../utils/supabase';
+import type { SignInWithPasswordCredentials } from '@supabase/gotrue-js/src/lib/types';
 
 export type CustomInstructions = {
 	instructions: string;
@@ -51,20 +51,16 @@ const UserProvider = ({ children }) => {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const sessionUser = supabase.auth.user();
+	const [sessionUser, setSessionUser] = useState(null);
 
 	useEffect(() => {
-		if (!sessionUser?.id) return;
-
-		import('axios')
-			.then(({ default: axios }) => {
-				return axios.post('/api/auth/set-supabase-cookie', {
-					event: sessionUser?.id ? 'SIGNED_IN' : 'SIGNED_OUT',
-					session: supabase.auth.session(),
-				});
-			})
-			.catch(error => console.error('Error loading axios', error));
-	}, [sessionUser?.id]);
+		const loadSession = async () => {
+			const { data, error } = await supabase.auth.getSession();
+			if (error) console.error(error);
+			else setSessionUser(data.session?.user);
+		};
+		void loadSession();
+	}, []);
 
 	const { data: userProfile, isLoading } = useQuery(
 		['fetch-user-profile', sessionUser?.id],
@@ -74,10 +70,17 @@ const UserProvider = ({ children }) => {
 
 	const logoutMutation = useMutation(() => supabase.auth.signOut(), {
 		onSuccess: () => {
+			setSessionUser(null)
 			queryClient.invalidateQueries('fetch-user-profile');
 			router.push('/');
 		},
 	});
+
+	const login = async (credentials: SignInWithPasswordCredentials) => {
+		const result = await supabase.auth.signInWithPassword(credentials)
+		if (result.data.user) setSessionUser(result.data.user)
+		return result
+	}
 
 	const exposed = useMemo(
 		() => ({
@@ -91,17 +94,17 @@ const UserProvider = ({ children }) => {
 			userIsLoading: isLoading,
 			setUser: newData =>
 				queryClient.setQueryData(['userProfile', sessionUser?.id], newData),
-			login: data => supabase.auth.signIn(data),
+			login,
 			logout: () => logoutMutation.mutate(),
 			loginWithGoogle: async () => {
 				const apiUrl =
 					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-				await supabase.auth.signIn(
-					{ provider: 'google' },
-					{
+				 return await supabase.auth.signInWithOAuth({
+					provider: 'google',
+					options: {
 						redirectTo: `${apiUrl}/editor?`,
 					},
-				);
+				});
 			},
 		}),
 		[userProfile, sessionUser, isLoading],

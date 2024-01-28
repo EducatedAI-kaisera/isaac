@@ -50,7 +50,7 @@ const ResearchQuestionPlugin = () => {
 		handleSubmit,
 	} = useCompletion({
 		api: '/api/answer-research-question',
-		body: { userId: user.id, editorLanguage: language },
+		body: { userId: user?.id, editorLanguage: language },
 		onResponse: () => {
 			setShowModal(true);
 			setIsQuestionSubmitted(true);

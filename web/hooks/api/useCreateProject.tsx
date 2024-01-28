@@ -21,6 +21,7 @@ export const createProject = async ({
 				userId: userId,
 			},
 		])
+		.select()
 		.single();
 
 	return data;

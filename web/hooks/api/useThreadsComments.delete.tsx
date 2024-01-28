@@ -23,6 +23,7 @@ const deleteThreadComment = async ({
 		.from('comments')
 		.update({ comments: updatedComments })
 		.eq('id', threadId)
+		.select()
 		.single();
 
 	return data;

@@ -24,6 +24,7 @@ const createDocument = async ({
 				userId: userId,
 			},
 		])
+		.select()
 		.single();
 
 	return data;

@@ -26,7 +26,7 @@ const useGetSupabaseSignedUrl = (
 
 				if (error) throw error;
 
-				setSignedUrl(data.signedURL);
+				setSignedUrl(data.signedUrl);
 				setStatus('success');
 			} catch (error) {
 				setError(error);

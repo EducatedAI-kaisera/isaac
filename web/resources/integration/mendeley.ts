@@ -95,15 +95,18 @@ export const saveMendeleyToken = async (
 	userId: string,
 	data: MendeleyToken,
 ) => {
-	const { error, status } = await supabase.from('user_integrations').upsert([
-		{
-			id: userId,
-			mendeley: {
-				...data,
-				expired_date: new Date(new Date().getTime() + 60 * 60 * 1000),
+	const { error, status } = await supabase
+		.from('user_integrations')
+		.upsert([
+			{
+				id: userId,
+				mendeley: {
+					...data,
+					expired_date: new Date(new Date().getTime() + 60 * 60 * 1000),
+				},
 			},
-		},
-	]);
+		])
+		.select();
 
 	return { error, status };
 };
@@ -116,7 +119,8 @@ export const deleteMendeleyToken = async (userId: string) => {
 				mendeley: null,
 			},
 		])
-		.eq('id', userId);
+		.eq('id', userId)
+		.select();
 
 	return { error, status };
 };

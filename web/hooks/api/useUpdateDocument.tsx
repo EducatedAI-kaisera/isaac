@@ -19,7 +19,8 @@ export const updateDocument = async (document: DocumentUpdatePayload) => {
 	const { data } = await supabase
 		.from('documents')
 		.update({ text: document.editorStateStr })
-		.eq('id', document.id);
+		.eq('id', document.id)
+		.select();
 
 	// console.log(`${document.debug.title} updated: `, document.debug?.text);
 	return data;

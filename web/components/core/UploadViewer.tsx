@@ -35,7 +35,7 @@ const useGetSignedUrl = ({
 
 				if (error) throw error;
 
-				setSignedUrl(data.signedURL);
+				setSignedUrl(data.signedUrl);
 				setStatus('success');
 			} catch (error) {
 				setError(error);
@@ -53,13 +53,3 @@ const useGetSignedUrl = ({
 		status,
 	};
 };
-
-export function UploadViewer({ uploadId }: { uploadId: string }) {
-	const user = supabase.auth.user();
-
-	const { data: signedUrl } = useGetSignedUrl({ user, uploadId });
-
-	if (!signedUrl) return null;
-
-	return <PDFViewer path={signedUrl} />;
-}

@@ -15,6 +15,7 @@ const deleteDocumentThead = async ({ threadId }: Payload) => {
 		.from('comments')
 		.delete()
 		.eq('id', threadId)
+		.select()
 		.single();
 
 	return data;

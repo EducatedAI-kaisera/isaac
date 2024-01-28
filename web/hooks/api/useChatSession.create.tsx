@@ -22,6 +22,7 @@ const createChatSession = async ({
 				type,
 			},
 		])
+		.select()
 		.single();
 
 	return data;

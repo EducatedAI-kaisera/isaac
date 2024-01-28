@@ -42,12 +42,15 @@ export const createProject = async ({
 	projectTitle: string;
 	user: User;
 }) => {
-	const { data } = await supabase.from('projects').insert([
-		{
-			title: projectTitle,
-			userId: user?.id,
-		},
-	]);
+	const { data } = await supabase
+		.from('projects')
+		.insert([
+			{
+				title: projectTitle,
+				userId: user?.id,
+			},
+		])
+		.select();
 
 	return data;
 };
@@ -61,14 +64,17 @@ export const createDocument = async ({
 	user: User;
 	docTitle?: string;
 }) => {
-	const { data } = await supabase.from('documents').insert([
-		{
-			type: 'text_document',
-			projectId: projectId,
-			title: docTitle || 'Main Document',
-			userId: user?.id,
-		},
-	]);
+	const { data } = await supabase
+		.from('documents')
+		.insert([
+			{
+				type: 'text_document',
+				projectId: projectId,
+				title: docTitle || 'Main Document',
+				userId: user?.id,
+			},
+		])
+		.select();
 
 	return data;
 };
@@ -83,13 +89,18 @@ const renameDocument = async ({
 	const { data } = await supabase
 		.from('documents')
 		.update({ title: newTitle })
-		.eq('id', docId);
+		.eq('id', docId)
+		.select();
 
 	return data;
 };
 
 const deleteDocument = async (docId: string) => {
-	const { data } = await supabase.from('documents').delete().eq('id', docId);
+	const { data } = await supabase
+		.from('documents')
+		.delete()
+		.eq('id', docId)
+		.select();
 
 	return data;
 };
@@ -98,7 +109,8 @@ export const updateDocument = async (document: DocumentPayload) => {
 	const { data } = await supabase
 		.from('documents')
 		.update({ text: document.content })
-		.eq('id', document?.id);
+		.eq('id', document?.id)
+		.select();
 	return data;
 };
 
@@ -112,7 +124,8 @@ const renameProject = async ({
 	const { data } = await supabase
 		.from('projects')
 		.update({ title: newTitle })
-		.eq('id', projectId);
+		.eq('id', projectId)
+		.select();
 
 	return data;
 };
@@ -127,7 +140,11 @@ const getReference = async (projectId: string) => {
 };
 
 const deleteReference = async id => {
-	const { data } = await supabase.from('references').delete().eq('id', id);
+	const { data } = await supabase
+		.from('references')
+		.delete()
+		.eq('id', id)
+		.select();
 	return data;
 };
 

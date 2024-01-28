@@ -41,6 +41,7 @@ const createDocumentThread = async ({
 				],
 			},
 		])
+		.select()
 		.single();
 
 	return data;

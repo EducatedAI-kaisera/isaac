@@ -9,6 +9,7 @@ const deleteDocument = async (docId: string) => {
 		.from('documents')
 		.delete()
 		.eq('id', docId)
+		.select()
 		.single();
 
 	return data;

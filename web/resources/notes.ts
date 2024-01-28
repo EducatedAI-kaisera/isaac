@@ -19,6 +19,7 @@ export const createNote = async (newNote: CreateNotePayload) => {
 	const { data, error: err } = await supabase
 		.from('notes')
 		.insert(newNote)
+		.select()
 		.single();
 	if (err) {
 		throw err;
@@ -76,7 +77,11 @@ export const useGetNotes = (projectId: string) => {
 };
 
 const deleteNote = async (noteId: string) => {
-	const { data } = await supabase.from('notes').delete().eq('id', noteId);
+	const { data } = await supabase
+		.from('notes')
+		.delete()
+		.eq('id', noteId)
+		.select();
 	return data;
 };
 
@@ -97,7 +102,11 @@ export const useDeleteNote = () => {
 
 const updateNote = async (payload: { id: string; text: string }) => {
 	const { id, text } = payload;
-	const { data } = await supabase.from('notes').update({ text }).eq('id', id);
+	const { data } = await supabase
+		.from('notes')
+		.update({ text })
+		.eq('id', id)
+		.select();
 	return data;
 };
 

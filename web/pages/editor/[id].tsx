@@ -15,7 +15,6 @@ const ReferenceViewer = dynamic(
 );
 const EditorPage = () => {
 	const { currentProjectTabs } = useDocumentTabs();
-	// useInitializeUserUploads();
 	useHandleToastQuery();
 
 	return (
