@@ -32,9 +32,20 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 ## Prerequisites
 
 - Python 3.x
+- Nodejs
 - Supabase Account
 
-## Installation using Docker (Recommended)
+## One-line installation (Recommended)
+
+1. You can use the one-line installation script to install Isaac on your local machine. This script will bootstrap the Supabase instance and create the docker containers.
+
+```bash
+python ./setup.py
+```
+
+> Don't forget to add the OpenAI and Stripe keys to the environment variables in `api/.env` and `web/.env` to unlock related features.
+
+## Installation using Docker 
 1. Install the Supabase CLI following the instructions [here](https://supabase.com/docs/guides/cli/getting-started)
 
 2. Setup Supabase locally and migrate database schema by running the following command
