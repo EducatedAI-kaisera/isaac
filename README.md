@@ -183,7 +183,7 @@ create table isaac_messages (
 );
 
 create table profile (
-  id uuid default uuid_generate_v4() primary key,
+  id uuid not null references auth.users on delete cascade,
   created_at timestamp default now(),
   is_subscribed boolean,
   interval text,
@@ -201,6 +201,19 @@ create table profile (
   custom_instructions jsonb,
   editor_language text not null
 );
+
+create function create_profile_for_user()
+returns trigger
+language plpgsql
+security definer
+as $$
+begin
+  insert into public.profile(id, email)
+  values (new.id, new.email);
+  return new;
+end;
+$$;
+
 
 create table notes (
   id uuid default uuid_generate_v4() primary key,
@@ -241,6 +254,8 @@ create table comments (
 CREATE TYPE upload_processing_status AS ENUM ('pending', 'processing', 'completed');
 
 create extension vector with schema extensions;
+
+
 
 create table uploads (
   id uuid default uuid_generate_v4() primary key,
