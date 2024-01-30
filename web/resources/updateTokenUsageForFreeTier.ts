@@ -9,11 +9,11 @@ export const updateTokenUsageForFreeTier = async (userId: string) => {
 		.single();
 
 	if (!user) {
-		throw new Error('user profile not found');
+		return { status: 'error', message: 'user profile not found' };
 	}
 	if (!user.is_subscribed) {
 		if (user.daily_free_token >= freePlanLimits.dailyFreeToken) {
-			throw new Error('OUT_OF_TOKEN');
+			return { status: 'error', message: 'OUT_OF_TOKEN' };
 		}
 		await supabase
 			.from('profile')
@@ -21,5 +21,5 @@ export const updateTokenUsageForFreeTier = async (userId: string) => {
 			.eq('id', userId);
 	}
 
-	return user;
+	return { status: 'success', data: user };
 };

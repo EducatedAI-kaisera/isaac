@@ -13,7 +13,7 @@ export default async function (req, res) {
 	let llmModel = req.query.llmModel;
 	const user = await updateTokenUsageForFreeTier(userId);
 
-	if (!user.is_subscribed) {
+	if (user.message!="success") {
 		llmModel = AIModels.GPT_3_5;
 	}
 
