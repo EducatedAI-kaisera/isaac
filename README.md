@@ -32,18 +32,20 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 ## Prerequisites
 
 - Python 3.x
+- Nodejs
 - Supabase Account
 
-## Docker-Based Installation (Recommended)
+## One-line installation (Recommended)
 
-### Automated Setup
-Execute the following command to automatically configure the development environment:
+1. You can use the one-line installation script to install Isaac on your local machine. This script will bootstrap the Supabase instance and create the docker containers.
 
 ```bash
-sh dev.sh
+python ./setup.py
 ```
 
-### Manual Setup
+> Don't forget to add the OpenAI and Stripe keys to the environment variables in `api/.env` and `web/.env` to unlock related features.
+
+## Installation using Docker 
 1. Install the Supabase CLI following the instructions [here](https://supabase.com/docs/guides/cli/getting-started)
 
 2. Setup Supabase locally and migrate database schema by running the following command
@@ -181,7 +183,7 @@ create table isaac_messages (
 );
 
 create table profile (
-  id uuid default uuid_generate_v4() primary key,
+  id uuid not null references auth.users on delete cascade,
   created_at timestamp default now(),
   is_subscribed boolean,
   interval text,
@@ -199,6 +201,19 @@ create table profile (
   custom_instructions jsonb,
   editor_language text not null
 );
+
+create function create_profile_for_user()
+returns trigger
+language plpgsql
+security definer
+as $$
+begin
+  insert into public.profile(id, email)
+  values (new.id, new.email);
+  return new;
+end;
+$$;
+
 
 create table notes (
   id uuid default uuid_generate_v4() primary key,
@@ -239,6 +254,8 @@ create table comments (
 CREATE TYPE upload_processing_status AS ENUM ('pending', 'processing', 'completed');
 
 create extension vector with schema extensions;
+
+
 
 create table uploads (
   id uuid default uuid_generate_v4() primary key,
