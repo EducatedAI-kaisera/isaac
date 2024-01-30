@@ -34,7 +34,16 @@ We're on a mission to make Isaac the go-to tool for researchers, scientists, and
 - Python 3.x
 - Supabase Account
 
-## Installation using Docker (Recommended)
+## Docker-Based Installation (Recommended)
+
+### Automated Setup
+Execute the following command to automatically configure the development environment:
+
+```bash
+sh dev.sh
+```
+
+### Manual Setup
 1. Install the Supabase CLI following the instructions [here](https://supabase.com/docs/guides/cli/getting-started)
 
 2. Setup Supabase locally and migrate database schema by running the following command
