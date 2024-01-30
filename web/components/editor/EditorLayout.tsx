@@ -3,7 +3,6 @@ import { EquationModal } from '@components/editor/EquationModal';
 import { useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
 import { useBreakpoint } from '@hooks/misc/useBreakPoint';
-import useAuthRedirect from '@hooks/useAuthRedirect';
 import useDocumentTabs, { paperTypeTabs } from '@hooks/useDocumentTabs';
 import useEditorShortcut from '@hooks/useEditorShortcut';
 import { useElementSize } from '@mantine/hooks';
@@ -64,7 +63,6 @@ const CreateNewProjectModal = dynamic(
  * Layout Component for Editor page that would contain the sidebar
  */
 const EditorLayout = ({ children }: Props) => {
-	useAuthRedirect();
 	useEditorShortcut();
 
 	const { activeDocument } = useDocumentTabs();
@@ -110,7 +108,8 @@ const EditorLayout = ({ children }: Props) => {
 			{isGetProjectsLoading ? (
 				<div className="flex h-screen justify-center items-center w-screen">
 					<div className="inline-flex items-center text-muted-foreground">
-						<Loader2 strokeWidth={1.2} size={30} className="animate-spin"/><span className="ml-2 text-2xl"> Loading...</span>
+						<Loader2 strokeWidth={1.2} size={30} className="animate-spin" />
+						<span className="ml-2 text-2xl"> Loading...</span>
 					</div>
 				</div>
 			) : (
