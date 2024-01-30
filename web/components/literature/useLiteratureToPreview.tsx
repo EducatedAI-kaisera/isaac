@@ -10,21 +10,23 @@ const useLiteratureToPreview = (doi: string) => {
 	const [literaturePreview, setLiteraturePreview] =
 		useState<LiteraturePreview>();
 
-	const { refetch, isError, data } = useGetLiteratureDetails(doi);
+	const { refetch, data, isError } = useGetLiteratureDetails(doi);
 
 	if (isError) {
 		toast.error('Failed to fetch literature preview');
 	}
 
-	if (data) {
-		const { openAccessPdf, externalIds, ...lit } = data;
-		setLiteraturePreview({
-			...lit,
-			pdfUrl: openAccessPdf?.url,
-			doi: externalIds?.DOI,
-			type: ReferenceType.STANDARD,
-		});
-	}
+	useEffect(() => {
+		if (data) {
+			const { openAccessPdf, externalIds, ...lit } = data;
+			setLiteraturePreview({
+				...lit,
+				pdfUrl: openAccessPdf?.url,
+				doi: externalIds?.DOI,
+				type: ReferenceType.STANDARD,
+			});
+		}
+	}, [data]);
 
 	useEffect(() => {
 		if (doi === undefined) {

@@ -56,16 +56,19 @@ const LiteratureSearchTab = ({ active }: Props) => {
 		isError,
 	} = useGetLiterature(literatureSearchPayload);
 
-	if (literatureSearchResult) {
-		setSearchedResultInLocalStorage({
-			...searchedResultInLocalStorage,
-			[literatureSearchPayload.keyword]: literatureSearchResult,
-		});
-		updateLiteratureSearchTab(
-			literatureSearchPayload.keyword,
-			activeDocument.source,
-		);
-	}
+	useEffect(() => {
+		if (literatureSearchResult) {
+			setSearchedResultInLocalStorage({
+				...searchedResultInLocalStorage,
+				[literatureSearchPayload.keyword]: literatureSearchResult,
+			});
+			updateLiteratureSearchTab(
+				literatureSearchPayload.keyword,
+				activeDocument.source,
+			);
+		}
+	}, [literatureSearchResult, literatureSearchPayload]);
+
 
 	if (isError) {
 		toast.error('Error fetching literature');
