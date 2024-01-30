@@ -58,7 +58,7 @@ export async function POST(req: Request) {
 
 		const user = await updateTokenUsageForFreeTier(userId);
 
-		if (!user.is_subscribed) {
+		if (!user.data.is_subscribed) {
 			llmModel = AIModels.GPT_3_5;
 		}
 
