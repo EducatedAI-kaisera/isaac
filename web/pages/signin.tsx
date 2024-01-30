@@ -15,9 +15,9 @@ import mixpanel from 'mixpanel-browser';
 import { useUser } from '../context/user';
 
 export default function Signin() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const router = useRouter();
 
 	const { login, loginWithGoogle } = useUser();
@@ -151,11 +151,7 @@ export default function Signin() {
 						onClick={signInWithGoogle}
 						className="bg-white"
 					>
-						{isLoading ? (
-							<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-						) : (
-							<Icons.google className="mr-2 h-4 w-4" />
-						)}{' '}
+						<Icons.google className="mr-2 h-4 w-4" />
 						Google
 					</LandingButton>
 				</div>
