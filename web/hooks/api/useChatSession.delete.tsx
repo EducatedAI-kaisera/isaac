@@ -12,7 +12,7 @@ import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChatSession } from 'types/chat';
 
 const deleteChatSession = async ({ sessionId }: { sessionId: string }) => {
@@ -35,8 +35,9 @@ const useDeleteChatSession = (params?: {
 	}>();
 	const { closeTab } = useDocumentTabs();
 	const queryClient = useQueryClient();
-	const { mutateAsync } = useMutation(deleteChatSession, {
-		mutationKey: 'delete-chat-session',
+	const { mutateAsync } = useMutation({
+		mutationFn: deleteChatSession,
+		mutationKey: ['delete-chat-session'],
 		onMutate: () => {
 			mixpanel.track('Deleted Chat Session');
 			setShowConfirmDialog(undefined);
@@ -46,7 +47,7 @@ const useDeleteChatSession = (params?: {
 				params.onSuccessCb(chatSession);
 			}
 			toast.success('Chat session deleted!');
-			queryClient.invalidateQueries(['get-chat-sessions']);
+			queryClient.invalidateQueries({ queryKey: ['get-chat-sessions'] });
 			closeTab(chatSession.id);
 		},
 		onError: error => {

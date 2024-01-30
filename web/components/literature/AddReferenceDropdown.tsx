@@ -23,18 +23,23 @@ type Props = {
 };
 
 const AddReferenceDropdown = ({ displayAsButtons }: Props) => {
-	const { data: userIntegration } = useGetUserIntegration();
+	const { data: userIntegration, isError } = useGetUserIntegration();
 	const { projectId } = useGetEditorRouter();
 	// const { isOpen: tutorialMode, setCurrentStep } = useTour();
 	const { user } = useUser();
 
 	const showRAGDisabledToast = () => {
-		toast('Document upload is temporarily unavailable due to system upgrades. \n\n  We apologize for the inconvenience and appreciate your patience. ', {
-			icon: 'ℹ️',
-		});
+		toast(
+			'Document upload is temporarily unavailable due to system upgrades. \n\n  We apologize for the inconvenience and appreciate your patience. ',
+			{
+				icon: 'ℹ️',
+			},
+		);
+	};
+
+	if (isError) {
+		toast.error("Error loading user's integrations");
 	}
-
-
 
 	const setShowMendeleyModal = useLiteratureReferenceStore(
 		s => s.setShowMendeleyModal,

@@ -1,7 +1,6 @@
-import { TextDocument } from '@hooks/api/useGetDocuments';
 import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
+import { TextDocument } from '@hooks/api/useGetDocuments';
 
 // Resources
 export const getDocumentById = async ({
@@ -18,16 +17,9 @@ export const getDocumentById = async ({
 };
 
 export const useGetDocumentById = (documentId: string) => {
-	return useQuery(
-		['get-document', documentId],
-		() => getDocumentById({ documentId }),
-		{
-			enabled: !!documentId,
-			onError: error => {
-				console.log({ error });
-				//TODO: need to show a more clearer message
-				toast.error('There is something wrong. Please try again.');
-			},
-		},
-	);
+	return useQuery({
+        queryKey: ['get-document', documentId],
+        queryFn: () => getDocumentById({ documentId }),
+        enabled: !!documentId
+    });
 };

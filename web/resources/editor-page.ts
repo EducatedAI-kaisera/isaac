@@ -1,8 +1,7 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
-	Author,
 	ReferenceLiterature,
 	UploadedFile,
 } from 'types/literatureReference.type';
@@ -160,24 +159,18 @@ const getUserUploads = async (userId: string, projectId: string) => {
 
 // Hooks
 export const useGetDocuments = (user: User) => {
-	return useQuery(['get-documents', user], () => getDocuments({ user }), {
+	return useQuery({
+		queryKey: ['get-documents', user],
+		queryFn: () => getDocuments({ user }),
 		enabled: !!user,
-		onError: error => {
-			console.log({ error });
-			//TODO: need to show a more clearer message
-			toast.error('There is something wrong. Please try again.');
-		},
 	});
 };
 
 export const useGetProjects = (user: User) => {
-	return useQuery(['get-projects', user], () => getProjects({ user }), {
+	return useQuery({
+		queryKey: ['get-projects', user],
+		queryFn: () => getProjects({ user }),
 		enabled: !!user,
-		onError: error => {
-			console.log({ error });
-			//TODO: need to show a more clearer message
-			toast.error('There is something wrong. Please try again.');
-		},
 	});
 };
 
@@ -187,12 +180,15 @@ export const useCreateProject = ({
 	onSuccessCb: (project: any[]) => void;
 }) => {
 	const queryClient = useQueryClient();
-	return useMutation(createProject, {
-		mutationKey: 'create-project',
+	return useMutation({
+		mutationFn: createProject,
+		mutationKey: ['create-project'],
 		onSuccess: project => {
 			onSuccessCb(project);
 			toast.success('Project created successfully!');
-			queryClient.invalidateQueries(['get-projects']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-projects'],
+			});
 		},
 		onError: error => {
 			console.log({ error });
@@ -206,15 +202,18 @@ export const useCreateDocument = (params?: {
 	onSuccessCb?: (document: any[]) => void;
 }) => {
 	const queryClient = useQueryClient();
-	return useMutation(createDocument, {
-		mutationKey: 'create-document',
+	return useMutation({
+		mutationFn: createDocument,
+		mutationKey: ['create-document'],
 		onSuccess: document => {
 			if (params?.onSuccessCb) {
 				params.onSuccessCb(document);
 			}
 
 			toast.success('Document created successfully!');
-			queryClient.invalidateQueries(['get-documents']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-documents'],
+			});
 			//TODO: need to close model
 		},
 		onError: error => {
@@ -231,13 +230,18 @@ export const useRenameDocument = ({
 	onSuccessCb: () => void;
 }) => {
 	const queryClient = useQueryClient();
-	return useMutation(renameDocument, {
-		mutationKey: 'rename-document',
+	return useMutation({
+		mutationFn: renameDocument,
+		mutationKey: ['rename-document'],
 		onSuccess: () => {
 			onSuccessCb();
 			toast.success('Document renamed successfully!');
-			queryClient.invalidateQueries(['get-documents']);
-			queryClient.invalidateQueries(['get-document']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-documents'],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['get-document'],
+			});
 			//TODO: need to close model
 		},
 		onError: error => {
@@ -250,11 +254,14 @@ export const useRenameDocument = ({
 
 export const useDeleteDocument = () => {
 	const queryClient = useQueryClient();
-	return useMutation(deleteDocument, {
-		mutationKey: 'delete-document',
+	return useMutation({
+		mutationFn: deleteDocument,
+		mutationKey: ['delete-document'],
 		onSuccess: () => {
 			toast.success('Document deleted successfully!');
-			queryClient.invalidateQueries(['get-documents']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-documents'],
+			});
 			//TODO: need to close model
 		},
 		onError: error => {
@@ -271,12 +278,15 @@ export const useRenameProject = ({
 	onSuccessCb: () => void;
 }) => {
 	const queryClient = useQueryClient();
-	return useMutation(renameProject, {
-		mutationKey: 'rename-project',
+	return useMutation({
+		mutationFn: renameProject,
+		mutationKey: ['rename-project'],
 		onSuccess: () => {
 			onSuccessCb();
 			toast.success('Project renamed successfully!');
-			queryClient.invalidateQueries(['get-projects']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-projects'],
+			});
 			//TODO: need to close model
 		},
 		onError: error => {
@@ -289,16 +299,21 @@ export const useRenameProject = ({
 
 export const useUpdateDocument = () => {
 	const queryClient = useQueryClient();
-	return useMutation(updateDocument, {
-		mutationKey: 'update-document',
+	return useMutation({
+		mutationFn: updateDocument,
+		mutationKey: ['update-document'],
 		onMutate: data => {
 			queryClient.cancelQueries({
 				queryKey: ['get-documents', 'get-document'],
 			});
 		},
 		onSuccess: data => {
-			queryClient.invalidateQueries(['get-documents']);
-			queryClient.invalidateQueries(['get-document']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-documents'],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['get-document'],
+			});
 		},
 		onError: error => {
 			console.log({ error });
@@ -308,47 +323,31 @@ export const useUpdateDocument = () => {
 	});
 };
 
-export const useGetReference = (
-	projectId: string,
-	options?: { onSuccess?: (data: ReferenceLiterature[]) => void } | undefined,
-) => {
-	return useQuery(['get-reference', projectId], () => getReference(projectId), {
+export const useGetReference = (projectId: string) => {
+	return useQuery({
+		queryKey: ['get-reference', projectId],
+		queryFn: () => getReference(projectId),
 		enabled: !!projectId,
-		onSuccess: options?.onSuccess,
-		onError: error => {
-			console.log({ error });
-			//TODO: need to show a more clearer message
-			toast.error('There is something wrong. Please try again.');
-		},
 	});
 };
 
-export const useGetUserUploads = (
-	userId: string,
-	projectId: string,
-	options?: { onSuccess?: (data: UploadedFile[]) => void } | undefined,
-) => {
-	return useQuery(
-		['get-user-uploads', userId, projectId],
-		() => getUserUploads(userId, projectId),
-		{
-			enabled: !!userId && !!projectId,
-			onSuccess: options?.onSuccess,
-			onError: error => {
-				console.log({ error });
-				//TODO: need to show a more clearer message
-				toast.error('There is something wrong. Please try again.');
-			},
-		},
-	);
+export const useGetUserUploads = (userId: string, projectId: string) => {
+	return useQuery({
+		queryKey: ['get-user-uploads', userId, projectId],
+		queryFn: () => getUserUploads(userId, projectId),
+		enabled: !!userId && !!projectId,
+	});
 };
 
 export const useDeleteReference = () => {
 	const queryClient = useQueryClient();
-	return useMutation(deleteReference, {
-		mutationKey: 'delete-reference',
+	return useMutation({
+		mutationFn: deleteReference,
+		mutationKey: ['delete-reference'],
 		onSuccess: () => {
-			queryClient.invalidateQueries(['get-reference']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-reference'],
+			});
 			toast.success('Reference removed');
 		},
 		onError: error => {

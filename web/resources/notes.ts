@@ -1,7 +1,7 @@
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 type CreateNotePayload = {
 	projectId: string;
@@ -35,11 +35,13 @@ type Callbacks = {
 export default function useCreateNote(cb?: Callbacks) {
 	const { projectId } = useGetEditorRouter();
 	const queryClient = useQueryClient();
-	const mutationKey = 'create-note';
-	return useMutation((text: string) => createNote({ text, projectId }), {
-		mutationKey,
+	return useMutation({
+		mutationFn: (text: string) => createNote({ text, projectId }),
+		mutationKey: ['create-note'],
 		onSuccess: note => {
-			queryClient.invalidateQueries(['get-notes']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-notes'],
+			});
 			toast.success('Note Created!');
 			cb?.onSuccess?.(note);
 		},
@@ -66,13 +68,10 @@ export const getNotes = async (projectId: string) => {
 };
 
 export const useGetNotes = (projectId: string) => {
-	return useQuery(['get-notes', projectId], () => getNotes(projectId), {
+	return useQuery({
+		queryKey: ['get-notes', projectId],
+		queryFn: () => getNotes(projectId),
 		enabled: !!projectId,
-		onError: error => {
-			console.log({ error });
-			//TODO: need to show a more clearer message
-			toast.error('There is something wrong. Please try again.');
-		},
 	});
 };
 
@@ -87,11 +86,14 @@ const deleteNote = async (noteId: string) => {
 
 export const useDeleteNote = () => {
 	const queryClient = useQueryClient();
-	return useMutation(deleteNote, {
-		mutationKey: 'delete-note',
+	return useMutation({
+		mutationFn: deleteNote,
+		mutationKey: ['delete-note'],
 		onSuccess: () => {
 			toast.success('Note deleted successfully!');
-			queryClient.invalidateQueries(['get-notes']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-notes'],
+			});
 		},
 		onError: error => {
 			console.log({ error });
@@ -112,10 +114,13 @@ const updateNote = async (payload: { id: string; text: string }) => {
 
 export const useUpdateNote = () => {
 	const queryClient = useQueryClient();
-	return useMutation(updateNote, {
-		mutationKey: 'update-note',
+	return useMutation({
+		mutationFn: updateNote,
+		mutationKey: ['update-note'],
 		onSuccess: () => {
-			queryClient.invalidateQueries(['get-notes']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-notes'],
+			});
 		},
 		onError: error => {
 			console.log({ error });

@@ -1,6 +1,6 @@
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
 
 export type DocumentUpdatePayload = {
@@ -28,8 +28,9 @@ export const updateDocument = async (document: DocumentUpdatePayload) => {
 
 const useUpdateDocument = () => {
 	const queryClient = useQueryClient();
-	const mutate = useMutation(updateDocument, {
-		mutationKey: 'update-document',
+	const mutate = useMutation({
+		mutationFn: updateDocument,
+		mutationKey: ['update-document'],
 		onError: error => {
 			console.log({ error });
 			//TODO: need to show a more clearer message
@@ -41,7 +42,9 @@ const useUpdateDocument = () => {
 			//
 		},
 		onSuccess: (data, input) => {
-			queryClient.invalidateQueries(['get-document', input.id]);
+			queryClient.invalidateQueries({
+                queryKey: ['get-document', input.id]
+            });
 		},
 	});
 

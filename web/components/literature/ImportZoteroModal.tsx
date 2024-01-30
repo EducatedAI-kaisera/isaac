@@ -1,4 +1,3 @@
-import { ReferenceTypeIconsMap } from '@components/core/IconMap';
 import { Button } from '@components/ui/button';
 import {
 	Dialog,
@@ -14,13 +13,13 @@ import {
 } from '@components/ui/folders-and-files-tree';
 import { useLiteratureReferenceStore } from '@context/literatureReference.store';
 import useAddReference from '@hooks/api/useAddToReference';
-import { useGetUserIntegration } from '@hooks/api/useUserIntegration.get';
 import { useGetZoteroCollection } from '@hooks/api/zotero/useZoteroCollection.get';
 import { useGetZoteroDocuments } from '@hooks/api/zotero/useZoteroDocuments.get';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { ZoteroToIsaacReferenceTypeMap } from '@utils/referenceTypeMapper';
 import { difference, every, includes, union } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { ZoteroDocument } from 'types/integration';
 import { ReferenceSource, ReferenceType } from 'types/literatureReference.type';
 
@@ -31,7 +30,11 @@ const ImportZoteroModal = () => {
 	const setShowZoteroModal = useLiteratureReferenceStore(
 		s => s.setShowZoteroModal,
 	);
-	const { data: zoteroFolders, refetch } = useGetZoteroCollection();
+	const { data: zoteroFolders, refetch, isError } = useGetZoteroCollection();
+
+	if (isError) {
+		toast.error('Error fetching documents');
+	}
 
 	const { mutateAsync: addReference } = useAddReference();
 
@@ -119,9 +122,13 @@ const FolderAccordion = ({
 	onDocumentAdded,
 	onDocumentRemove,
 }: FolderAccordionProps) => {
-	const { data: _documents } = useGetZoteroDocuments(id);
+	const { data: _documents, isError } = useGetZoteroDocuments(id);
 	const documents = _documents?.filter(i => !!i.data.title); // filter out document out of spec
 	const documentIds = documents?.map(i => i.key);
+
+	if (isError) {
+		toast.error('Error loading documents');
+	}
 
 	const handleSelectAll = (checked: boolean) => {
 		if (documents) {

@@ -5,6 +5,7 @@ import { LiteratureResponse } from '@resources/literature.api';
 import { LocalStorageKeys } from '@utils/localStorageKeys';
 import { omit } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
+import toast from 'react-hot-toast';
 
 export enum TabType {
 	SemanticScholar = 'SemanticScholar',
@@ -47,7 +48,7 @@ export enum UniqueTabSources {
 
 // ? Is this the right approach ? should I be using Zustand state
 const useDocumentTabs = () => {
-	const { data: projectList } = useGetProjects();
+	const { data: projectList, isError } = useGetProjects();
 	const { projectId } = useGetEditorRouter();
 	const [searchedResultInLocalStorage, setSearchedResultInLocalStorage] =
 		useLocalStorage<Record<string, LiteratureResponse>>({
@@ -60,6 +61,10 @@ const useDocumentTabs = () => {
 			key: LocalStorageKeys.PROJECT_TABS,
 			defaultValue: null, // this cannot be set undefined, else it'll overlaps
 		});
+
+	if (isError) {
+		toast.error('Error loading projects');
+	}
 
 	// Initialize if doesn't exist
 	useEffect(() => {

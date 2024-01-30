@@ -26,6 +26,7 @@ import {
 import clsx from 'clsx';
 import { Bookmark } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import {
 	ReferenceSource,
 	SemanticScholarReference,
@@ -52,22 +53,32 @@ const LiteratureSearchTab = ({ active }: Props) => {
 		data: literatureSearchResult,
 		isLoading: litSearchLoading,
 		isFetching: litSearchFetching,
-	} = useGetLiterature(literatureSearchPayload, {
-		onSuccess: data => {
-			setSearchedResultInLocalStorage({
-				...searchedResultInLocalStorage,
-				[literatureSearchPayload.keyword]: data,
-			});
-			updateLiteratureSearchTab(
-				literatureSearchPayload.keyword,
-				activeDocument.source,
-			);
-		},
-	});
+		isError,
+	} = useGetLiterature(literatureSearchPayload);
 
-	const { data: savedReferenceList } = useGetReference(projectId);
+	if (literatureSearchResult) {
+		setSearchedResultInLocalStorage({
+			...searchedResultInLocalStorage,
+			[literatureSearchPayload.keyword]: literatureSearchResult,
+		});
+		updateLiteratureSearchTab(
+			literatureSearchPayload.keyword,
+			activeDocument.source,
+		);
+	}
+
+	if (isError) {
+		toast.error('Error fetching literature');
+	}
+
+	const { data: savedReferenceList, isError: errorLoadingReferences } =
+		useGetReference(projectId);
 	const { mutateAsync: addReference } = useAddReference();
 	const { mutateAsync: removeReference } = useDeleteReference();
+
+	if (errorLoadingReferences) {
+		toast.error('Error loading references');
+	}
 
 	const handleSaveReference = (lit: SemanticScholarReference) => {
 		addReference({

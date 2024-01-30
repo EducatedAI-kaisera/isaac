@@ -21,10 +21,14 @@ const GlobalSettingsSection = () => {
 	const router = useRouter();
 	const email = user?.email ?? '';
 
-	const { data: userIntegration } = useGetUserIntegration();
+	const { data: userIntegration, isError } = useGetUserIntegration();
 	const { mutateAsync: mutateDeleteUser } = useDeleteUser({
 		onSuccessCb: () => router.push('/'),
 	});
+
+	if (isError) {
+		toast.error("Error loading user's integrations");
+	}
 
 	const loadPortal = async () => {
 		const { data } = await axios.get('/api/portal');

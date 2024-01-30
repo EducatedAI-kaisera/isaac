@@ -16,6 +16,7 @@ import { Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { ReactNode, useEffect } from 'react';
 import Sidebar from './Sidebar';
+import toast from 'react-hot-toast';
 
 type Props = {
 	children: ReactNode; // dedicated for the content in the middle
@@ -72,8 +73,12 @@ const EditorLayout = ({ children }: Props) => {
 	const { ref: editorRef, width: editorWidth } = useElementSize();
 	const { width: editorMobileWidth } = useElementSize();
 	const { isAboveMd, isBelowMd } = useBreakpoint('md');
-	const { data: projects, isLoading: isGetProjectsLoading } =
+	const { data: projects, isLoading: isGetProjectsLoading, isError } =
 		useGetProjects(user);
+
+	if (isError) {
+		toast.error("Error loading projects");
+	}
 
 	const uiStore = useUIStore(s => ({
 		activePanel: s.activePanel,

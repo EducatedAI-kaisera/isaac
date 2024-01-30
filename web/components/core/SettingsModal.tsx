@@ -28,10 +28,14 @@ export default function SettingsModal() {
 	const id = user?.id ?? '';
 	const [openConfirmedModal, setOpenConfirmedModal] = useState<boolean>(false);
 
-	const { data: userIntegration } = useGetUserIntegration();
+	const { data: userIntegration, isError } = useGetUserIntegration();
 	const { mutateAsync: mutateDeleteUser } = useDeleteUser({
 		onSuccessCb: () => router.push('/'),
 	});
+
+	if (isError) {
+		toast.error("Error loading user's integrations");
+	}
 
 	// TODO: Fix subscription
 	const loadPortal = async () => {
