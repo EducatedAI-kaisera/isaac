@@ -8,11 +8,11 @@ import { cn } from '@components/lib/utils';
 import { LandingButton } from '@components/ui/button-landing';
 import { LandingInput } from '@components/ui/input-landing';
 import { Label } from '@components/ui/label';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 
 import mixpanel from 'mixpanel-browser';
 import { useUser } from '../context/user';
-import { supabase } from '../utils/supabase';
 
 export default function Signup() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +20,7 @@ export default function Signup() {
 	const [password, setPassword] = useState('');
 	const router = useRouter();
 	const { user, loginWithGoogle } = useUser();
+	const supabase = createClientComponentClient();
 
 	async function signUpWithEmail(e) {
 		e.preventDefault();
@@ -56,7 +57,6 @@ export default function Signup() {
 		if (user) {
 			router.push('/editor');
 		}
-
 	}, [router, user]);
 
 	return (
