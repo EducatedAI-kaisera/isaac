@@ -1,8 +1,8 @@
 import { SignInWithPasswordCredentials, User } from '@supabase/supabase-js';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export type CustomInstructions = {
 	instructions: string;
@@ -26,7 +26,7 @@ export type Profile = {
 };
 
 const Context = createContext<{
-	user: User & Partial<Profile> & { accessToken: string; refreshToken: string };
+	user: User & Partial<Profile>;
 	userIsLoading: boolean;
 	setUser?: (user: User & Partial<Profile>) => void;
 	login?: (data: any) => Promise<any>;
@@ -56,12 +56,7 @@ const UserProvider = ({ children }) => {
 		const loadSession = async () => {
 			const { data, error } = await supabase.auth.getSession();
 			if (error) console.error(error);
-			else
-				setSessionUser({
-					...data.session?.user,
-					accessToken: data.session?.access_token,
-					refreshToken: data.session?.refresh_token,
-				});
+			else setSessionUser(data.session?.user);
 		};
 		void loadSession();
 	}, []);
@@ -69,23 +64,23 @@ const UserProvider = ({ children }) => {
 	const { data: userProfile, isLoading } = useQuery({
 		queryKey: ['fetch-user-profile', sessionUser?.id],
 		queryFn: () => fetchUserProfile(sessionUser?.id),
-		enabled: !!sessionUser,
-	});
+		enabled: !!sessionUser
+  });
 
 	const logoutMutation = useMutation({
 		mutationFn: () => supabase.auth.signOut(),
 		onSuccess: () => {
-			setSessionUser(null);
+			setSessionUser(null)
 			queryClient.invalidateQueries({ queryKey: ['fetch-user-profile'] });
 			router.push('/');
 		},
 	});
 
 	const login = async (credentials: SignInWithPasswordCredentials) => {
-		const result = await supabase.auth.signInWithPassword(credentials);
-		if (result.data.user) setSessionUser(result.data.user);
-		return result;
-	};
+		const result = await supabase.auth.signInWithPassword(credentials)
+		if (result.data.user) setSessionUser(result.data.user)
+		return result
+	}
 
 	const exposed = useMemo(
 		() => ({
@@ -94,7 +89,7 @@ const UserProvider = ({ children }) => {
 						...sessionUser,
 						...userProfile,
 						username: sessionUser?.email.split('@')[0],
-					}
+				  }
 				: undefined,
 			userIsLoading: isLoading,
 			setUser: newData =>
@@ -104,7 +99,7 @@ const UserProvider = ({ children }) => {
 			loginWithGoogle: async () => {
 				const apiUrl =
 					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-				return await supabase.auth.signInWithOAuth({
+				 return await supabase.auth.signInWithOAuth({
 					provider: 'google',
 					options: {
 						redirectTo: `${apiUrl}/editor?`,

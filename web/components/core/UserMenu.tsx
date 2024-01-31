@@ -8,22 +8,15 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import { useUser } from '@context/user';
 import axios from 'axios';
 import { CreditCard, LogOut } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 const UserMenu = ({ email = '', logout, avatarUrl }) => {
 	const router = useRouter();
-	const { user } = useUser();
 
 	const loadPortal = async () => {
-		const { data } = await axios.get('/api/portal', {
-			headers: {
-				'X-Access-Token': user?.accessToken,
-				'X-Refresh-Token': user?.refreshToken,
-			},
-		});
+		const { data } = await axios.get('/api/portal');
 		router.push(data.url);
 	};
 

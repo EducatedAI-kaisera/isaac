@@ -1,7 +1,6 @@
 import { Logomark } from '@components/landing/Logo';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
-import { useUser } from '@context/user';
 import { loadStripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -50,19 +49,13 @@ export function PricingCard({
 	priceId,
 	oldPrice,
 }: PricingCardProps) {
-	const { user } = useUser();
 	const processSubscription = priceId => async () => {
 		const mixpanel = (await import('mixpanel-browser')).default;
 		mixpanel.track('Clicked Subscribe');
 		const mode = name === '7 days plan' ? 'payment' : 'subscription';
-		const userId = user?.id;
 		const axios = (await import('axios')).default;
 		const { data } = await axios.get(`/api/subscription/${priceId}`, {
-			headers: {
-				'X-Access-Token': user?.accessToken,
-				'X-Refresh-Token': user?.refreshToken,
-			},
-			params: { mode, userId },
+			params: { mode },
 		});
 		const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 		await stripe.redirectToCheckout({ sessionId: data.id });
