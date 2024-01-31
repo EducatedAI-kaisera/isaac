@@ -39,12 +39,7 @@ export default function SettingsModal() {
 
 	// TODO: Fix subscription
 	const loadPortal = async () => {
-		const { data } = await axios.get('/api/portal', {
-			headers: {
-				'X-Access-Token': user?.accessToken,
-				'X-Refresh-Token': user?.refreshToken,
-			},
-		});
+		const { data } = await axios.get('/api/portal');
 		router.push(data.url);
 	};
 

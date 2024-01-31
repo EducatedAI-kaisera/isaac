@@ -1,28 +1,26 @@
+import cookie from 'cookie';
 import initStripe from 'stripe';
-import getSupabaseServerClient from '../../../server/util';
+import { supabase } from '../../../utils/supabase';
 
 const handler = async (req, res) => {
-	const accessToken = req.headers['x-access-token'];
-	const refreshToken = req.headers['x-refresh-token'];
-
-	const supabase = getSupabaseServerClient(req, res);
-	const {
-		data: { user },
-	} = await supabase.auth.setSession({
-		access_token: accessToken,
-		refresh_token: refreshToken,
-	});
+	const { user } = await supabase.auth.api.getUserByCookie(req);
 
 	if (!user) {
 		return res.status(401).send('Unauthorized');
 	}
 
+	const token = cookie.parse(req.headers.cookie)['sb:token'];
+
+	supabase.auth.session = () => ({
+		access_token: token,
+	});
+
 	const {
-		data
+		data: { stripe_customer },
 	} = await supabase
 		.from('profile')
 		.select('stripe_customer')
-		.eq('id', req.query.userId)
+		.eq('id', user?.id)
 		.single();
 
 	const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
@@ -36,7 +34,7 @@ const handler = async (req, res) => {
 	];
 
 	const session = await stripe.checkout.sessions.create({
-		customer: data.stripe_customer,
+		customer: stripe_customer,
 		mode: req.query.mode,
 		payment_method_types: ['card', 'us_bank_account', 'sepa_debit'],
 		line_items: lineItems,
