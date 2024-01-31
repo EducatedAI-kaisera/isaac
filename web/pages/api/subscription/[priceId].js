@@ -18,11 +18,11 @@ const handler = async (req, res) => {
 	}
 
 	const {
-		data: { stripe_customer },
+		data
 	} = await supabase
 		.from('profile')
 		.select('stripe_customer')
-		.eq('id', user?.id)
+		.eq('id', req.query.userId)
 		.single();
 
 	const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
@@ -36,7 +36,7 @@ const handler = async (req, res) => {
 	];
 
 	const session = await stripe.checkout.sessions.create({
-		customer: stripe_customer,
+		customer: data.stripe_customer,
 		mode: req.query.mode,
 		payment_method_types: ['card', 'us_bank_account', 'sepa_debit'],
 		line_items: lineItems,

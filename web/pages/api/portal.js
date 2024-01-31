@@ -17,18 +17,16 @@ const handler = async (req, res) => {
 		return res.status(401).send('Unauthorized');
 	}
 
-	const {
-		data: { stripe_customer },
-	} = await supabase
+	const { data } = await supabase
 		.from('profile')
 		.select('stripe_customer')
-		.eq('id', user?.id)
+		.eq('id', req.query.userId)
 		.single();
 
 	const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
 
 	const session = await stripe.billingPortal.sessions.create({
-		customer: stripe_customer,
+		customer: data.stripe_customer,
 	});
 
 	res.send({

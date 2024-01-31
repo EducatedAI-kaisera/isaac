@@ -55,13 +55,14 @@ export function PricingCard({
 		const mixpanel = (await import('mixpanel-browser')).default;
 		mixpanel.track('Clicked Subscribe');
 		const mode = name === '7 days plan' ? 'payment' : 'subscription';
+		const userId = user?.id;
 		const axios = (await import('axios')).default;
 		const { data } = await axios.get(`/api/subscription/${priceId}`, {
 			headers: {
 				'X-Access-Token': user?.accessToken,
 				'X-Refresh-Token': user?.refreshToken,
 			},
-			params: { mode },
+			params: { mode, userId },
 		});
 		const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 		await stripe.redirectToCheckout({ sessionId: data.id });

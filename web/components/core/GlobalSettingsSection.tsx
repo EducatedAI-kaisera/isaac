@@ -30,7 +30,11 @@ const GlobalSettingsSection = () => {
 	}
 
 	const loadPortal = async () => {
-		const { data } = await axios.get('/api/portal', {
+		const params = new URLSearchParams({
+			userId: user?.id, // Replace with the actual user ID or other data
+		});
+
+		const { data } = await axios.get(`/api/portal?${params.toString()}`, {
 			headers: {
 				'X-Access-Token': user?.accessToken,
 				'X-Refresh-Token': user?.refreshToken,
