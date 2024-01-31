@@ -90,8 +90,6 @@ def setup_environmental_variables():
 
     with open("./web/.env", "r+") as file:
         file_data = file.read()
-        # required for supabase middleware fix
-        file_data = re.sub(r"NEXT_PUBLIC_SUPABASE_ANON_KEY=.*", f"NEXT_PUBLIC_SUPABASE_ANON_KEY={supabase_anon_key}", file_data)
         file_data = re.sub(r"NEXT_PUBLIC_SUPABASE_KEY=.*", f"NEXT_PUBLIC_SUPABASE_KEY={supabase_anon_key}", file_data)
         file_data = re.sub(r"SUPABASE_SERVICE_KEY=.*", f"SUPABASE_SERVICE_KEY={supabase_service_role_key}", file_data)
         file.seek(0)
@@ -103,7 +101,7 @@ def run_docker_compose():
     print("Running docker compose...")
 
     validate_env_variables("./api/.env", ["SUPABASE_KEY"])
-    validate_env_variables("./web/.env", ["NEXT_PUBLIC_SUPABASE_ANON_KEY", "NEXT_PUBLIC_SUPABASE_KEY", "SUPABASE_SERVICE_KEY"])
+    validate_env_variables("./web/.env", ["NEXT_PUBLIC_SUPABASE_KEY", "SUPABASE_SERVICE_KEY"])
 
     run_command_with_logs("docker compose up -d")
 

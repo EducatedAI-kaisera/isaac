@@ -3,7 +3,13 @@ import { NextResponse } from 'next/server';
 
 export async function middleware(req) {
 	const res = NextResponse.next();
-	const supabase = createMiddlewareClient({ req, res });
+	const supabase = createMiddlewareClient(
+		{ req, res },
+		{
+			supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_KEY,
+			supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+		},
+	);
 	const { data } = await supabase.auth.getUser();
 	if (!data.user) return NextResponse.redirect(new URL('/signup', req.url));
 	const result = await supabase
