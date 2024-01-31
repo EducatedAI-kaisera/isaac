@@ -103,7 +103,7 @@ def run_docker_compose():
     print("Running docker compose...")
 
     validate_env_variables("./api/.env", ["SUPABASE_KEY"])
-    validate_env_variables("./web/.env", ["NEXT_PUBLIC_SUPABASE_KEY", "SUPABASE_SERVICE_KEY"])
+    validate_env_variables("./web/.env", ["NEXT_PUBLIC_SUPABASE_ANON_KEY", "NEXT_PUBLIC_SUPABASE_KEY", "SUPABASE_SERVICE_KEY"])
 
     run_command_with_logs("docker compose up -d")
 
