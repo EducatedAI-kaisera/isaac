@@ -11,7 +11,7 @@ const MendeleyIntegration = () => {
 	const { code, state } = query;
 	const { user } = useUser();
 
-	const { mutateAsync, isLoading } = useGetMendeleyToken({
+	const { mutateAsync, isPending } = useGetMendeleyToken({
 		onSuccessCb: () => {
 			toast.success('Mendeley integrated successfully 🎉');
 			setTimeout(() => {
@@ -29,7 +29,7 @@ const MendeleyIntegration = () => {
 	return (
 		<div className="justify-center m-5">
 			<p>Integrating Mendeley to Isaac...</p>
-			{!isLoading && (
+			{!isPending && (
 				<Link href={state ? `/editor/${state}` : '/editor'}>
 					Back to Editor
 				</Link>

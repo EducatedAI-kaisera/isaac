@@ -9,7 +9,6 @@ import useRevokeZoteroToken from '@hooks/api/zotero/useZoteroToken.delete';
 import { getMendeleyUserAuthorizationUrl } from '@resources/integration/mendeley';
 import { useDeleteUser } from '@resources/user';
 import axios from 'axios';
-import { format } from 'date-fns';
 import { CreditCard, LogOut } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React from 'react';

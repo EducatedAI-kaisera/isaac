@@ -21,7 +21,7 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function SettingsModal() {
-	const { user, setUser, userIsLoading } = useUser();
+	const { user, userIsLoading } = useUser();
 
 	const router = useRouter();
 	const email = user?.email ?? '';
