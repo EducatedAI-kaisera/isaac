@@ -33,7 +33,7 @@ type Props = {
 const EditProjectDropdown = ({ projectId, projectName, className }: Props) => {
 	const [openRenameDialog, setOpenRenameDialog] = useState(false);
 	const [newProjectTitle, setNewProjectTitle] = useState(projectName);
-	const { mutate: deleteProject, isLoading, isError } = useDeleteProject();
+	const { mutate: deleteProject } = useDeleteProject();
 	const { mutateAsync: mutateRenameProject } = useRenameProject({
 		onSuccessCb: () => setNewProjectTitle(''),
 	});
