@@ -16,6 +16,7 @@ import toast from 'react-hot-toast';
 
 const GlobalSettingsSection = () => {
 	const { user, logout, userIsLoading } = useUser();
+	const userId = user?.id;
 
 	const router = useRouter();
 	const email = user?.email ?? '';
@@ -30,7 +31,9 @@ const GlobalSettingsSection = () => {
 	}
 
 	const loadPortal = async () => {
-		const { data } = await axios.get('/api/portal');
+		const { data } = await axios.get('/api/portal', {
+			params: { userId },
+		});
 		router.push(data.url);
 	};
 
