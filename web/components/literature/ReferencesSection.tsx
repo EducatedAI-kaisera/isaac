@@ -8,7 +8,7 @@ import useReferenceListOperation, {
 	ReferenceSourceFilter,
 } from '@hooks/api/useReferenceListOperation';
 import { TabType, UniqueTabSources } from '@hooks/useDocumentTabs';
-import { Maximize2} from 'lucide-react';
+import { Maximize2 } from 'lucide-react';
 import React, { useState } from 'react';
 import AddReferenceDropdown from './AddReferenceDropdown';
 import ReferenceExportButton from './ReferenceExportButton';

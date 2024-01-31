@@ -1,6 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
-import { useQuery } from 'react-query';
 import { ChatMessageV2 } from 'types/chat';
 
 export const retrieveChatMessages = async (sessionId: string) => {
@@ -15,16 +14,9 @@ export const retrieveChatMessages = async (sessionId: string) => {
 
 // NOT USED
 export const useRetrieveChatMessages = (sessionId?: string) => {
-	return useQuery(
-		['get-chat-messages', sessionId],
-		() => retrieveChatMessages(sessionId),
-		{
-			enabled: !!sessionId,
-			onError: error => {
-				console.log({ error });
-				//TODO: need to show a more clearer message
-				toast.error('There is something wrong. Please try again.');
-			},
-		},
-	);
+	return useQuery({
+		queryKey: ['get-chat-messages', sessionId],
+		queryFn: () => retrieveChatMessages(sessionId),
+		enabled: !!sessionId,
+	});
 };

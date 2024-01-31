@@ -19,6 +19,7 @@ import { FolderPlus } from 'lucide-react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const EditorHead = () => (
 	<Head>
@@ -38,13 +39,20 @@ const editorPageStyle = `
 
 const EditorPage = () => {
 	const { user } = useUser();
-	const { data: projects, isLoading: isGetProjectsLoading } =
-		useGetProjects(user);
+	const {
+		data: projects,
+		isLoading: isGetProjectsLoading,
+		isError,
+	} = useGetProjects(user);
 	const editorWidth = useUIStore(s => s.editorWidth);
 	const setCreateNewProjectModalOpen = useUIStore(
 		s => s.setCreateProjectPopoverOpen,
 	);
 	useHandleToastQuery();
+
+	if (isError) {
+		toast.error('Error loading projects');
+	}
 
 	const projectGridClasses = useMemo(
 		() =>
@@ -111,10 +119,10 @@ const EditorPage = () => {
 		[sortedProjects],
 	);
 
-	const projectsLoadedAndEmpty = useMemo(() => !isGetProjectsLoading && !projects?.length, [
-		isGetProjectsLoading,
-		projects,
-	]);
+	const projectsLoadedAndEmpty = useMemo(
+		() => !isGetProjectsLoading && !projects?.length,
+		[isGetProjectsLoading, projects],
+	);
 
 	return (
 		<>

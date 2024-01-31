@@ -47,6 +47,7 @@ import { LinePlaceholderPlugin } from './plugins/LinePlaceholderPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import DefaultTheme from './themes/DefaultTheme';
+import toast from 'react-hot-toast';
 
 type Props = {
 	documentId: string;
@@ -148,7 +149,7 @@ const CopilotPlugin = dynamic(() => import('./plugins/CopilotPlugin'), {
 });
 
 const EditorLexical = ({ documentId, active }: Props) => {
-	const { data: document } = useGetDocumentById(documentId);
+	const { data: document, isError } = useGetDocumentById(documentId);
 	const [floatingAnchorElem, setFloatingAnchorElem] =
 		useState<HTMLDivElement | null>(null);
 	const showDocumentComments = useUIStore(s => s.showDocumentComments);
@@ -162,6 +163,10 @@ const EditorLexical = ({ documentId, active }: Props) => {
 
 	const [isSmallWidthViewport, setIsSmallWidthViewport] =
 		useState<boolean>(false);
+
+	if (isError) {
+		toast.error('Error loading document');
+	}
 
 	useEffect(() => {
 		const updateViewPortWidth = () => {

@@ -54,7 +54,11 @@ const AISearchSourceComponent = ({
 	const { setLiteratureReferenceOutput, setOpen } = useAIAssistantStore(
 		state => state.actions,
 	);
-	const { data: _referenceList } = useGetReference(projectId);
+	const { data: _referenceList, isError } = useGetReference(projectId);
+
+	if (isError) {
+		toast.error("Error loading references");
+	}
 
 	const { mutateAsync: addToReference } = useAddReference();
 	const { mutateAsync: removeReference } = useDeleteReference();

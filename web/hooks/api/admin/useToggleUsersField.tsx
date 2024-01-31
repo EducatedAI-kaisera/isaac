@@ -1,6 +1,6 @@
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type BoolFieldToUpdate =
 	| 'has_seen_tour'
@@ -24,14 +24,15 @@ export const updateUserBoolField = async (payload: {
 
 const useToggleUsersField = () => {
 	const queryClient = useQueryClient();
-	return useMutation(updateUserBoolField, {
-		mutationKey: 'update-user-bool-field',
+	return useMutation({
+		mutationFn: updateUserBoolField,
+		mutationKey: ['update-user-bool-field'],
 		onMutate: data => {
 			//
 		},
 		onSuccess: (data, { toUpdateField, bool }) => {
 			// toast.success(`${toUpdateField} Field has been updated to "${bool}"`);
-			queryClient.invalidateQueries('fetch-user-profile');
+			queryClient.invalidateQueries({ queryKey: ['fetch-user-profile'] });
 		},
 		onError: error => {
 			console.log({ error });

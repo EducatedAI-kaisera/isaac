@@ -2,7 +2,7 @@ import { TextDocument } from '@hooks/api/useGetDocuments';
 import useDocumentTabs from '@hooks/useDocumentTabs';
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const renameDocument = async ({
 	docId,
@@ -24,13 +24,18 @@ const renameDocument = async ({
 const useRenameDocument = ({ onSuccessCb }: { onSuccessCb: () => void }) => {
 	const queryClient = useQueryClient();
 	const { renameTab, activeDocument } = useDocumentTabs();
-	return useMutation(renameDocument, {
-		mutationKey: 'rename-document',
+	return useMutation({
+		mutationFn: renameDocument,
+		mutationKey: ['rename-document'],
 		onSuccess: data => {
 			onSuccessCb();
 			toast.success('Document renamed successfully!');
-			queryClient.invalidateQueries(['get-documents']);
-			queryClient.invalidateQueries(['get-document']);
+			queryClient.invalidateQueries({
+                queryKey: ['get-documents']
+            });
+			queryClient.invalidateQueries({
+                queryKey: ['get-document']
+            });
 
 			// Close tab if opened
 			if (

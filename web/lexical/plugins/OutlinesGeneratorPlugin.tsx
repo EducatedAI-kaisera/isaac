@@ -9,7 +9,7 @@ import { generateOutlineHeaderPrompt } from '@utils/promptBuilder';
 import { AIModelLocalStorageKey } from 'data/aiModels.data';
 import { $createParagraphNode, $createTextNode, $getSelection } from 'lexical';
 import { useEffect } from 'react';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { SSE } from 'sse.js';
 // type Props = {}
 
@@ -49,7 +49,9 @@ const OutlinesGeneratorPlugin = () => {
 					});
 
 					source.close();
-					queryClient.invalidateQueries([QKFreeAIToken]);
+					queryClient.invalidateQueries({
+                        queryKey: [QKFreeAIToken]
+                    });
 					push(`/editor/${projectId}`);
 				} else {
 					// remove two line breaks after another from the text

@@ -1,11 +1,11 @@
 import { useUser } from '@context/user';
 import { QKFreeAIToken } from '@hooks/api/useFreeTierLimit.get';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
+import { useQueryClient } from '@tanstack/react-query';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 import toast from 'react-hot-toast';
-import { useQueryClient } from 'react-query';
 import { SSE } from 'sse.js';
 import { ChatContext } from 'types/chat';
-import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 import { freePlanLimits } from 'data/pricingPlans';
 import { ProPlanUpgradeToast, reachedTokenLimitToastStyle } from '@components/toast/ProPlanUpgradToast';
 
@@ -61,10 +61,12 @@ const useStreamChatMessage = () => {
 					source.close();
 					onComplete(cumulativeChunk);
 
-					queryClient.invalidateQueries([QKFreeAIToken]);
+					queryClient.invalidateQueries({
+						queryKey: [QKFreeAIToken],
+					});
 				} else {
 					console.log({ data: eventMessage });
-					const chunkText = eventMessage
+					const chunkText = eventMessage;
 
 					if (chunkText !== undefined) {
 						onStreamChunk(chunkText);

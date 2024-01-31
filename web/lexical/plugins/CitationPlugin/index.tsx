@@ -23,6 +23,7 @@ import {
 import { Book, BookUp, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
+import toast from 'react-hot-toast';
 import { CitationData } from 'types/literatureReference.type';
 
 class CitationOption extends MenuOption {
@@ -39,12 +40,16 @@ export default function CitationPlugin() {
 	const [queryString, setQueryString] = useState(null);
 	const { openDocument } = useDocumentTabs();
 	const { projectId } = useGetEditorRouter();
-	const { data: references } = useGetReference(projectId);
+	const { data: references, isError } = useGetReference(projectId);
 	const userUploads = useLiteratureReferenceStore(s => s.userUploads);
 	const checkForTriggerMatch = useBasicTypeaheadTriggerMatch('@', {
 		minLength: 0,
 	});
 	const showCommand = useUIStore(s => s.setShowEditorCommand);
+
+	if (isError) {
+		toast.error("Error loading references");
+	}
 
 	// TODO: Filter based on query string
 	const _options = useMemo(() => {

@@ -3,7 +3,7 @@ import { TextDocument } from '@hooks/api/useGetDocuments';
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const createDocument = async ({
 	projectId,
@@ -35,11 +35,10 @@ const useCreateDocument = (params?: {
 }) => {
 	const { user } = useUser();
 	const queryClient = useQueryClient();
-	return useMutation(
-		(payload: { projectId: string; docTitle: string }) =>
+	return useMutation({
+		  mutationFn: (payload: { projectId: string; docTitle: string }) =>
 			createDocument({ ...payload, userId: user?.id }),
-		{
-			mutationKey: 'create-document',
+			mutationKey: ['create-document'],
 			onMutate: () => {
 				mixpanel.track('Created Document');
 			},
@@ -49,7 +48,9 @@ const useCreateDocument = (params?: {
 				}
 
 				toast.success('Document created successfully!');
-				queryClient.invalidateQueries(['get-documents']);
+				queryClient.invalidateQueries({
+                    queryKey: ['get-documents']
+                });
 			},
 			onError: error => {
 				console.log({ error });

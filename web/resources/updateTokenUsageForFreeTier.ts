@@ -1,7 +1,6 @@
 import { supabase } from '@utils/supabase';
 import { freePlanLimits } from 'data/pricingPlans';
 
-
 export const updateTokenUsageForFreeTier = async (userId: string) => {
 	const { data: user } = await supabase
 		.from('profile')

@@ -1,9 +1,9 @@
 import UserProvider from '@context/user';
+import { QueryClientProvider } from '@tanstack/react-query';
 import 'focus-visible';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { QueryClientProvider } from 'react-query';
 import { IntercomProvider } from 'react-use-intercom';
 import queryClient from 'utils/reactQuery';
 import '../styles/globals.scss';

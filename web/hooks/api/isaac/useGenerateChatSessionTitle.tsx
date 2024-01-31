@@ -3,9 +3,9 @@ import { useUser } from '@context/user';
 import useUpdateChatSession from '@hooks/api/useChatSession.update';
 import { QKFreeAIToken } from '@hooks/api/useFreeTierLimit.get';
 import useDocumentTabs from '@hooks/useDocumentTabs';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useQueryClient } from 'react-query';
 import { SSE } from 'sse.js';
 
 const useGenerateChatSessionTitle = (minimized: boolean) => {
@@ -38,7 +38,9 @@ const useGenerateChatSessionTitle = (minimized: boolean) => {
 					cumulativeChunk &&
 						(await updateSessionTitle({ sessionId, title: cumulativeChunk }));
 					setTriggerRename({ source: sessionId, newName: cumulativeChunk });
-					queryClient.invalidateQueries([QKFreeAIToken]);
+					queryClient.invalidateQueries({
+						queryKey: [QKFreeAIToken],
+					});
 				} else {
 					const payload = JSON.parse(e.data);
 					const chunkText = payload.choices[0].text;
