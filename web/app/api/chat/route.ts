@@ -132,10 +132,6 @@ export async function POST(req: Request) {
 			stream: true,
 		});
 
-		// for await (const part of completion) {
-		// 	console.log(part.choices[0].delta);
-		// }
-
 		const { stream, controller } = createCustomReadableStream();
 
 		for await (const chunk of completion) {
