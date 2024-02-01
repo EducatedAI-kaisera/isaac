@@ -1,9 +1,9 @@
 import useChatSessions from '@context/chatSessions.store';
-import { useUser } from '@context/user';
 import useUpdateChatSession from '@hooks/api/useChatSession.update';
 import { QKFreeAIToken } from '@hooks/api/useFreeTierLimit.get';
 import useDocumentTabs from '@hooks/useDocumentTabs';
 import { useQueryClient } from '@tanstack/react-query';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { SSE } from 'sse.js';
@@ -33,7 +33,9 @@ const useGenerateChatSessionTitle = (minimized: boolean) => {
 		// Start Streaming
 		try {
 			source.addEventListener('message', async function (e) {
-				if (e.data === '[DONE]') {
+				const uint8Array = base64ToUint8Array(e.data);
+				const eventMessage = new TextDecoder('utf-8').decode(uint8Array);
+				if (eventMessage === '[DONE]') {
 					source.close();
 					cumulativeChunk &&
 						(await updateSessionTitle({ sessionId, title: cumulativeChunk }));
@@ -42,8 +44,7 @@ const useGenerateChatSessionTitle = (minimized: boolean) => {
 						queryKey: [QKFreeAIToken],
 					});
 				} else {
-					const payload = JSON.parse(e.data);
-					const chunkText = payload.choices[0].text;
+					const chunkText = eventMessage;
 
 					if (chunkText !== undefined) {
 						cumulativeChunk = cumulativeChunk + chunkText;

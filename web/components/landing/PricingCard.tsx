@@ -4,6 +4,7 @@ import { Button } from '@components/ui/button';
 import { loadStripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useUser } from '@context/user';
 
 function CheckIcon(props) {
 	return (
@@ -49,13 +50,18 @@ export function PricingCard({
 	priceId,
 	oldPrice,
 }: PricingCardProps) {
+
+	const { user } = useUser();
+
+
 	const processSubscription = priceId => async () => {
 		const mixpanel = (await import('mixpanel-browser')).default;
 		mixpanel.track('Clicked Subscribe');
 		const mode = name === '7 days plan' ? 'payment' : 'subscription';
+		const userId = user?.id;
 		const axios = (await import('axios')).default;
 		const { data } = await axios.get(`/api/subscription/${priceId}`, {
-			params: { mode },
+			params: { mode, userId },
 		});
 		const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 		await stripe.redirectToCheckout({ sessionId: data.id });
