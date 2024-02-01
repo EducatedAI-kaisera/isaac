@@ -3,8 +3,7 @@ import initStripe from 'stripe';
 import { supabase } from '../../../utils/supabase';
 
 const handler = async (req, res) => {
-	// const { user } = await supabase.auth.api.getUserByCookie(req);
-  const userId = req.query.userId;
+	const userId = req.query.userId;
 	if (!userId) {
 		return res.status(401).send('Unauthorized');
 	}
