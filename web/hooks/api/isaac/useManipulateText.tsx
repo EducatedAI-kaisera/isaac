@@ -9,6 +9,8 @@ import useIsaacSystemPrompt from '@hooks/api/isaac/useIsaacSystemPrompt';
 import { QKFreeAIToken } from '@hooks/api/useFreeTierLimit.get';
 import { $createAIOutputNode } from '@lexical/nodes/AIOutputNode';
 import { useLocalStorage } from '@mantine/hooks';
+import { useQueryClient } from '@tanstack/react-query';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 import {
 	manipulateTextMap,
 	ManipulateTextMethods,
@@ -19,9 +21,7 @@ import { $getSelection, $isRangeSelection } from 'lexical';
 import mixpanel from 'mixpanel-browser';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
-import { useQueryClient } from 'react-query';
 import { SSE } from 'sse.js';
-import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 
 const useManipulationText = () => {
 	const { user } = useUser();
@@ -32,7 +32,6 @@ const useManipulationText = () => {
 	const systemPrompt = useIsaacSystemPrompt();
 	const { setAITextOutput, setCachedSelection, setOpen, setAIOperation } =
 		useAIAssistantStore(state => state.actions);
-
 
 	const insertAIOutputComponent = useCallback(() => {
 		editor.update(() => {
@@ -94,11 +93,12 @@ const useManipulationText = () => {
 				const uint8Array = base64ToUint8Array(e.data);
 				const eventMessage = new TextDecoder('utf-8').decode(uint8Array);
 
-
 				if (eventMessage === '[DONE]') {
 					source.close();
 
-					queryClient.invalidateQueries([QKFreeAIToken]);
+					queryClient.invalidateQueries({
+						queryKey: [QKFreeAIToken],
+					});
 				} else {
 					const chunkText = eventMessage;
 

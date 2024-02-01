@@ -1,12 +1,25 @@
-import { createClient } from '@supabase/supabase-js';
+import {
+	createPagesBrowserClient,
+	createPagesServerClient,
+} from '@supabase/auth-helpers-nextjs';
 
-export const supabase = createClient(
-	process.env.NEXT_PUBLIC_SUPABASE_URL,
-	process.env.NEXT_PUBLIC_SUPABASE_KEY,
-);
+export const supabase = createPagesBrowserClient({
+	supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+	supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_KEY,
+});
 
 export const getServiceSupabase = () =>
-	createClient(
-		process.env.NEXT_PUBLIC_SUPABASE_URL,
-		process.env.SUPABASE_SERVICE_KEY,
+	createPagesBrowserClient({
+		supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+		supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_KEY,
+	});
+
+export const createSupabaseServerClient = (req, res) => {
+	return createPagesServerClient(
+		{ req, res },
+		{
+			supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+			supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_KEY,
+		},
 	);
+};

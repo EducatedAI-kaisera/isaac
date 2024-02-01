@@ -24,7 +24,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-	const getBody = await req.json()
+	const getBody = await req.json();
 
 	const searchParams = req.nextUrl.searchParams;
 
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
 	const user = await updateTokenUsageForFreeTier(userId);
 
-	if (!user.is_subscribed) {
+	if (user.message != 'success') {
 		llmModel = AIModels.GPT_3_5;
 	}
 

@@ -2,6 +2,7 @@ import { TextDocument, useGetDocuments } from '@hooks/api/useGetDocuments';
 import { Project, useGetProjects } from '@hooks/api/useGetProjects';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface ProjectDocuments extends Project {
 	documents: TextDocument[];
@@ -20,9 +21,17 @@ const useGetProjectWithDocuments = (): ReturnProps => {
 		[],
 	);
 
-	const { data: documents, isLoading: isGetDocumentsLoading } =
+	const { data: documents, isLoading: isGetDocumentsLoading, isError } =
 		useGetDocuments();
-	const { data: projects, isLoading: isGetProjectsLoading } = useGetProjects();
+	const { data: projects, isLoading: isGetProjectsLoading, isError: projectsError } = useGetProjects();
+
+	if (isError) {
+		toast.error('Error fetching project documents');
+	}
+
+	if (projectsError) {
+		toast.error("Error loading projects");
+	}
 
 	useEffect(() => {
 		if (projects?.length && documents?.length) {

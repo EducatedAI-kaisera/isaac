@@ -1,5 +1,4 @@
-import toast from 'react-hot-toast';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 // Resources
 
@@ -44,15 +43,9 @@ export const useGetChatMessagesByUserIdAndProjectId = (
 	userId: string,
 	projectId: string,
 ) => {
-	return useQuery(
-		['get-chat-messages', userId, projectId],
-		() => getChatMessagesByUserIdAndProjectId({ userId, projectId }),
-		{
-			enabled: !!userId && !!projectId,
-			onError: error => {
-				console.log({ error });
-				toast.error('There is something wrong. Please try again.');
-			},
-		},
-	);
+	return useQuery({
+        queryKey: ['get-chat-messages', userId, projectId],
+        queryFn: () => getChatMessagesByUserIdAndProjectId({ userId, projectId }),
+        enabled: !!userId && !!projectId
+    });
 };

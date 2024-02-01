@@ -1,4 +1,4 @@
-_README.md is a work-in-progress. Please check back later for more updates._
+_README.md is a work-in-progress.
 
 <p align="center">
 
@@ -25,9 +25,7 @@ _README.md is a work-in-progress. Please check back later for more updates._
 
 ## Description
 
-You've stumbled upon the most exciting thing since sliced bread in the world of research and AI. But guess what? Our README is playing catch up with our awesomeness. It's still a work-in-progress, just like the best of us.
-
-We're on a mission to make Isaac the go-to tool for researchers, scientists, and knowledge workers - basically anyone who loves to blend coffee with groundbreaking ideas.
+Isaac is an AI-native, open-source research workspace that focuses on enhancing the scientific research experience by offering tools for writing, reference management, and literature discovery. It presents an IDE-like interface, streamlining the process of drafting research papers, organizing bibliographic information, and accessing a wide array of academic sources. The platform is designed to centralize these key aspects of research, making it easier for researchers to manage their writing process, keep track of references, and find relevant literature efficiently. Isaac aims to reduce the time and effort typically spent on these tasks, allowing researchers to focus more on the core aspects of their studies. This approach intends to bring a more systematic and organized methodology to scientific research, catering specifically to the needs of researchers looking for a comprehensive and integrated research workspace.
 
 ## Prerequisites
 

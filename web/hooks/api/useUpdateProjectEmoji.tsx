@@ -1,6 +1,6 @@
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const updateProjectEmoji = async ({
 	projectId,
@@ -20,11 +20,14 @@ const updateProjectEmoji = async ({
 
 export const useUpdateProjectEmoji = (opts?: { onSuccessCb?: () => void }) => {
 	const queryClient = useQueryClient();
-	return useMutation(updateProjectEmoji, {
-		mutationKey: 'rename-project',
+	return useMutation({
+		mutationFn: updateProjectEmoji,
+		mutationKey: ['rename-project'],
 		onSuccess: () => {
 			opts?.onSuccessCb?.();
-			queryClient.invalidateQueries(['get-projects']);
+			queryClient.invalidateQueries({
+                queryKey: ['get-projects']
+            });
 			//TODO: need to close model
 		},
 		onError: error => {

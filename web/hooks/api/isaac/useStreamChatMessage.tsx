@@ -1,11 +1,16 @@
+import {
+	ProPlanUpgradeToast,
+	reachedTokenLimitToastStyle,
+} from '@components/toast/ProPlanUpgradToast';
 import { useUser } from '@context/user';
 import { QKFreeAIToken } from '@hooks/api/useFreeTierLimit.get';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
+import { useQueryClient } from '@tanstack/react-query';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
+import { freePlanLimits } from 'data/pricingPlans';
 import toast from 'react-hot-toast';
-import { useQueryClient } from 'react-query';
 import { SSE } from 'sse.js';
 import { ChatContext } from 'types/chat';
-import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 
 const useStreamChatMessage = () => {
 	const { user } = useUser();
@@ -37,6 +42,16 @@ const useStreamChatMessage = () => {
 		});
 
 		try {
+			if (
+				user.is_subscribed === false &&
+				user.daily_free_token === freePlanLimits.dailyFreeToken
+			) {
+				toast.error(<ProPlanUpgradeToast target="AI" />, {
+					style: reachedTokenLimitToastStyle,
+				});
+				return;
+			}
+
 			const source = new SSE('/api/chat', { payload });
 			let cumulativeChunk = '';
 
@@ -48,10 +63,11 @@ const useStreamChatMessage = () => {
 					source.close();
 					onComplete(cumulativeChunk);
 
-					queryClient.invalidateQueries([QKFreeAIToken]);
+					queryClient.invalidateQueries({
+						queryKey: [QKFreeAIToken],
+					});
 				} else {
-					console.log({ data: eventMessage });
-					const chunkText = eventMessage
+					const chunkText = eventMessage;
 
 					if (chunkText !== undefined) {
 						onStreamChunk(chunkText);

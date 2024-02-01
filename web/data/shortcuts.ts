@@ -35,6 +35,10 @@ export const hotKeys = {
 		key: 'p',
 		withCommand: true,
 	},
+	writeNextSentence: {
+		key: 'i',
+		withCommand: true,
+	},
 };
 
 export const tabNumberKeys = ['1', '2', '3', '4', '5', '6', '7'];

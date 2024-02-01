@@ -1,6 +1,6 @@
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type ReferencePayload = {
 	title: string;
@@ -41,11 +41,12 @@ const useAddReference = (options?: {
 }) => {
 	const queryClient = useQueryClient();
 
-	return useMutation(addReference, {
-		mutationKey: 'add-reference',
+	return useMutation({
+		mutationFn: addReference,
+		mutationKey: ['add-reference'],
 		onMutate: options?.onMutate,
 		onSuccess: () => {
-			queryClient.invalidateQueries(['get-reference']);
+			queryClient.invalidateQueries({ queryKey: ['get-reference']});
 			toast.success('Added to References!');
 			options?.onSuccess?.();
 		},

@@ -4,7 +4,7 @@ import useDocumentTabs from '@hooks/useDocumentTabs';
 import { useCreateDocument } from '@resources/editor-page';
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const createProject = async ({
 	projectTitle,
@@ -39,14 +39,15 @@ const useCreateProject = ({
 	const { addProject: addProjectToTab } = useDocumentTabs();
 	const { mutateAsync: createDocument } = useCreateDocument();
 
-	return useMutation(
-		(projectTitle: string) => createProject({ projectTitle, userId: user?.id }),
-		{
-			mutationKey: 'create-project',
+	return useMutation({
+		  mutationFn: (projectTitle: string) => createProject({ projectTitle, userId: user?.id }),
+			mutationKey: ['create-project'],
 			onSuccess: async project => {
 				onSuccessCb?.(project);
 				toast.success('Project created successfully!');
-				queryClient.invalidateQueries(['get-projects']);
+				queryClient.invalidateQueries({
+					queryKey: ['get-projects']
+				});
 				addProjectToTab(project.id);
 				if (createDocumentOnCreate) {
 					await createDocument({ projectId: project.id, user });

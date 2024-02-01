@@ -22,6 +22,7 @@ import { useGetReference } from '@resources/editor-page';
 import { useGetLiterature } from '@resources/literature.api';
 import { Maximize2 } from 'lucide-react';
 import React, { useCallback } from 'react';
+import toast from 'react-hot-toast';
 import {
 	ReferenceSource,
 	SemanticScholarReference,
@@ -50,6 +51,7 @@ const LiteratureSearchSection = () => {
 		data: literatureSearchResult,
 		isLoading: litSearchLoading,
 		isFetching: litSearchFetching,
+		isError,
 	} = useGetLiterature(literatureSearchPayload);
 
 	const { mutateAsync: addReference } = useAddReference({
@@ -57,7 +59,12 @@ const LiteratureSearchSection = () => {
 			//
 		},
 	});
-	const { data: _referenceList } = useGetReference(projectId);
+	const { data: _referenceList, isError: referenceError } =
+		useGetReference(projectId);
+
+	if (referenceError) {
+		toast.error('Error loading references');
+	}
 
 	const { openDocument } = useDocumentTabs();
 
@@ -97,6 +104,10 @@ const LiteratureSearchSection = () => {
 				/>
 			</div>
 		);
+	}
+
+	if (isError) {
+		toast.error('Failed to fetch literature');
 	}
 
 	return (

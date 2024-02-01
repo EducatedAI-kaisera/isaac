@@ -13,7 +13,7 @@ import { supabase } from '@utils/supabase';
 import { freePlanLimits } from 'data/pricingPlans';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 type Options = {
 	onSuccess?: () => void;
@@ -175,12 +175,16 @@ const useUploadDocument = (projectId: string, options?: Options) => {
 					toast.success(` ${upload.value.fileName} uploaded`, {
 						id: 'upload-file',
 					});
-					queryClient.invalidateQueries([
-						'get-user-uploads',
-						user.id,
-						projectId,
-					]);
-					queryClient.invalidateQueries([QKUploadStorageUsage]);
+					queryClient.invalidateQueries({
+                        queryKey: [
+                            'get-user-uploads',
+                            user.id,
+                            projectId,
+                        ]
+                    });
+					queryClient.invalidateQueries({
+                        queryKey: [QKUploadStorageUsage]
+                    });
 				}
 			}
 		}
