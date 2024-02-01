@@ -69,8 +69,6 @@ const AIFunctionsDropdown = () => {
 		useAIAssistantStore(state => state.actions);
 
 	const [method, setMethod] = useState<ManipulateTextMethods>(null);
-	const [customInstructions, setCustomInstructions] = useState<string>(null);
-	console.log('customInstructions', customInstructions);
 
 	// Update the method when a dropdown menu item is clicked
 	const handleDropdownClick = (selectedMethod: ManipulateTextMethods) => {
