@@ -1,11 +1,15 @@
+import { createSupabaseServerClient } from '@utils/supabase';
 import cookie from 'cookie';
 import initStripe from 'stripe';
-import { supabase } from '../../utils/supabase';
 
 const handler = async (req, res) => {
-	const userId = req.query.userId;
+	const supabase = createSupabaseServerClient(req, res);
 
-	if (!userId) {
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	if (!user) {
 		return res.status(401).send('Unauthorized');
 	}
 
@@ -20,7 +24,7 @@ const handler = async (req, res) => {
 	} = await supabase
 		.from('profile')
 		.select('stripe_customer')
-		.eq('id', userId)
+		.eq('id', user?.id)
 		.single();
 
 	const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
