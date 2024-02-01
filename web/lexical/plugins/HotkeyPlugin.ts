@@ -1,4 +1,5 @@
 import { Panel, useUIStore } from '@context/ui.store';
+import useWriteNextSentence from '@hooks/api/isaac/useWriteNextSentence';
 import useDocumentTabs from '@hooks/useDocumentTabs';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { allCommandKeys, hotKeys, tabNumberKeys } from 'data/shortcuts';
@@ -15,6 +16,7 @@ const HotkeyPlugin = () => {
 	const setShowEditorCommand = useUIStore(s => s.setShowEditorCommand);
 	const { toggleDocumentByTabIndex } = useDocumentTabs();
 	const pressedKey = useRef<string>();
+	const { writeNextSentence } = useWriteNextSentence(editor);
 
 	// * Register hotkey
 	useEffect(() => {
@@ -58,8 +60,11 @@ const HotkeyPlugin = () => {
 		} else if (pressedKey.current === hotKeys.openCommand.key) {
 			setShowEditorCommand(true, { showAIFunctions: true });
 		} else if (pressedKey.current === hotKeys.toggleTheme.key) {
-			// toggleColorScheme(); // TODO: Rework this
+			// toggleColorScheme();
+		} else if (pressedKey.current === hotKeys.writeNextSentence.key) {
+			writeNextSentence();
 		}
+
 		pressedKey.current = undefined;
 	};
 
