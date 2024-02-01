@@ -1,9 +1,13 @@
+import { createSupabaseServerClient } from '@utils/supabase';
 import cookie from 'cookie';
 import initStripe from 'stripe';
-import { supabase } from '../../utils/supabase';
 
 const handler = async (req, res) => {
-	const { user } = await supabase.auth.api.getUserByCookie(req);
+	const supabase = createSupabaseServerClient(req, res);
+
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
 
 	if (!user) {
 		return res.status(401).send('Unauthorized');
