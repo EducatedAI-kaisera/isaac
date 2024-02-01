@@ -10,6 +10,7 @@ import { cn } from '@components/lib/utils';
 import { LandingButton } from '@components/ui/button-landing';
 import { LandingInput } from '@components/ui/input-landing';
 import { Label } from '@components/ui/label';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 import mixpanel from 'mixpanel-browser';
 import { useUser } from '../context/user';
@@ -19,6 +20,7 @@ export default function Signin() {
 	const [password, setPassword] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const router = useRouter();
+	const supabase = createClientComponentClient();
 
 	const { login, loginWithGoogle } = useUser();
 
@@ -37,7 +39,7 @@ export default function Signin() {
 		e.preventDefault();
 		setIsLoading(true);
 
-		const { error, data } = await login({ email, password });
+		const { error, data } = await supabase.auth.signInWithPassword({ email, password });
 
 		if (error) {
 			if (error.status === 400) {
