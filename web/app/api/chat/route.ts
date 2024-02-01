@@ -1,10 +1,14 @@
 // import fetch from 'node-fetch';
 import { updateTokenUsageForFreeTier } from '@resources/updateTokenUsageForFreeTier';
+import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { AIModels } from 'data/aiModels.data';
+import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 import { ChatContext } from 'types/chat';
 
 const encoder = new TextEncoder();
+
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Function to create and return a custom readable stream
 function createCustomReadableStream() {
@@ -20,11 +24,7 @@ function createCustomReadableStream() {
 	return { stream: customReadable, controller };
 }
 
-// Can be 'nodejs', but Vercel recommends using 'edge'
 export const runtime = 'edge';
-
-// Prevents this route's response from being cached
-// export const dynamic = 'force-dynamic'
 
 type Payload = {
 	userId: string;
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
 
 		const user = await updateTokenUsageForFreeTier(userId);
 
-		if (user.message!="success") {
+		if (user.message != 'success') {
 			llmModel = AIModels.GPT_3_5;
 		}
 
@@ -122,57 +122,50 @@ export async function POST(req: Request) {
 				)}\nCurrent date:${dateString}\n\nInstructions:Using the provided web search results, write a comprehensive reply to the given query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject.\nQuery:${prompt} `,
 			});
 		}
-		const completion = await fetch(
-			`${process.env.NEXT_PUBLIC_API_HOST}/api/completion`,
-			{
-				method: 'POST',
-				body: JSON.stringify({
-					model: llmModel || 'gpt-3.5-turbo',
-					messages,
-					temperature,
-					max_tokens,
-					top_p: 1,
-					stream: true,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-					'X-API-KEY': process.env.NEXT_PUBLIC_API_ROUTE_SECRET,
-				},
-			},
-		);
+
+		const completion = await openai.chat.completions.create({
+			model: llmModel || 'gpt-3.5-turbo',
+			messages,
+			temperature,
+			max_tokens,
+			top_p: 1,
+			stream: true,
+		});
+
+		// for await (const part of completion) {
+		// 	console.log(part.choices[0].delta);
+		// }
+
 		const { stream, controller } = createCustomReadableStream();
 
-		const reader = completion.body.getReader();
-		const readStream = async () => {
-			const { done, value } = await reader.read();
-			if (done) {
-				// Send a final chunk to the frontend that says [DONE]
-				if (controller) {
-					controller.enqueue(
-						encoder.encode(
-							`data: ${Buffer.from('[DONE]').toString('base64')}\n\n`,
-						),
-					);
-				}
-				// Close the SSE connection when the completion request is complete
-				if (controller) {
-					controller.close();
-				}
-			} else {
-				// Forward the data from the completion request to the client
-				if (controller) {
-					controller.enqueue(
-						encoder.encode(
-							`data: ${Buffer.from(value).toString('base64')}\n\n`,
-						),
-					);
-				}
-				// Continue reading the stream
-				readStream();
+		for await (const chunk of completion) {
+			// Forward the data from the completion request to the client
+			if (
+				controller &&
+				chunk.choices[0]?.delta?.content &&
+				chunk.choices[0].delta.content.trim() !== ''
+			) {
+				controller.enqueue(
+					encoder.encode(
+						`data: ${Buffer.from(chunk.choices[0].delta.content).toString(
+							'base64',
+						)}\n\n`,
+					),
+				);
 			}
-		};
+		}
 
-		readStream();
+		// Send a final chunk to the frontend that says [DONE]
+		if (controller) {
+			controller.enqueue(
+				encoder.encode(`data: ${Buffer.from('[DONE]').toString('base64')}\n\n`),
+			);
+		}
+
+		// Close the SSE connection when the completion request is complete
+		if (controller) {
+			controller.close();
+		}
 		// Return the stream and try to keep the connection alive
 		return new Response(stream, {
 			// Set headers for Server-Sent Events (SSE) / stream from the server
