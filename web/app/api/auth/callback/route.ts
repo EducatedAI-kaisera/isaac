@@ -1,6 +1,6 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { redirect } from 'next/navigation'
 
 export async function GET(request) {
 	const requestUrl = new URL(request.url);
@@ -11,6 +11,5 @@ export async function GET(request) {
 		await supabase.auth.exchangeCodeForSession(code);
 	}
 	const editorUrl = new URL('/editor', request.url);
-	// URL to redirect to after sign in process completes
-	return NextResponse.redirect(editorUrl.toString());
+	redirect(editorUrl.toString());
 }
