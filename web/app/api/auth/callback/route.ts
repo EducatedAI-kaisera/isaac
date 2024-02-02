@@ -1,6 +1,5 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation'
 
 export async function GET(request) {
 	const requestUrl = new URL(request.url);
@@ -10,6 +9,10 @@ export async function GET(request) {
 		const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 		await supabase.auth.exchangeCodeForSession(code);
 	}
-	const editorUrl = new URL('/editor', request.url);
-	redirect(editorUrl.toString());
+	return new Response(null, {
+			status: 302,
+			headers: {
+					Location: '/editor'
+			}
+	})
 }
