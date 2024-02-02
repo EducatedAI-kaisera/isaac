@@ -97,12 +97,10 @@ const UserProvider = ({ children }) => {
 			login,
 			logout: () => logoutMutation.mutate(),
 			loginWithGoogle: async () => {
-				const apiUrl =
-					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 				 return await supabase.auth.signInWithOAuth({
 					provider: 'google',
 					options: {
-						redirectTo: `${apiUrl}/editor?`,
+						redirectTo: `${location.origin}/editor?`,
 					},
 				});
 			},
