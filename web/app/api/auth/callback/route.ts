@@ -1,6 +1,6 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { RedirectType, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export async function GET(request) {
 	const requestUrl = new URL(request.url);
@@ -11,5 +11,5 @@ export async function GET(request) {
 		await supabase.auth.exchangeCodeForSession(code);
 	}
 
-	redirect("https://isaaceditor.com/editor", RedirectType.replace);
+	redirect('/editor');
 }
