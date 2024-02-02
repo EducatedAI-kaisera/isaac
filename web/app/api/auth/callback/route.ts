@@ -10,7 +10,7 @@ export async function GET(request) {
 		const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 		await supabase.auth.exchangeCodeForSession(code);
 	}
-	const editorUrl = new URL('/editor', requestUrl);
+	const editorUrl = new URL('/editor', request.url);
 	// URL to redirect to after sign in process completes
 	return NextResponse.redirect(editorUrl.toString());
 }
