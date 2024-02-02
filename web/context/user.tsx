@@ -3,6 +3,7 @@ import { supabase } from '@utils/supabase';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export type CustomInstructions = {
 	instructions: string;
@@ -97,9 +98,10 @@ const UserProvider = ({ children }) => {
 			login,
 			logout: () => logoutMutation.mutate(),
 			loginWithGoogle: async () => {
+				const clientSupabase = createClientComponentClient()
 				const apiUrl =
 					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-				 return await supabase.auth.signInWithOAuth({
+				 return await clientSupabase.auth.signInWithOAuth({
 					provider: 'google',
 					options: {
 						redirectTo: `${apiUrl}/editor?`,
