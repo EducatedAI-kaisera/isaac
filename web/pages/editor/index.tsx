@@ -2,6 +2,14 @@ import EditorLayout from '@components/editor/EditorLayout';
 import { Logomark } from '@components/landing/Logo';
 import { Button } from '@components/ui/button';
 import Ripple from '@components/ui/ripple';
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@components/ui/select';
 import { useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
 import useHandleToastQuery from '@hooks/misc/useHandleToastQuery';
@@ -56,6 +64,10 @@ const EditorPage = () => {
 
 	const [sortMethod, setSortMethod] = useState('lastOpened'); // Default sort method
 	const [sortedProjects, setSortedProjects] = useState([]);
+
+	const handleSortChange = value => {
+		setSortMethod(value);
+	};
 
 	useEffect(() => {
 		if (projects) {
@@ -116,6 +128,20 @@ const EditorPage = () => {
 				{renderedProjects ? (
 					<div className="w-full">
 						<h1 className="text-center text-foreground">Projects</h1>
+						<Select onValueChange={handleSortChange}>
+							<SelectTrigger className={clsx('w-[240px] mx-auto my-10')}>
+								<SelectValue placeholder="Recently created" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									{/* <SelectItem value="lastOpened">Last Opened</SelectItem> */}
+									<SelectItem value="recentlyCreated">
+										Recently created
+									</SelectItem>
+									<SelectItem value="name">Name</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 						<div className={projectGridClasses}>{renderedProjects}</div>
 					</div>
 				) : (
