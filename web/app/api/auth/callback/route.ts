@@ -10,6 +10,5 @@ export async function GET(request) {
 		const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 		await supabase.auth.exchangeCodeForSession(code);
 	}
-	const editorUrl = new URL('/editor', request.url);
-	redirect(editorUrl.toString());
+	redirect('https://isaaceditor.com/editor')
 }
