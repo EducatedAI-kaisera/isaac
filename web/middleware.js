@@ -12,13 +12,6 @@ export async function middleware(req) {
 	);
 	const { data } = await supabase.auth.getUser();
 	if (!data.user) return NextResponse.redirect(new URL('/signup', req.url));
-	// Commenting this out as it won't allow a new user to log in succesfully
-	// const result = await supabase
-	// 	.from('profile')
-	// 	.select('is_subscribed, expiration_date, plan')
-	// 	.eq('id', data.user.id)
-	// 	.single();
-	// if (!result.data) return NextResponse.redirect(new URL('/signup', req.url));
 	return NextResponse.next();
 }
 
