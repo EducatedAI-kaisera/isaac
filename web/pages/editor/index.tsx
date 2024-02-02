@@ -48,6 +48,7 @@ const EditorPage = () => {
 	const setCreateNewProjectModalOpen = useUIStore(
 		s => s.setCreateProjectPopoverOpen,
 	);
+	const [projectsLoadedAndEmpty, setProjectsLoadedAndEmpty] = useState(false);
 	useHandleToastQuery();
 
 	if (isError) {
@@ -94,6 +95,12 @@ const EditorPage = () => {
 		}
 	}, [projects, sortMethod]);
 
+	useEffect(() => {
+		if (!isGetProjectsLoading && projects?.length > 0) {
+			setProjectsLoadedAndEmpty(true);
+		}
+	}, [isGetProjectsLoading, projects]);
+
 	const handleSortChange = value => {
 		setSortMethod(value);
 	};
@@ -119,11 +126,6 @@ const EditorPage = () => {
 		[sortedProjects],
 	);
 
-	const projectsLoadedAndEmpty = useMemo(
-		() => !isGetProjectsLoading && !projects?.length,
-		[isGetProjectsLoading, projects],
-	);
-
 	return (
 		<>
 			<EditorHead />
@@ -132,7 +134,6 @@ const EditorPage = () => {
 				{!projectsLoadedAndEmpty ? (
 					<div className="w-full">
 						<h1 className="text-center text-foreground">Projects</h1>
-
 						<Select onValueChange={handleSortChange}>
 							<SelectTrigger className={clsx('w-[240px] mx-auto my-10')}>
 								<SelectValue placeholder="Recently created" />
@@ -147,7 +148,6 @@ const EditorPage = () => {
 								</SelectGroup>
 							</SelectContent>
 						</Select>
-
 						<div className={projectGridClasses}>{renderedProjects}</div>
 					</div>
 				) : (
