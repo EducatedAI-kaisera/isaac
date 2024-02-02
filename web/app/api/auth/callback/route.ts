@@ -10,7 +10,11 @@ export async function GET(request) {
 		const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 		const { error } = await supabase.auth.exchangeCodeForSession(code);
 		if (!error) {
-			redirect('/editor');
+			throw new Error(error.message);
+		} else {
+			throw new Error('no error but redirect still does not work');
+
 		}
 	}
+	redirect('/editor');
 }
