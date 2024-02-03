@@ -45,6 +45,7 @@ const EditorPage = () => {
 		s => s.setCreateProjectPopoverOpen,
 	);
 	const [renderedProjects, setRenderedProjects] = useState(null);
+	console.log(renderedProjects)
 	useHandleToastQuery();
 
 	if (isError) toast.error('Error loading projects');
@@ -125,7 +126,7 @@ const EditorPage = () => {
 			<EditorHead />
 			<style>{editorPageStyle}</style>
 			<EditorLayout>
-				{renderedProjects ? (
+				{renderedProjects?.length > 0 ? (
 					<div className="w-full">
 						<h1 className="text-center text-foreground">Projects</h1>
 						<Select onValueChange={handleSortChange}>
