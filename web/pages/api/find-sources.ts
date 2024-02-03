@@ -1,21 +1,13 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 
-const configuration = new Configuration({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
-
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export default async function (req, res) {
-	console.time('Function Execution Time');
-
-
 	try {
-		const completion = await openai.createChatCompletion({
+		const completion = await openai.chat.completions.create({
 			model: 'gpt-4',
 			messages: [
 				{
@@ -37,7 +29,7 @@ export default async function (req, res) {
 			presence_penalty: 0,
 		});
 
-		const search_query = completion.data.choices[0].message.content;
+		const search_query = completion.choices[0].message.content;
 		const search_query_parts = search_query.split('BREAK');
 		const search_query_input_language = search_query_parts[0];
 		const search_query_english = search_query_parts[1];
@@ -101,5 +93,4 @@ export default async function (req, res) {
 		console.error(error);
 		res.status(500).json({ message: 'Internal Server Error' });
 	}
-	console.timeEnd('Function Execution Time');
 }
