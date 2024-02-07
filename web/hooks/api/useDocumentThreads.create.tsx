@@ -2,7 +2,7 @@ import { useUser } from '@context/user';
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DocumentThread } from 'types/threadComments';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -52,17 +52,16 @@ const useCreateDocumentThread = (params?: {
 }) => {
 	const { user } = useUser();
 	const queryClient = useQueryClient();
-	return useMutation(
-		(payload: Omit<Payload, 'author'>) => {
-			if (user?.username) {
-				return createDocumentThread({
-					...payload,
-					author: user?.username,
-				});
-			}
-		},
-		{
-			mutationKey: 'create-document-thread',
+	return useMutation({
+			mutationFn: (payload: Omit<Payload, 'author'>) => {
+				if (user?.username) {
+					return createDocumentThread({
+						...payload,
+						author: user?.username,
+					});
+				}
+			},
+			mutationKey: ['create-document-thread'],
 			onMutate: () => {
 				mixpanel.track('Created Document Thread');
 			},
@@ -71,7 +70,9 @@ const useCreateDocumentThread = (params?: {
 					params.onSuccessCb(thread);
 				}
 
-				queryClient.invalidateQueries(['get-thread-comment']);
+				queryClient.invalidateQueries({
+                    queryKey: ['get-thread-comment']
+                });
 			},
 			onError: error => {
 				console.log({ error });

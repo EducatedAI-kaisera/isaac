@@ -1,8 +1,8 @@
 import { SignInWithPasswordCredentials, User } from '@supabase/supabase-js';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export type CustomInstructions = {
 	instructions: string;
@@ -61,25 +61,26 @@ const UserProvider = ({ children }) => {
 		void loadSession();
 	}, []);
 
-	const { data: userProfile, isLoading } = useQuery(
-		['fetch-user-profile', sessionUser?.id],
-		() => fetchUserProfile(sessionUser?.id),
-		{ enabled: !!sessionUser },
-	);
+	const { data: userProfile, isLoading } = useQuery({
+		queryKey: ['fetch-user-profile', sessionUser?.id],
+		queryFn: () => fetchUserProfile(sessionUser?.id),
+		enabled: !!sessionUser,
+	});
 
-	const logoutMutation = useMutation(() => supabase.auth.signOut(), {
+	const logoutMutation = useMutation({
+		mutationFn: () => supabase.auth.signOut(),
 		onSuccess: () => {
-			setSessionUser(null)
-			queryClient.invalidateQueries('fetch-user-profile');
+			setSessionUser(null);
+			queryClient.invalidateQueries({ queryKey: ['fetch-user-profile'] });
 			router.push('/');
 		},
 	});
 
 	const login = async (credentials: SignInWithPasswordCredentials) => {
-		const result = await supabase.auth.signInWithPassword(credentials)
-		if (result.data.user) setSessionUser(result.data.user)
-		return result
-	}
+		const result = await supabase.auth.signInWithPassword(credentials);
+		if (result.data.user) setSessionUser(result.data.user);
+		return result;
+	};
 
 	const exposed = useMemo(
 		() => ({
@@ -96,12 +97,10 @@ const UserProvider = ({ children }) => {
 			login,
 			logout: () => logoutMutation.mutate(),
 			loginWithGoogle: async () => {
-				const apiUrl =
-					process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-				 return await supabase.auth.signInWithOAuth({
+				return await supabase.auth.signInWithOAuth({
 					provider: 'google',
 					options: {
-						redirectTo: `${apiUrl}/editor?`,
+						redirectTo: `${location.origin}/api/auth/callback`,
 					},
 				});
 			},

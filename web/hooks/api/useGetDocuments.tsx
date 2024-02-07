@@ -1,7 +1,6 @@
 import { useUser } from '@context/user';
 import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export type TextDocument = {
 	id: string;
@@ -28,12 +27,6 @@ export const useGetDocuments = () => {
 	return useQuery({
 		queryKey: ['get-documents', userId],
 		queryFn: () => getDocuments(userId),
-		enabled: !!userId,
-		onError: error => {
-			console.log({ error });
-
-			//TODO: need to show a more clearer message
-			toast.error('There is something wrong. Please try again.');
-		},
+		enabled: !!userId
 	});
 };

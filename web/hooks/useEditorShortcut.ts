@@ -13,6 +13,7 @@ const useEditorShortcut = () => {
 	const toggleDocumentComment = useUIStore(s => s.toggleDocumentComment);
 	const { toggleDocumentByTabIndex } = useDocumentTabs();
 
+
 	// Hotkeys for Editor
 	useHotkeys([
 		[

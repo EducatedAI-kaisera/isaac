@@ -1,8 +1,6 @@
 import { useUser } from '@context/user';
-import useDocumentTabs from '@hooks/useDocumentTabs';
 import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { UserIntegration } from 'types/integration';
 
 export const getUserIntegration = async (userId: string) => {
@@ -20,16 +18,9 @@ export const getUserIntegration = async (userId: string) => {
 export const useGetUserIntegration = () => {
 	const { user } = useUser();
 	const userId = user?.id;
-	return useQuery(
-		['get-user-integration', userId],
-		() => getUserIntegration(userId),
-		{
-			enabled: !!userId,
-			onError: error => {
-				console.log({ error });
-				//TODO: need to show a more clearer message
-				toast.error('There is something wrong. Please try again.');
-			},
-		},
-	);
+	return useQuery({
+        queryKey: ['get-user-integration', userId],
+        queryFn: () => getUserIntegration(userId),
+        enabled: !!userId
+    });
 };

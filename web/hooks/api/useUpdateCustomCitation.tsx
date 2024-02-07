@@ -1,7 +1,7 @@
 import { TextDocument } from '@hooks/api/useGetDocuments';
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CustomCitation } from 'types/literatureReference.type';
 
 const updateCustomCitation = async (input: {
@@ -20,13 +20,16 @@ const updateCustomCitation = async (input: {
 
 const useUpdateCustomCitation = (options?: { onSuccessCb?: () => void }) => {
 	const queryClient = useQueryClient();
-	return useMutation(updateCustomCitation, {
-		mutationKey: 'update-custom-citation',
-		onSuccess: data => {
+	return useMutation({
+		mutationFn: updateCustomCitation,
+		mutationKey: ['update-custom-citation'],
+		onSuccess: () => {
 			options?.onSuccessCb?.();
 			toast.success('Custom citation updated successfully!');
 			// queryClient.invalidateQueries(['get-documents']);
-			queryClient.invalidateQueries(['get-user-uploads']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-user-uploads']
+			});
 		},
 		onError: error => {
 			console.log({ error });

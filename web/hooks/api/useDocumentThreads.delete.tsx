@@ -3,7 +3,7 @@ import { $isMarkNode, $unwrapMarkNode } from '@lexical/mark';
 import { supabase } from '@utils/supabase';
 import { $getNodeByKey, LexicalEditor, LexicalNode } from 'lexical';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type Payload = {
 	threadId: string;
@@ -23,8 +23,9 @@ const deleteDocumentThead = async ({ threadId }: Payload) => {
 
 const useDeleteCommentThread = (editor: LexicalEditor) => {
 	const queryClient = useQueryClient();
-	return useMutation(deleteDocumentThead, {
-		mutationKey: 'delete-document',
+	return useMutation({
+		mutationFn: deleteDocumentThead,
+		mutationKey: ['delete-document'],
 		onSuccess: (data: TextDocument, { markNodeKey, threadId }) => {
 			editor.update(() => {
 				const node = $getNodeByKey(markNodeKey);
@@ -37,7 +38,9 @@ const useDeleteCommentThread = (editor: LexicalEditor) => {
 				}
 			});
 
-			queryClient.invalidateQueries(['get-thread-comment']);
+			queryClient.invalidateQueries({
+				queryKey: ['get-thread-comment']
+			});
 		},
 		onError: error => {
 			console.log({ error });

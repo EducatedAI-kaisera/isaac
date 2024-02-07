@@ -1,7 +1,7 @@
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
 import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChatSession, ChatSessionType } from 'types/chat';
 
 const createChatSession = async ({
@@ -32,11 +32,10 @@ const useCreateChatSession = (params?: {
 	onSuccessCb?: (chatSession: ChatSession) => void;
 }) => {
 	const queryClient = useQueryClient();
-	return useMutation(
-		(payload: { projectId: string; title: string }) =>
-			createChatSession({ ...payload }),
-		{
-			mutationKey: 'create-chat-session',
+	return useMutation({
+			mutationFn: (payload: { projectId: string; title: string }) =>
+				createChatSession({ ...payload }),
+			mutationKey: ['create-chat-session'],
 			onMutate: () => {
 				mixpanel.track('Created ChatSession');
 			},
@@ -45,7 +44,7 @@ const useCreateChatSession = (params?: {
 					params.onSuccessCb(chatSession);
 				}
 
-				queryClient.invalidateQueries(['get-chat-sessions']);
+				queryClient.invalidateQueries({ queryKey: ['get-chat-sessions'] });
 			},
 			onError: error => {
 				console.log({ error });

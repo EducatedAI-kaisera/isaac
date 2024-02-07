@@ -9,7 +9,6 @@ import useRevokeZoteroToken from '@hooks/api/zotero/useZoteroToken.delete';
 import { getMendeleyUserAuthorizationUrl } from '@resources/integration/mendeley';
 import { useDeleteUser } from '@resources/user';
 import axios from 'axios';
-import { format } from 'date-fns';
 import { CreditCard, LogOut } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -17,17 +16,24 @@ import toast from 'react-hot-toast';
 
 const GlobalSettingsSection = () => {
 	const { user, logout, userIsLoading } = useUser();
+	const userId = user?.id;
 
 	const router = useRouter();
 	const email = user?.email ?? '';
 
-	const { data: userIntegration } = useGetUserIntegration();
+	const { data: userIntegration, isError } = useGetUserIntegration();
 	const { mutateAsync: mutateDeleteUser } = useDeleteUser({
 		onSuccessCb: () => router.push('/'),
 	});
 
+	if (isError) {
+		toast.error("Error loading user's integrations");
+	}
+
 	const loadPortal = async () => {
-		const { data } = await axios.get('/api/portal');
+		const { data } = await axios.get('/api/portal', {
+			params: { userId },
+		});
 		router.push(data.url);
 	};
 

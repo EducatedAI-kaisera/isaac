@@ -16,7 +16,7 @@ import { AlertCircle } from 'lucide-react';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { SSE } from 'sse.js';
 
 class ComponentPickerOption extends MenuOption {

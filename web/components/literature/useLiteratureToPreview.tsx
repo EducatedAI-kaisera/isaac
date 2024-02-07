@@ -1,5 +1,6 @@
 import { useGetLiteratureDetails } from '@resources/literature.api';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import {
 	LiteraturePreview,
 	ReferenceType,
@@ -9,8 +10,14 @@ const useLiteratureToPreview = (doi: string) => {
 	const [literaturePreview, setLiteraturePreview] =
 		useState<LiteraturePreview>();
 
-	const { refetch } = useGetLiteratureDetails(doi, {
-		onSuccess(data) {
+	const { refetch, data, isError } = useGetLiteratureDetails(doi);
+
+	if (isError) {
+		toast.error('Failed to fetch literature preview');
+	}
+
+	useEffect(() => {
+		if (data) {
 			const { openAccessPdf, externalIds, ...lit } = data;
 			setLiteraturePreview({
 				...lit,
@@ -18,8 +25,8 @@ const useLiteratureToPreview = (doi: string) => {
 				doi: externalIds?.DOI,
 				type: ReferenceType.STANDARD,
 			});
-		},
-	});
+		}
+	}, [data]);
 
 	useEffect(() => {
 		if (doi === undefined) {

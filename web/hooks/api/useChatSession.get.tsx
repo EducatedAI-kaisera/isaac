@@ -1,6 +1,5 @@
 import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { ChatSession } from 'types/chat';
 
 const getChatSession = async (projectId: string) => {
@@ -17,10 +16,7 @@ const useGetChatSessions = (projectId: string) => {
 	return useQuery({
 		queryKey: ['get-chat-sessions', projectId],
 		queryFn: () => getChatSession(projectId),
-		enabled: !!projectId,
-		onError: error => {
-			console.log({ error });
-		},
+		enabled: !!projectId
 	});
 };
 

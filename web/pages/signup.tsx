@@ -15,9 +15,9 @@ import { useUser } from '../context/user';
 import { supabase } from '../utils/supabase';
 
 export default function Signup() {
-	const [isLoading, setIsLoading] = useState(false);
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
 	const router = useRouter();
 	const { user, loginWithGoogle } = useUser();
 
@@ -56,7 +56,6 @@ export default function Signup() {
 		if (user) {
 			router.push('/editor');
 		}
-
 	}, [router, user]);
 
 	return (
@@ -155,11 +154,7 @@ export default function Signup() {
 						onClick={signUpWithGoogle}
 						className="bg-white"
 					>
-						{isLoading ? (
-							<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-						) : (
-							<Icons.google className="mr-2 h-4 w-4" />
-						)}{' '}
+						<Icons.google className="mr-2 h-4 w-4" />
 						Google
 					</LandingButton>
 				</div>

@@ -10,7 +10,6 @@ import {
 	CommandList,
 } from '@components/ui/command';
 import useLexicalEditorStore from '@context/lexicalEditor.store';
-import { useLiteratureReferenceStore } from '@context/literatureReference.store';
 import useCitationStyle from '@hooks/api/isaac/useCitationStyle';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { $createCitationNode } from '@lexical/nodes/CitationNode';
@@ -20,6 +19,7 @@ import { supabase } from '@utils/supabase';
 import { $createTextNode, $getSelection, $isRangeSelection } from 'lexical';
 import { Book, BookUp } from 'lucide-react';
 import { CitationData, UploadedFile } from 'types/literatureReference.type';
+import toast from 'react-hot-toast';
 
 type Props = {
 	open: boolean;
@@ -29,11 +29,15 @@ type Props = {
 
 export function CitationCommand({ open, setOpen, onSelectCallback }: Props) {
 	const { projectId } = useGetEditorRouter();
-	const { data: references } = useGetReference(projectId);
+	const { data: references, isError } = useGetReference(projectId);
 	const userUploadsRef = useRef<UploadedFile[]>([]);
 
 	const editor = useLexicalEditorStore(s => s.activeEditor);
 	const { citationStyle } = useCitationStyle();
+
+	if (isError) {
+		toast.error("Error loading references")
+	}
 
 	useEffect(() => {
 		async function fetchMyAPI() {

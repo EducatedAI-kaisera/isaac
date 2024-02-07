@@ -18,7 +18,8 @@ import clsx from 'clsx';
 import { FolderPlus } from 'lucide-react';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const EditorHead = () => (
 	<Head>
@@ -38,13 +39,16 @@ const editorPageStyle = `
 
 const EditorPage = () => {
 	const { user } = useUser();
-	const { data: projects, isLoading: isGetProjectsLoading } =
-		useGetProjects(user);
+	const { data: projects, isError } = useGetProjects(user);
 	const editorWidth = useUIStore(s => s.editorWidth);
 	const setCreateNewProjectModalOpen = useUIStore(
 		s => s.setCreateProjectPopoverOpen,
 	);
+	const [renderedProjects, setRenderedProjects] = useState(null);
+	console.log(renderedProjects)
 	useHandleToastQuery();
+
+	if (isError) toast.error('Error loading projects');
 
 	const projectGridClasses = useMemo(
 		() =>
@@ -61,6 +65,10 @@ const EditorPage = () => {
 
 	const [sortMethod, setSortMethod] = useState('lastOpened'); // Default sort method
 	const [sortedProjects, setSortedProjects] = useState([]);
+
+	const handleSortChange = value => {
+		setSortMethod(value);
+	};
 
 	useEffect(() => {
 		if (projects) {
@@ -86,45 +94,41 @@ const EditorPage = () => {
 		}
 	}, [projects, sortMethod]);
 
-	const handleSortChange = value => {
-		setSortMethod(value);
-	};
-
-	const renderedProjects = useMemo(
-		() =>
-			sortedProjects.map(project => (
-				<Link href={`/editor/${project.id}`} key={project.id} prefetch={false}>
-					<div
-						className={clsx(
-							'flex flex-col justify-between w-full h-[200px] p-3 border-t border-gray-100 rounded-md shadow-lg cursor-pointer hover:shadow-xl transition-all dark:border dark:border-gray-900 dark:hover:border-gray-600',
-						)}
+	useEffect(() => {
+		if (sortedProjects) {
+			setRenderedProjects(
+				sortedProjects.map(project => (
+					<Link
+						href={`/editor/${project.id}`}
+						key={project.id}
+						prefetch={false}
 					>
-						<p className="font-semibold">{project.title}</p>
-						<div className="text-sm opacity-75">
-							{/* TODO: This doesnt seem to work */}
-							{/* <p>Last opened {new Date(project.updated_at).toDateString()}</p> */}
-							<p>Created on {new Date(project.created_at).toDateString()}</p>
+						<div
+							className={clsx(
+								'flex flex-col justify-between w-full h-[200px] p-3 border-t border-gray-100 rounded-md shadow-lg cursor-pointer hover:shadow-xl transition-all dark:border dark:border-gray-900 dark:hover:border-gray-600',
+							)}
+						>
+							<p className="font-semibold">{project.title}</p>
+							<div className="text-sm opacity-75">
+								{/* TODO: This doesnt seem to work */}
+								{/* <p>Last opened {new Date(project.updated_at).toDateString()}</p> */}
+								<p>Created on {new Date(project.created_at).toDateString()}</p>
+							</div>
 						</div>
-					</div>
-				</Link>
-			)),
-		[sortedProjects],
-	);
-
-	const projectsLoadedAndEmpty = useMemo(() => !isGetProjectsLoading && !projects?.length, [
-		isGetProjectsLoading,
-		projects,
-	]);
+					</Link>
+				)),
+			);
+		}
+	}, [sortedProjects]);
 
 	return (
 		<>
 			<EditorHead />
 			<style>{editorPageStyle}</style>
 			<EditorLayout>
-				{!projectsLoadedAndEmpty ? (
+				{renderedProjects?.length > 0 ? (
 					<div className="w-full">
 						<h1 className="text-center text-foreground">Projects</h1>
-
 						<Select onValueChange={handleSortChange}>
 							<SelectTrigger className={clsx('w-[240px] mx-auto my-10')}>
 								<SelectValue placeholder="Recently created" />
@@ -139,7 +143,6 @@ const EditorPage = () => {
 								</SelectGroup>
 							</SelectContent>
 						</Select>
-
 						<div className={projectGridClasses}>{renderedProjects}</div>
 					</div>
 				) : (
@@ -150,7 +153,6 @@ const EditorPage = () => {
 								Isaac
 							</p>
 						</div>
-
 						<Button
 							size="lg"
 							className="z-10 bg-isaac hover:bg-white hover:text-isaac mt-6"

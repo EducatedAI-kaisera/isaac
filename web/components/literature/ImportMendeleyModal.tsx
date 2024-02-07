@@ -22,24 +22,31 @@ import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { mendeleyToIsaacReferenceTypeMap } from '@utils/referenceTypeMapper';
 import { difference, every, includes, union } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { MendeleyDocument, MendeleyFolder } from 'types/integration';
 import { ReferenceSource, ReferenceType } from 'types/literatureReference.type';
 
 const ImportMendeleyModal = () => {
 	const [tokenValid, setTokenValid] = useState<boolean>(false);
 	const [selectedDocs, setSelectedDocs] = useState<MendeleyDocument[]>([]);
-	const { data: userIntegration } = useGetUserIntegration();
+	const { data: userIntegration, isError } = useGetUserIntegration();
 	const { projectId } = useGetEditorRouter();
 	const openModal = useLiteratureReferenceStore(s => s.showMendeleyModal);
 	const setShowMendeleyModal = useLiteratureReferenceStore(
 		s => s.setShowMendeleyModal,
 	);
 	const { mutateAsync: refreshToken } = useRefreshMendeleyToken();
-	const { data: mendeleyFolders } = useGetMendeleyFolders(
-		tokenValid && userIntegration.mendeley.access_token,
-	);
+	const { data: mendeleyFolders, isError: mendeleyFoldersError } =
+		useGetMendeleyFolders(tokenValid && userIntegration.mendeley.access_token);
 	const { mutateAsync: addReference } = useAddReference();
 
+	if (isError) {
+		toast.error("Error loading user's integrations");
+	}
+
+	if (mendeleyFoldersError) {
+		toast.error('Error fetching mendeley folders.');
+	}
 	// handle expired token
 	useEffect(() => {
 		if (userIntegration?.mendeley && openModal) {

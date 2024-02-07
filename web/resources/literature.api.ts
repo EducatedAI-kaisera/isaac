@@ -1,7 +1,6 @@
 import { UniqueTabSources } from '@hooks/useDocumentTabs';
+import { useQuery } from '@tanstack/react-query';
 import { currentYear, earliestLiteratureYear } from 'data/meta';
-import toast from 'react-hot-toast';
-import { useQuery } from 'react-query';
 import { SemanticScholarReference } from 'types/literatureReference.type';
 
 export type GetLiteraturePayload = {
@@ -37,20 +36,11 @@ const getLiterature = async ({
 	return data as LiteratureResponse;
 };
 
-export const useGetLiterature = (
-	payload?: GetLiteraturePayload,
-	options?: { onSuccess?: (data: LiteratureResponse) => void },
-) => {
-	return useQuery(['get-literature', payload], () => getLiterature(payload), {
+export const useGetLiterature = (payload?: GetLiteraturePayload) => {
+	return useQuery({
+		queryKey: ['get-literature', payload],
+		queryFn: () => getLiterature(payload),
 		enabled: !!payload && payload?.keyword !== UniqueTabSources.NEW_LIT_SEARCH,
-		onSuccess: data => {
-			options?.onSuccess?.(data);
-		},
-		onError: error => {
-			console.log({ error });
-			//TODO: need to show a more clearer message
-			toast.error('There is something wrong. Please try again.');
-		},
 	});
 };
 
@@ -63,13 +53,11 @@ const fetchPdf = async (targetUrl: string) => {
 };
 
 export const useFetchLiteraturePdf = (targetUrl?: string) => {
-	return useQuery(
-		['get-literature-pdf', targetUrl],
-		() => fetchPdf(targetUrl),
-		{
-			enabled: !!targetUrl,
-		},
-	);
+	return useQuery({
+		queryKey: ['get-literature-pdf', targetUrl],
+		queryFn: () => fetchPdf(targetUrl),
+		enabled: !!targetUrl,
+	});
 };
 
 const getLiteratureDetails = async (doi?: string) => {
@@ -84,24 +72,10 @@ const getLiteratureDetails = async (doi?: string) => {
 	return data.paperDetails as SemanticScholarReference;
 };
 
-export const useGetLiteratureDetails = (
-	id?: string,
-	options?: { onSuccess?: (data: SemanticScholarReference) => void },
-) => {
-	return useQuery(
-		['get-literature-detail', id],
-		() => getLiteratureDetails(id),
-		{
-			enabled: !!id,
-			onSuccess: data => {
-				options?.onSuccess(data);
-			},
-
-			onError: error => {
-				console.log({ error });
-				//TODO: need to show a more clearer message
-				toast.error('There is something wrong. Please try again.');
-			},
-		},
-	);
+export const useGetLiteratureDetails = (id?: string) => {
+	return useQuery({
+		queryKey: ['get-literature-detail', id],
+		queryFn: () => getLiteratureDetails(id),
+		enabled: !!id,
+	});
 };

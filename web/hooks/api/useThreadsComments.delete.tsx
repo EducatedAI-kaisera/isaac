@@ -1,9 +1,6 @@
-import { TextDocument } from '@hooks/api/useGetDocuments';
-import { $isMarkNode, $unwrapMarkNode } from '@lexical/mark';
 import { supabase } from '@utils/supabase';
-import { $getNodeByKey, LexicalEditor, LexicalNode } from 'lexical';
 import toast from 'react-hot-toast';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ThreadComment } from 'types/threadComments';
 
 type Payload = {
@@ -31,10 +28,13 @@ const deleteThreadComment = async ({
 
 const useDeleteThreadComment = () => {
 	const queryClient = useQueryClient();
-	return useMutation(deleteThreadComment, {
-		mutationKey: 'delete-document',
-		onSuccess: (data: TextDocument) => {
-			queryClient.invalidateQueries(['get-thread-comment']);
+	return useMutation({
+		mutationFn: deleteThreadComment,
+		mutationKey: ['delete-document'],
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['get-thread-comment']
+			});
 		},
 		onError: error => {
 			console.log({ error });

@@ -35,7 +35,7 @@ const LiteratureList = ({
 			{/* LIST */}
 			<div className="flex flex-col gap-2 overflow-y-scroll h-[calc(100vh-210px)] px-3">
 				{literatureList.map(lit => {
-					const savedRef = savedLiteratureIds.find(i => {
+					const savedRef = savedLiteratureIds?.find(i => {
 						return i.doi === lit.externalIds.DOI;
 					});
 					return (

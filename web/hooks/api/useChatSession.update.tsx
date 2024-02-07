@@ -1,7 +1,7 @@
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
 import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChatSession } from 'types/chat';
 
 // this just update the title atm
@@ -30,8 +30,9 @@ const useUpdateChatSession = (params?: {
 	onSuccessCb?: (chatSession: ChatSession) => void;
 }) => {
 	const queryClient = useQueryClient();
-	return useMutation(updateChatSessionTitle, {
-		mutationKey: 'update-chat-session',
+	return useMutation({
+		mutationFn: updateChatSessionTitle,
+		mutationKey: ['update-chat-session'],
 		onMutate: () => {
 			mixpanel.track('Updated ChatSession');
 		},
@@ -39,7 +40,9 @@ const useUpdateChatSession = (params?: {
 			if (params?.onSuccessCb) {
 				params.onSuccessCb(chatSession);
 			}
-			queryClient.invalidateQueries(['get-chat-sessions']);
+			queryClient.invalidateQueries({
+                queryKey: ['get-chat-sessions']
+            });
 		},
 		onError: error => {
 			console.log({ error });

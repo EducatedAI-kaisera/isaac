@@ -417,8 +417,8 @@ function TableActionMenu({
 	const [x, y] = coords;
 
 	return (
-		// eslint-disable-next-line jsx-a11y/no-static-element-interactions
-		<div
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        (<div
 			className="dropdown"
 			ref={dropDownRef}
 			onPointerMove={e => {
@@ -434,7 +434,7 @@ function TableActionMenu({
 				e.stopPropagation();
 			}}
 		>
-			<button
+            <button
 				className="item"
 				onClick={() => {
 					updateTableNode(tableNode => {
@@ -452,7 +452,7 @@ function TableActionMenu({
 					{cell.type === 'normal' ? 'Make header' : 'Remove header'}
 				</span>
 			</button>
-			<button
+            <button
 				className="item"
 				onClick={() => {
 					updateCellsByID([cell.id], () => {
@@ -465,8 +465,8 @@ function TableActionMenu({
 			>
 				<span className="text">Clear cell</span>
 			</button>
-			<hr />
-			{cell.type === 'header' && y === 0 && (
+            <hr />
+            {cell.type === 'header' && y === 0 && (
 				<>
 					{sortingOptions !== null && sortingOptions.x === x && (
 						<button
@@ -508,7 +508,7 @@ function TableActionMenu({
 					<hr />
 				</>
 			)}
-			<button
+            <button
 				className="item"
 				onClick={() => {
 					updateTableNode(tableNode => {
@@ -520,7 +520,7 @@ function TableActionMenu({
 			>
 				<span className="text">Insert row above</span>
 			</button>
-			<button
+            <button
 				className="item"
 				onClick={() => {
 					updateTableNode(tableNode => {
@@ -532,8 +532,8 @@ function TableActionMenu({
 			>
 				<span className="text">Insert row below</span>
 			</button>
-			<hr />
-			<button
+            <hr />
+            <button
 				className="item"
 				onClick={() => {
 					updateTableNode(tableNode => {
@@ -545,7 +545,7 @@ function TableActionMenu({
 			>
 				<span className="text">Insert column left</span>
 			</button>
-			<button
+            <button
 				className="item"
 				onClick={() => {
 					updateTableNode(tableNode => {
@@ -557,8 +557,8 @@ function TableActionMenu({
 			>
 				<span className="text">Insert column right</span>
 			</button>
-			<hr />
-			{rows[0].cells.length !== 1 && (
+            <hr />
+            {rows[0].cells.length !== 1 && (
 				<button
 					className="item"
 					onClick={() => {
@@ -572,7 +572,7 @@ function TableActionMenu({
 					<span className="text">Delete column</span>
 				</button>
 			)}
-			{rows.length !== 1 && (
+            {rows.length !== 1 && (
 				<button
 					className="item"
 					onClick={() => {
@@ -586,7 +586,7 @@ function TableActionMenu({
 					<span className="text">Delete row</span>
 				</button>
 			)}
-			<button
+            <button
 				className="item"
 				onClick={() => {
 					updateTableNode(tableNode => {
@@ -599,8 +599,8 @@ function TableActionMenu({
 			>
 				<span className="text">Delete table</span>
 			</button>
-		</div>
-	);
+        </div>)
+    );
 }
 
 function TableCell({

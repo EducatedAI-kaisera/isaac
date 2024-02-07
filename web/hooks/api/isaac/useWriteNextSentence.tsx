@@ -5,6 +5,7 @@ import {
 	CitationSearchResponse,
 	SimilarSource,
 } from '@pages/api/similarity-search';
+import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 import { $createTextNode, $getSelection, LexicalEditor } from 'lexical';
 import { SSE } from 'sse.js';
 
@@ -82,47 +83,49 @@ const useWriteNextSentence = (editor: LexicalEditor) => {
 			const project_id = window.location.pathname.split('/')[2];
 
 			// get citations for text
-			const citations = await getCitationsForText(textCompletion, project_id);
+			// const citations = await getCitationsForText(textCompletion, project_id);
 			let source = null;
 
-			if ('similarSources' in citations) {
-				const relevantSourceResponse =
-					citations.similarSources as SimilarSource[];
+			// if ('similarSources' in citations) {
+			// 	const relevantSourceResponse =
+			// 		citations.similarSources as SimilarSource[];
 
-				const filteredRelevantSourceResponse = relevantSourceResponse.filter(
-					source => source.similarity_score > similarityThreshold,
-				);
-				const relevantCitations = [];
-				for (const source of relevantSourceResponse) {
-					const quotation = '"' + source.content + '"';
-					const authors =
-						source.citation && source.citation.authors
-							? String(source.citation.authors)
-							: 'Unknown author';
-					const year =
-						source.citation && source.citation.year
-							? source.citation.year
-							: 'Unknown year';
+			// 	const filteredRelevantSourceResponse = relevantSourceResponse.filter(
+			// 		source => source.similarity_score > similarityThreshold,
+			// 	);
+			// 	const relevantCitations = [];
+			// 	for (const source of relevantSourceResponse) {
+			// 		const quotation = '"' + source.content + '"';
+			// 		const authors =
+			// 			source.citation && source.citation.authors
+			// 				? String(source.citation.authors)
+			// 				: 'Unknown author';
+			// 		const year =
+			// 			source.citation && source.citation.year
+			// 				? source.citation.year
+			// 				: 'Unknown year';
 
-					const currCitation = formatCitation(authors, year);
-					relevantCitations.push(quotation + ' ' + currCitation);
-				}
+			// 		const currCitation = formatCitation(authors, year);
+			// 		relevantCitations.push(quotation + ' ' + currCitation);
+			// 	}
 
-				source = new SSE('/api/completion', {
-					payload:
-						`Relevant Citations: \n` +
-						String(relevantCitations) +
-						`\n\n Continue the following text in one to two sentences. Feel free to insert relevant citations as it makes sense. Your output must be in ${user?.editor_language}: \n\n ${textCompletion}.`,
-				});
-			} else {
-				source = new SSE('/api/completion', {
-					payload: `Complete the following text with one or two sentences. If the text to continue is shorter than three words, you must say "Please write at least three words and try again. Kindly - Isaac 🧑‍🚀". Your output must be in ${user?.editor_language}: \n\n Text to Continue: ${textCompletion}.`,
-				});
-			}
+			// 	source = new SSE('/api/completion', {
+			// 		payload:
+			// 			`Relevant Citations: \n` +
+			// 			String(relevantCitations) +
+			// 			`\n\n Continue the following text in one to two sentences. Feel free to insert relevant citations as it makes sense. Your output must be in ${user?.editor_language}: \n\n ${textCompletion}.`,
+			// 	});
+			// } else {
+			source = new SSE('/api/completion', {
+				payload: JSON.stringify(
+					`Complete the following text with one or two sentences. If the text to continue is shorter than three words, you must say "Please write at least three words and try again. Kindly - Isaac 🧑‍🚀". Your output must be in ${user?.editor_language}: \n\n Text to Continue: ${textCompletion}.`,
+				),
+			});
+			// }
 
 			source.addEventListener('message', function (e) {
-				const binaryString = atob(e.data);
-				const eventMessage = decodeURIComponent(escape(binaryString))
+				const uint8Array = base64ToUint8Array(e.data);
+				const eventMessage = new TextDecoder('utf-8').decode(uint8Array);
 				if (eventMessage === '[DONE]') {
 					source.close();
 				} else {

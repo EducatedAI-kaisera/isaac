@@ -3,7 +3,6 @@ import { EquationModal } from '@components/editor/EquationModal';
 import { useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
 import { useBreakpoint } from '@hooks/misc/useBreakPoint';
-import useAuthRedirect from '@hooks/useAuthRedirect';
 import useDocumentTabs, { paperTypeTabs } from '@hooks/useDocumentTabs';
 import useEditorShortcut from '@hooks/useEditorShortcut';
 import { useElementSize } from '@mantine/hooks';
@@ -16,6 +15,7 @@ import { Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { ReactNode, useEffect } from 'react';
 import Sidebar from './Sidebar';
+import toast from 'react-hot-toast';
 
 type Props = {
 	children: ReactNode; // dedicated for the content in the middle
@@ -64,7 +64,6 @@ const CreateNewProjectModal = dynamic(
  * Layout Component for Editor page that would contain the sidebar
  */
 const EditorLayout = ({ children }: Props) => {
-	useAuthRedirect();
 	useEditorShortcut();
 
 	const { activeDocument } = useDocumentTabs();
@@ -72,8 +71,12 @@ const EditorLayout = ({ children }: Props) => {
 	const { ref: editorRef, width: editorWidth } = useElementSize();
 	const { width: editorMobileWidth } = useElementSize();
 	const { isAboveMd, isBelowMd } = useBreakpoint('md');
-	const { data: projects, isLoading: isGetProjectsLoading } =
+	const { data: projects, isLoading: isGetProjectsLoading, isError } =
 		useGetProjects(user);
+
+	if (isError) {
+		toast.error("Error loading projects");
+	}
 
 	const uiStore = useUIStore(s => ({
 		activePanel: s.activePanel,
@@ -110,7 +113,8 @@ const EditorLayout = ({ children }: Props) => {
 			{isGetProjectsLoading ? (
 				<div className="flex h-screen justify-center items-center w-screen">
 					<div className="inline-flex items-center text-muted-foreground">
-						<Loader2 strokeWidth={1.2} size={30} className="animate-spin"/><span className="ml-2 text-2xl"> Loading...</span>
+						<Loader2 strokeWidth={1.2} size={30} className="animate-spin" />
+						<span className="ml-2 text-2xl"> Loading...</span>
 					</div>
 				</div>
 			) : (

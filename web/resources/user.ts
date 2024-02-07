@@ -1,7 +1,7 @@
 import type { CustomInstructions } from '@context/user';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from 'react-query';
 
 const deleteUser = async (userId: string) => {
 	const { data } = await supabase
@@ -42,8 +42,9 @@ const updateUserFirstTime = async ({ userId }: { userId: string }) => {
 export const useUpdateUserFirstTime = (options?: {
 	onSuccessCb: (data: any) => void;
 }) => {
-	return useMutation(updateUserFirstTime, {
-		mutationKey: 'update-user-first-time',
+	return useMutation({
+		mutationFn: updateUserFirstTime,
+		mutationKey: ['update-user-first-time'],
 		onSuccess: data => {
 			options?.onSuccessCb(data);
 		},
@@ -55,8 +56,9 @@ export const useUpdateUserEmail = ({
 }: {
 	onSuccessCb: (data: any) => void;
 }) => {
-	return useMutation(updateUserEmail, {
-		mutationKey: 'update-user',
+	return useMutation({
+		mutationFn: updateUserEmail,
+		mutationKey: ['update-user'],
 		onSuccess: data => {
 			onSuccessCb(data);
 			toast.success('User Email changed successfully!');
@@ -70,8 +72,9 @@ export const useUpdateUserEmail = ({
 };
 
 export const useDeleteUser = ({ onSuccessCb }: { onSuccessCb: () => void }) => {
-	return useMutation(deleteUser, {
-		mutationKey: 'delete-user',
+	return useMutation({
+		mutationFn: deleteUser,
+		mutationKey: ['delete-user'],
 		onSuccess: () => {
 			onSuccessCb();
 			toast.success('User deleted successfully!');
@@ -106,14 +109,15 @@ const updateCustomInstructions = async ({
 
 export const useUpdateCustomInstructions = () => {
 	const queryClient = useQueryClient();
-	return useMutation(updateCustomInstructions, {
-		mutationKey: 'update-custom-instructions',
+	return useMutation({
+		mutationFn: updateCustomInstructions,
+		mutationKey: ['update-custom-instructions'],
 		onMutate: data => {
 			//
 		},
 		onSuccess: data => {
 			toast.success('Custom instructions updated!');
-			queryClient.invalidateQueries('fetch-user-profile');
+			queryClient.invalidateQueries({ queryKey: ['fetch-user-profile'] });
 		},
 		onError: error => {
 			console.log({ error });
@@ -145,14 +149,15 @@ const updateEditorLanguage = async ({
 
 export const useUpdateEditorLanguage = () => {
 	const queryClient = useQueryClient();
-	return useMutation(updateEditorLanguage, {
-		mutationKey: 'update-editor-instructions',
+	return useMutation({
+		mutationFn: updateEditorLanguage,
+		mutationKey: ['update-editor-instructions'],
 		onMutate: data => {
 			//
 		},
 		onSuccess: data => {
 			toast.success('Editor language updated!');
-			queryClient.invalidateQueries('fetch-user-profile');
+			queryClient.invalidateQueries({ queryKey: ['fetch-user-profile'] });
 		},
 		onError: error => {
 			console.log({ error });
