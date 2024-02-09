@@ -42,11 +42,6 @@ const faqs = [
 			answer:
 				'Currently, Isaac is only available on Desktop. But, we´re working hard to enable mobile support as soon as possible.',
 		},
-		// {
-		//   question: 'How do I become an insider?',
-		//   answer:
-		//     'Contact us with some details about your industry and the type of access you have to apply for an insider account. Once approved, we’ll send you a guide on collecting insider information without being detected at work.',
-		// },
 		{
 			question: 'What if Isaac doesn’t work?',
 			answer:
