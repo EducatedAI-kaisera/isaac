@@ -39,7 +39,7 @@ import { useUpdateEditorLanguage } from '@resources/user';
 import { discordInviteLink, twitterLink } from 'data/externalLinks';
 import mixpanel from 'mixpanel-browser';
 import { memo, useCallback, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const appHeaderMenuTitle =
 	'px-2 !ml-0 text-xs text-accent-foreground w-full md:w-auto gap-0.5 ';

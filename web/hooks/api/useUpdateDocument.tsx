@@ -1,6 +1,6 @@
-import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@utils/supabase';
+import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
 
 export type DocumentUpdatePayload = {
@@ -43,8 +43,8 @@ const useUpdateDocument = () => {
 		},
 		onSuccess: (data, input) => {
 			queryClient.invalidateQueries({
-                queryKey: ['get-document', input.id]
-            });
+				queryKey: ['get-document', input.id],
+			});
 		},
 	});
 

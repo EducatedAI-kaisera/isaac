@@ -9,7 +9,7 @@ import { mergeRegister, registerNestedElementResolver } from '@lexical/utils';
 import { $getNodeByKey, COMMAND_PRIORITY_EDITOR, createCommand } from 'lexical';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { ThreadPosition } from 'types/threadComments';
 
 export const INSERT_INLINE_COMMAND = createCommand('INSERT_INLINE_COMMAND');
@@ -27,7 +27,7 @@ export default function CommentPlugin({ documentId }: Props) {
 	const { data: threads, isError } = useGetDocumentCommentThreads();
 
 	if (isError) {
-		toast.error("Error loading comments")
+		toast.error('Error loading comments');
 	}
 
 	// ? This should be a state

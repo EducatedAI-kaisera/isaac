@@ -1,9 +1,9 @@
 import { TextDocument } from '@hooks/api/useGetDocuments';
 import { $isMarkNode, $unwrapMarkNode } from '@lexical/mark';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import { $getNodeByKey, LexicalEditor, LexicalNode } from 'lexical';
-import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 type Payload = {
 	threadId: string;
@@ -39,7 +39,7 @@ const useDeleteCommentThread = (editor: LexicalEditor) => {
 			});
 
 			queryClient.invalidateQueries({
-				queryKey: ['get-thread-comment']
+				queryKey: ['get-thread-comment'],
 			});
 		},
 		onError: error => {

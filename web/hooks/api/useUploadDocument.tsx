@@ -1,7 +1,4 @@
-import {
-	ProPlanUpgradeToast,
-	reachedStorageLimitToastStyle,
-} from '@components/toast/ProPlanUpgradToast';
+import { ProPlanUpgradeToast } from '@components/toast/ProPlanUpgradToast';
 import {
 	ReferenceSection,
 	useLiteratureReferenceStore,
@@ -9,11 +6,12 @@ import {
 import { useUser } from '@context/user';
 import { QKUploadStorageUsage } from '@hooks/api/useFreeTierLimit.get';
 import { getUserStorageSize } from '@resources/user';
+import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import { freePlanLimits } from 'data/pricingPlans';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 type Options = {
 	onSuccess?: () => void;
@@ -137,9 +135,7 @@ const useUploadDocument = (projectId: string, options?: Options) => {
 		if (user?.is_subscribed === false) {
 			const storageUsage = await getUserStorageSize(user?.id);
 			if (storageUsage >= freePlanLimits.uploadStorage) {
-				toast.error(<ProPlanUpgradeToast target="storage" />, {
-					style: reachedStorageLimitToastStyle,
-				});
+				<ProPlanUpgradeToast target="storage" />;
 				return;
 			}
 		}
@@ -176,15 +172,11 @@ const useUploadDocument = (projectId: string, options?: Options) => {
 						id: 'upload-file',
 					});
 					queryClient.invalidateQueries({
-                        queryKey: [
-                            'get-user-uploads',
-                            user.id,
-                            projectId,
-                        ]
-                    });
+						queryKey: ['get-user-uploads', user.id, projectId],
+					});
 					queryClient.invalidateQueries({
-                        queryKey: [QKUploadStorageUsage]
-                    });
+						queryKey: [QKUploadStorageUsage],
+					});
 				}
 			}
 		}

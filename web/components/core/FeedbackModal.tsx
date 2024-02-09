@@ -11,7 +11,7 @@ import { useUIStore } from '@context/ui.store';
 import clsx from 'clsx';
 import { Check, Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 interface FeedbackModalProps {
 	userEmail: string;

@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useCallback } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 const TabButton = classed.button(
 	cva({
 		base: 'w-10 h-10 flex justify-center items-center text-gray-400 transition-colors hover:text-isaac dark:text-gray-500 hover:dark:text-isaac rounded-md',
@@ -117,7 +117,10 @@ export default function AppMenuBar() {
 										) : (
 											<btn.Icon size={22} strokeWidth={1.4} />
 										)}
-										<span className="text-[9.5px] truncate"> {panelButtonNames[btn.tab]} </span>
+										<span className="text-[9.5px] truncate">
+											{' '}
+											{panelButtonNames[btn.tab]}{' '}
+										</span>
 									</div>
 								</TabButton>
 							</TooltipTrigger>

@@ -5,12 +5,13 @@ import {
 } from '@hooks/api/useFreeTierLimit.get';
 import { freePlanLimits } from 'data/pricingPlans';
 import React from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const SidebarFooter = () => {
 	const { user } = useUser();
 	const { data: freeTierToken, isError } = useGetFreeTokenUsage();
-	const { data: storageUsage, isError: errorGettingUploadStorageUseage } = useGetUploadStorageUsage();
+	const { data: storageUsage, isError: errorGettingUploadStorageUseage } =
+		useGetUploadStorageUsage();
 
 	if (isError) {
 		toast.error("Error fetching user's free tier token usage");

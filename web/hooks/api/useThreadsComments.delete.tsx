@@ -1,6 +1,6 @@
-import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@utils/supabase';
+import { toast } from 'sonner';
 import { ThreadComment } from 'types/threadComments';
 
 type Payload = {
@@ -33,7 +33,7 @@ const useDeleteThreadComment = () => {
 		mutationKey: ['delete-document'],
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['get-thread-comment']
+				queryKey: ['get-thread-comment'],
 			});
 		},
 		onError: error => {

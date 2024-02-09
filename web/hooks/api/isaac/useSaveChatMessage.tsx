@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { ChatMessageV2 } from 'types/chat';
 
 const createChatMessage = async (messages: ChatMessageV2[]) => {

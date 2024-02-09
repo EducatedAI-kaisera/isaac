@@ -12,7 +12,7 @@ import axios from 'axios';
 import { CreditCard, LogOut } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const GlobalSettingsSection = () => {
 	const { user, logout, userIsLoading } = useUser();

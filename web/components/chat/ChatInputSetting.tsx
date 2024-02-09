@@ -27,7 +27,7 @@ import clsx from 'clsx';
 import { BookUp, Globe2, Library, RefreshCw, Search } from 'lucide-react';
 import React, { memo } from 'react';
 import { FaStopCircle } from 'react-icons/fa';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 type Props = {
 	sessionId: string;
@@ -63,10 +63,13 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 	const isRegenerateSeen = false; // TODO
 
 	const showRAGDisabledToast = () => {
-		toast('Chatting with your documents is temporarily unavailable due to system upgrades. \n\n  We apologize for the inconvenience and appreciate your patience. ', {
-			icon: 'ℹ️',
-		});
-	}
+		toast(
+			'Chatting with your documents is temporarily unavailable due to system upgrades. \n\n  We apologize for the inconvenience and appreciate your patience. ',
+			{
+				icon: 'ℹ️',
+			},
+		);
+	};
 
 	return (
 		<div className="flex justify-between pt-2 pb-2 text-xs">
@@ -106,17 +109,14 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 								</div>
 							</div>
 						</DropdownMenuItem>
-						<DropdownMenuItem
-							onClick={showRAGDisabledToast}
-							className="py-2"
-						>
-						<Library className="h-5 w-5 mr-3.5 ml-1.5 shrink-0" />
-								<div>
-									<div className="font-bold">References</div>
-									<div className="text-xs">
-										All your uploaded papers & documents. Or just a single file.
-									</div>
+						<DropdownMenuItem onClick={showRAGDisabledToast} className="py-2">
+							<Library className="h-5 w-5 mr-3.5 ml-1.5 shrink-0" />
+							<div>
+								<div className="font-bold">References</div>
+								<div className="text-xs">
+									All your uploaded papers & documents. Or just a single file.
 								</div>
+							</div>
 						</DropdownMenuItem>
 						{/* RAG disabled*/}
 						{/* <DropdownMenuSub>
@@ -230,7 +230,10 @@ const ChatInputSetting = ({ sessionId, minimized }: Props) => {
 
 				{/* // TODO: Figure out how to stop generation */}
 				{isHandling && (
-					<InputSettingButton className="inline-flex items-center" onClick={() => resetStateOnError(sessionId)}>
+					<InputSettingButton
+						className="inline-flex items-center"
+						onClick={() => resetStateOnError(sessionId)}
+					>
 						<span className="mr-0.5"> Stop generation</span>
 						<FaStopCircle size="10" className="inline-block animate-pulse" />
 					</InputSettingButton>

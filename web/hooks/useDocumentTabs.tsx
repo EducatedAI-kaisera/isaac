@@ -5,7 +5,7 @@ import { LiteratureResponse } from '@resources/literature.api';
 import { LocalStorageKeys } from '@utils/localStorageKeys';
 import { omit } from 'lodash';
 import React, { useEffect, useMemo } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export enum TabType {
 	SemanticScholar = 'SemanticScholar',

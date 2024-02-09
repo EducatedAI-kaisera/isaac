@@ -2,7 +2,7 @@ import { supabase } from '@utils/supabase';
 
 import { useUser } from '@context/user';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export const deleteZoteroToken = async (userId: string) => {
 	const { error, status } = await supabase

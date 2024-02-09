@@ -16,7 +16,7 @@ import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { getMendeleyUserAuthorizationUrl } from '@resources/integration/mendeley';
 import { BookmarkPlus, FileUp, FolderInput } from 'lucide-react';
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 type Props = {
 	displayAsButtons?: boolean;
@@ -29,11 +29,8 @@ const AddReferenceDropdown = ({ displayAsButtons }: Props) => {
 	const { user } = useUser();
 
 	const showRAGDisabledToast = () => {
-		toast(
+		toast.info(
 			'Document upload is temporarily unavailable due to system upgrades. \n\n  We apologize for the inconvenience and appreciate your patience. ',
-			{
-				icon: 'ℹ️',
-			},
 		);
 	};
 

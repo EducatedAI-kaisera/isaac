@@ -18,7 +18,7 @@ import { Settings } from 'lucide-react';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export default function SettingsModal() {
 	const { user, userIsLoading } = useUser();

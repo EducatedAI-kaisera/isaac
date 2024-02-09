@@ -1,6 +1,6 @@
 import { Check, X } from 'lucide-react';
 import React from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const useAIDetector = () => {
 	const sendToAIDetector = async (text: string) => {

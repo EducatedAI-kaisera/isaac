@@ -8,11 +8,11 @@ import {
 	DialogTitle,
 } from '@components/ui/dialog';
 import useDocumentTabs from '@hooks/useDocumentTabs';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { ChatSession } from 'types/chat';
 
 const deleteChatSession = async ({ sessionId }: { sessionId: string }) => {

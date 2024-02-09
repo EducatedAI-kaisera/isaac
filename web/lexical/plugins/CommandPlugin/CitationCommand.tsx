@@ -18,8 +18,8 @@ import { generateCitation } from '@utils/citation';
 import { supabase } from '@utils/supabase';
 import { $createTextNode, $getSelection, $isRangeSelection } from 'lexical';
 import { Book, BookUp } from 'lucide-react';
+import { toast } from 'sonner';
 import { CitationData, UploadedFile } from 'types/literatureReference.type';
-import toast from 'react-hot-toast';
 
 type Props = {
 	open: boolean;
@@ -36,7 +36,7 @@ export function CitationCommand({ open, setOpen, onSelectCallback }: Props) {
 	const { citationStyle } = useCitationStyle();
 
 	if (isError) {
-		toast.error("Error loading references")
+		toast.error('Error loading references');
 	}
 
 	useEffect(() => {
@@ -45,16 +45,17 @@ export function CitationCommand({ open, setOpen, onSelectCallback }: Props) {
 				.from('uploads')
 				.select('*')
 				.eq('project_id', projectId);
-			const fileList: UploadedFile[] = uploads?.map(file => ({
-				id: file.id,
-				file_name: file.file_name,
-				status: file.status,
-				created_at: file.created_at,
-				citation: file.citation,
-				custom_citation: file.custom_citation,
-				abstract: file.abstract ? file.abstract : null,
-				tldr: file.tldr ? file.tldr : null,
-			})) || [];
+			const fileList: UploadedFile[] =
+				uploads?.map(file => ({
+					id: file.id,
+					file_name: file.file_name,
+					status: file.status,
+					created_at: file.created_at,
+					citation: file.citation,
+					custom_citation: file.custom_citation,
+					abstract: file.abstract ? file.abstract : null,
+					tldr: file.tldr ? file.tldr : null,
+				})) || [];
 			userUploadsRef.current = fileList;
 		}
 		if (!userUploadsRef.current.length) {

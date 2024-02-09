@@ -2,7 +2,7 @@ import { Button } from '@components/ui/button';
 import { FileDown } from 'lucide-react';
 import { list } from 'postcss';
 import React from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const ReferenceExportButton = () => {
 	return (

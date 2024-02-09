@@ -1,6 +1,6 @@
 import { useGetLiteratureDetails } from '@resources/literature.api';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import {
 	LiteraturePreview,
 	ReferenceType,

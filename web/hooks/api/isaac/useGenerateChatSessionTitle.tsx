@@ -5,7 +5,7 @@ import useDocumentTabs from '@hooks/useDocumentTabs';
 import { useQueryClient } from '@tanstack/react-query';
 import { base64ToUint8Array } from '@utils/base64ToUint8Array';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { SSE } from 'sse.js';
 
 const useGenerateChatSessionTitle = (minimized: boolean) => {

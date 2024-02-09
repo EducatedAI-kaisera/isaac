@@ -1,6 +1,6 @@
-import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@utils/supabase';
+import { toast } from 'sonner';
 import { Project } from 'types/project';
 
 const updateProjectSortingOrder = async ({
@@ -26,18 +26,21 @@ export const useUpdateProjectSortingOrder = (opts?: {
 		mutationKey: ['rename-project'],
 
 		onMutate: ({ sortedIds }) => {
-			queryClient.setQueriesData({ queryKey: ['get-projects'] },(data: Project[]) => {
-				return sortedIds.map(id => {
-					const project = data.find(item => item.id === id);
-					return project;
-				});
-			});
+			queryClient.setQueriesData(
+				{ queryKey: ['get-projects'] },
+				(data: Project[]) => {
+					return sortedIds.map(id => {
+						const project = data.find(item => item.id === id);
+						return project;
+					});
+				},
+			);
 		},
 		onSuccess: () => {
 			opts?.onSuccessCb?.();
 			queryClient.invalidateQueries({
-                queryKey: ['get-projects']
-            });
+				queryKey: ['get-projects'],
+			});
 			//TODO: need to close model
 		},
 		onError: error => {

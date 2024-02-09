@@ -1,7 +1,7 @@
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 type CreateNotePayload = {
 	projectId: string;

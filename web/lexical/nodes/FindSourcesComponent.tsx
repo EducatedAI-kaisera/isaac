@@ -23,7 +23,7 @@ import {
 } from 'lexical';
 import { X } from 'lucide-react';
 import { useCallback } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { LiteratureSource } from 'types/chat';
 import {
 	ReferenceLiterature,
@@ -57,7 +57,7 @@ const AISearchSourceComponent = ({
 	const { data: _referenceList, isError } = useGetReference(projectId);
 
 	if (isError) {
-		toast.error("Error loading references");
+		toast.error('Error loading references');
 	}
 
 	const { mutateAsync: addToReference } = useAddReference();
@@ -132,7 +132,7 @@ const AISearchSourceComponent = ({
 		s => s.setLiteratureDOIPreview,
 	);
 
-	console.log(literatures)
+	console.log(literatures);
 
 	return (
 		<motion.div

@@ -14,7 +14,7 @@ import {
 import { ArrowRightIcon, SparklesIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const ToggleButton = classed.button(
 	cva({
