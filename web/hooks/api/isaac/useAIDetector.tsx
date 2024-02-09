@@ -15,45 +15,34 @@ const useAIDetector = () => {
 			return await response.json();
 		};
 
-		toast.promise(
-			detectAI(),
-			{
-				loading: 'Detecting...',
-				success: data => {
-					const fake = data.data.fake_probability > data.data.real_probability;
+		toast.promise(detectAI(), {
+			loading: 'Detecting...',
+			success: data => {
+				const fake = data.data.fake_probability > data.data.real_probability;
 
-					const icon = fake ? (
-						<X size={16} className="text-red-500" />
-					) : (
-						<Check size={16} className="text-green-500" />
-					);
+				const icon = fake ? (
+					<X size={16} className="text-red-500" />
+				) : (
+					<Check size={16} className="text-green-500" />
+				);
 
-					const message = fake
-						? `Likely AI Generated (${Math.round(
-								data.data.fake_probability * 100,
-						  )}%)`
-						: `Likely not AI Generated (${Math.round(
-								data.data.real_probability * 100,
-						  )}%)`;
+				const message = fake
+					? `Likely AI Generated (${Math.round(
+							data.data.fake_probability * 100,
+					  )}%)`
+					: `Likely not AI Generated (${Math.round(
+							data.data.real_probability * 100,
+					  )}%)`;
 
-					return (
-						<div className="flex items-center gap-2">
-							{icon}
-							{message}
-						</div>
-					);
-				},
-				error: error => `Detection failed: ${error.message}`,
+				return (
+					<div className="flex items-center gap-2">
+						{icon}
+						{message}
+					</div>
+				);
 			},
-			{
-				style: {
-					minWidth: '250px',
-				},
-				success: {
-					duration: 5000,
-				},
-			},
-		);
+			error: 'Error',
+		});
 	};
 	return { sendToAIDetector };
 };
