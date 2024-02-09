@@ -1,8 +1,8 @@
 import { useUser } from '@context/user';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
-import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { DocumentThread, ThreadComment } from 'types/threadComments';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -45,33 +45,32 @@ const useCreateThreadComment = (params?: {
 	const { user } = useUser();
 	const queryClient = useQueryClient();
 	return useMutation({
-			mutationFn: (payload: Omit<Payload, 'author'>) => {
-				if (user?.username) {
-					return createThreadComment({
-						...payload,
-						author: user?.username,
-					});
-				}
-			},
-			mutationKey: ['create-document-thread'],
-			onMutate: () => {
-				mixpanel.track('Created Document Thread');
-			},
-			onSuccess: thread => {
-				if (params?.onSuccessCb) {
-					params.onSuccessCb(thread);
-				}
-
-				queryClient.invalidateQueries({
-                    queryKey: ['get-thread-comment']
-                });
-			},
-			onError: error => {
-				console.log({ error });
-				toast.error('There is something wrong. Please try again.');
-			},
+		mutationFn: (payload: Omit<Payload, 'author'>) => {
+			if (user?.username) {
+				return createThreadComment({
+					...payload,
+					author: user?.username,
+				});
+			}
 		},
-	);
+		mutationKey: ['create-document-thread'],
+		onMutate: () => {
+			mixpanel.track('Created Document Thread');
+		},
+		onSuccess: thread => {
+			if (params?.onSuccessCb) {
+				params.onSuccessCb(thread);
+			}
+
+			queryClient.invalidateQueries({
+				queryKey: ['get-thread-comment'],
+			});
+		},
+		onError: error => {
+			console.log({ error });
+			toast.error('There is something wrong. Please try again.');
+		},
+	});
 };
 
 export default useCreateThreadComment;

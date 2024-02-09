@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { ToastQuery } from 'types/queryParam';
 
 const toastQueryData: Record<

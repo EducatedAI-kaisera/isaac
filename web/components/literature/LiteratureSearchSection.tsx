@@ -22,7 +22,7 @@ import { useGetReference } from '@resources/editor-page';
 import { useGetLiterature } from '@resources/literature.api';
 import { Maximize2 } from 'lucide-react';
 import React, { useCallback } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import {
 	ReferenceSource,
 	SemanticScholarReference,
@@ -80,7 +80,7 @@ const LiteratureSearchSection = () => {
 						doi: lit.externalIds.DOI,
 						year: lit.year,
 						sourceId: ReferenceSource.SEMANTIC_SCHOLAR,
-						pdf: lit.openAccessPdf.url || null,
+						pdf: lit.openAccessPdf?.url || null,
 						abstract: lit.abstract,
 					},
 				],

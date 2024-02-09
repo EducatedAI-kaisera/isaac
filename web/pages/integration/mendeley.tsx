@@ -3,7 +3,7 @@ import useGetMendeleyToken from '@hooks/api/mendeley/useMendeleyToken.create';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 // TODO: THIS CAN BE HANDLED ENTIRELY ON BACKEND -> SEE ZOTERO AUTH API
 const MendeleyIntegration = () => {

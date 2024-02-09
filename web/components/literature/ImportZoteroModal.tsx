@@ -19,7 +19,7 @@ import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { ZoteroToIsaacReferenceTypeMap } from '@utils/referenceTypeMapper';
 import { difference, every, includes, union } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { ZoteroDocument } from 'types/integration';
 import { ReferenceSource, ReferenceType } from 'types/literatureReference.type';
 

@@ -2,9 +2,9 @@ import { useUser } from '@context/user';
 import { Project } from '@hooks/api/useGetProjects';
 import useDocumentTabs from '@hooks/useDocumentTabs';
 import { useCreateDocument } from '@resources/editor-page';
-import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@utils/supabase';
+import { toast } from 'sonner';
 
 export const createProject = async ({
 	projectTitle,
@@ -40,26 +40,26 @@ const useCreateProject = ({
 	const { mutateAsync: createDocument } = useCreateDocument();
 
 	return useMutation({
-		  mutationFn: (projectTitle: string) => createProject({ projectTitle, userId: user?.id }),
-			mutationKey: ['create-project'],
-			onSuccess: async project => {
-				onSuccessCb?.(project);
-				toast.success('Project created successfully!');
-				queryClient.invalidateQueries({
-					queryKey: ['get-projects']
-				});
-				addProjectToTab(project.id);
-				if (createDocumentOnCreate) {
-					await createDocument({ projectId: project.id, user });
-				}
-			},
-			onError: error => {
-				console.log({ error });
-				//TODO: need to show a more clearer message
-				toast.error('There is something wrong. Please try again.');
-			},
+		mutationFn: (projectTitle: string) =>
+			createProject({ projectTitle, userId: user?.id }),
+		mutationKey: ['create-project'],
+		onSuccess: async project => {
+			onSuccessCb?.(project);
+			toast.success('Project created successfully!');
+			queryClient.invalidateQueries({
+				queryKey: ['get-projects'],
+			});
+			addProjectToTab(project.id);
+			if (createDocumentOnCreate) {
+				await createDocument({ projectId: project.id, user });
+			}
 		},
-	);
+		onError: error => {
+			console.log({ error });
+			//TODO: need to show a more clearer message
+			toast.error('There is something wrong. Please try again.');
+		},
+	});
 };
 
 export default useCreateProject;

@@ -35,6 +35,7 @@ import { $getRoot, EditorState } from 'lexical';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { SharedAutocompleteContext } from './context/SharedAutocompleteContext';
 import { AutocompleteNode } from './nodes/AutocompleteNode';
 import { CitationNode } from './nodes/CitationNode';
@@ -47,7 +48,6 @@ import { LinePlaceholderPlugin } from './plugins/LinePlaceholderPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import DefaultTheme from './themes/DefaultTheme';
-import toast from 'react-hot-toast';
 
 type Props = {
 	documentId: string;

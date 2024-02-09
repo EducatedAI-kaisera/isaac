@@ -1,7 +1,4 @@
-import {
-	ProPlanUpgradeToast,
-	reachedTokenLimitToastStyle,
-} from '@components/toast/ProPlanUpgradToast';
+import { ProPlanUpgradeToast } from '@components/toast/ProPlanUpgradToast';
 import useAIAssistantStore from '@context/aiAssistant.store';
 import useLexicalEditorStore from '@context/lexicalEditor.store';
 import { useUser } from '@context/user';
@@ -20,7 +17,7 @@ import { freePlanLimits } from 'data/pricingPlans';
 import { $getSelection, $isRangeSelection } from 'lexical';
 import mixpanel from 'mixpanel-browser';
 import { useCallback } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { SSE } from 'sse.js';
 
 const useManipulationText = () => {
@@ -61,9 +58,7 @@ const useManipulationText = () => {
 			user.is_subscribed === false &&
 			user.daily_free_token === freePlanLimits.dailyFreeToken
 		) {
-			toast.error(<ProPlanUpgradeToast target="AI" />, {
-				style: reachedTokenLimitToastStyle,
-			});
+			<ProPlanUpgradeToast target="AI" />;
 			return;
 		}
 

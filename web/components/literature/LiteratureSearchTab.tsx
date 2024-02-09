@@ -26,7 +26,7 @@ import {
 import clsx from 'clsx';
 import { Bookmark } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import {
 	ReferenceSource,
 	SemanticScholarReference,
@@ -68,7 +68,6 @@ const LiteratureSearchTab = ({ active }: Props) => {
 			);
 		}
 	}, [literatureSearchResult, literatureSearchPayload]);
-
 
 	if (isError) {
 		toast.error('Error fetching literature');

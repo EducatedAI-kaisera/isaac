@@ -1,7 +1,7 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import mixpanel from 'mixpanel-browser';
-import toast from 'react-hot-toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { ChatSession, ChatSessionType } from 'types/chat';
 
 const createChatSession = async ({
@@ -33,25 +33,24 @@ const useCreateChatSession = (params?: {
 }) => {
 	const queryClient = useQueryClient();
 	return useMutation({
-			mutationFn: (payload: { projectId: string; title: string }) =>
-				createChatSession({ ...payload }),
-			mutationKey: ['create-chat-session'],
-			onMutate: () => {
-				mixpanel.track('Created ChatSession');
-			},
-			onSuccess: chatSession => {
-				if (params?.onSuccessCb) {
-					params.onSuccessCb(chatSession);
-				}
-
-				queryClient.invalidateQueries({ queryKey: ['get-chat-sessions'] });
-			},
-			onError: error => {
-				console.log({ error });
-				toast.error('There is something wrong. Please try again.');
-			},
+		mutationFn: (payload: { projectId: string; title: string }) =>
+			createChatSession({ ...payload }),
+		mutationKey: ['create-chat-session'],
+		onMutate: () => {
+			mixpanel.track('Created ChatSession');
 		},
-	);
+		onSuccess: chatSession => {
+			if (params?.onSuccessCb) {
+				params.onSuccessCb(chatSession);
+			}
+
+			queryClient.invalidateQueries({ queryKey: ['get-chat-sessions'] });
+		},
+		onError: error => {
+			console.log({ error });
+			toast.error('There is something wrong. Please try again.');
+		},
+	});
 };
 
 export default useCreateChatSession;

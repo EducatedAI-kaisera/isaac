@@ -1,7 +1,7 @@
 import { useGetUserIntegration } from '@hooks/api/useUserIntegration.get';
 import { getZoteroDocuments } from '@resources/integration/zotero';
 import { useQuery } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export const useGetZoteroDocuments = (folderId: string) => {
 	const { data, isError } = useGetUserIntegration();

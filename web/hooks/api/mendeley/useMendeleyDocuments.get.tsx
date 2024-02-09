@@ -1,7 +1,7 @@
 import { useGetUserIntegration } from '@hooks/api/useUserIntegration.get';
 import { getMendeleyDocuments } from '@resources/integration/mendeley';
 import { useQuery } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export const useGetMendeleyDocuments = (folderId: string) => {
 	const { data, isError } = useGetUserIntegration();

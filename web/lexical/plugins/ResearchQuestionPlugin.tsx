@@ -22,7 +22,7 @@ import { $createTextNode, $getSelection } from 'lexical';
 import { ArrowDownSquare, Clipboard, Save } from 'lucide-react';
 import React, { useCallback, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const ResearchQuestionPlugin = () => {
 	const [editor] = useLexicalComposerContext();
@@ -39,7 +39,6 @@ const ResearchQuestionPlugin = () => {
 	const { mutateAsync: createNote } = useCreateNote();
 	const [isQuestionSubmitted, setIsQuestionSubmitted] =
 		useState<boolean>(false);
-
 
 	const {
 		completion,
@@ -58,7 +57,7 @@ const ResearchQuestionPlugin = () => {
 	});
 
 	const onModalClose = cleanUp => {
-		stop();// Call abort function when closing the modal
+		stop(); // Call abort function when closing the modal
 		setAnswer('');
 		setIsQuestionSubmitted(false);
 		cleanUp();

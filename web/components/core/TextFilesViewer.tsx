@@ -1,6 +1,6 @@
 import { ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export default function TextFilesViewer({ path }) {
 	const [content, setContent] = useState('');

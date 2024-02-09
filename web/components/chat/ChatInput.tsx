@@ -10,7 +10,7 @@ import useDocumentTabs, { UniqueTabSources } from '@hooks/useDocumentTabs';
 import clsx from 'clsx';
 import { Send } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { ChatMessageV2 } from 'types/chat';
 // Types
 interface ChatInputProps {

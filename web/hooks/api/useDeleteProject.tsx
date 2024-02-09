@@ -1,8 +1,8 @@
 import useDocumentTabs from '@hooks/useDocumentTabs';
-import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@utils/supabase';
 import router from 'next/router';
+import { toast } from 'sonner';
 
 const deleteProject = async (projectId: string) => {
 	const { data } = await supabase
@@ -24,8 +24,8 @@ const useDeleteProject = () => {
 		onSuccess: (projectId: string) => {
 			toast.success('Project deleted.');
 			queryClient.invalidateQueries({
-                queryKey: ['get-projects']
-            });
+				queryKey: ['get-projects'],
+			});
 			deleteProjectFromTabMemory(projectId);
 			router.push('/editor');
 		},

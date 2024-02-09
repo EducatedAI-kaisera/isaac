@@ -5,7 +5,7 @@ import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { useGetReference, useGetUserUploads } from '@resources/editor-page';
 import Fuse from 'fuse.js';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import {
 	ReferenceLiterature,
 	UploadedFile,
@@ -38,15 +38,16 @@ const useReferenceListOperation = () => {
 	);
 
 	const { data: _referenceList, isError } = useGetReference(projectId);
-	const { data: userUploads, isError: errorFetchingUserUploads } = useGetUserUploads(user?.id, projectId);
+	const { data: userUploads, isError: errorFetchingUserUploads } =
+		useGetUserUploads(user?.id, projectId);
 	const { openDocument } = useDocumentTabs();
 
 	if (isError) {
-		toast.error("Error loading references")
+		toast.error('Error loading references');
 	}
 
 	if (errorFetchingUserUploads) {
-		toast.error("Error loading user uploads")
+		toast.error('Error loading user uploads');
 	}
 
 	// Clientside Filter for reference

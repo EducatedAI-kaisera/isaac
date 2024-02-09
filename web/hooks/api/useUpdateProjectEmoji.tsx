@@ -1,6 +1,6 @@
-import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@utils/supabase';
+import { toast } from 'sonner';
 
 const updateProjectEmoji = async ({
 	projectId,
@@ -26,8 +26,8 @@ export const useUpdateProjectEmoji = (opts?: { onSuccessCb?: () => void }) => {
 		onSuccess: () => {
 			opts?.onSuccessCb?.();
 			queryClient.invalidateQueries({
-                queryKey: ['get-projects']
-            });
+				queryKey: ['get-projects'],
+			});
 			//TODO: need to close model
 		},
 		onError: error => {

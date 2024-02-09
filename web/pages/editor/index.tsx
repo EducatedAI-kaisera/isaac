@@ -19,7 +19,7 @@ import { FolderPlus } from 'lucide-react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const EditorHead = () => (
 	<Head>
@@ -45,7 +45,7 @@ const EditorPage = () => {
 		s => s.setCreateProjectPopoverOpen,
 	);
 	const [renderedProjects, setRenderedProjects] = useState(null);
-	console.log(renderedProjects)
+	console.log(renderedProjects);
 	useHandleToastQuery();
 
 	if (isError) toast.error('Error loading projects');

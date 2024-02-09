@@ -23,7 +23,7 @@ import {
 import { Book, BookUp, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { CitationData } from 'types/literatureReference.type';
 
 class CitationOption extends MenuOption {
@@ -48,7 +48,7 @@ export default function CitationPlugin() {
 	const showCommand = useUIStore(s => s.setShowEditorCommand);
 
 	if (isError) {
-		toast.error("Error loading references");
+		toast.error('Error loading references');
 	}
 
 	// TODO: Filter based on query string

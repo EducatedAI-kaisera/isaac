@@ -1,8 +1,8 @@
 import { TextDocument } from '@hooks/api/useGetDocuments';
 import useDocumentTabs from '@hooks/useDocumentTabs';
-import { supabase } from '@utils/supabase';
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@utils/supabase';
+import { toast } from 'sonner';
 
 const deleteDocument = async (docId: string) => {
 	const { data } = await supabase
@@ -28,8 +28,8 @@ const useDeleteDocument = () => {
 			closeTab(data.id, data.projectId);
 
 			queryClient.invalidateQueries({
-                queryKey: ['get-documents']
-            });
+				queryKey: ['get-documents'],
+			});
 		},
 		onError: error => {
 			console.log({ error });
