@@ -1,3 +1,4 @@
+import { Toaster } from '@components/ui/sonner';
 import UserProvider from '@context/user';
 import { QueryClientProvider } from '@tanstack/react-query';
 import 'focus-visible';
@@ -19,10 +20,10 @@ const TooltipProvider = dynamic(
 	},
 );
 
-const Toaster = dynamic(
-	() => import('react-hot-toast').then(module => module.Toaster),
-	{ ssr: false },
-);
+// const Toaster = dynamic(
+// 	() => import('react-hot-toast').then(module => module.Toaster),
+// 	{ ssr: false },
+// );
 
 function MyApp({ Component, pageProps }) {
 	const [isMounted, setIsMounted] = useState(false);
