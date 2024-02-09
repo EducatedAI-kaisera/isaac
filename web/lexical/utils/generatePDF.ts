@@ -1,4 +1,4 @@
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export default async function generatePDF(
 	documentName: string,

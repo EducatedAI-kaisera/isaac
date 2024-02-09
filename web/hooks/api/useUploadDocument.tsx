@@ -9,7 +9,6 @@ import { getUserStorageSize } from '@resources/user';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@utils/supabase';
 import { freePlanLimits } from 'data/pricingPlans';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { toast } from 'sonner';
 

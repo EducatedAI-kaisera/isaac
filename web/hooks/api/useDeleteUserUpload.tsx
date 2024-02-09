@@ -1,9 +1,9 @@
 import { QKUploadStorageUsage } from '@hooks/api/useFreeTierLimit.get';
 import { ProjectTabs } from '@hooks/useDocumentTabs';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
-import { supabase } from '@utils/supabase';
-import { toast } from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@utils/supabase';
+import { toast } from 'sonner';
 
 // TODO: Close document if tab is opened
 const useDeleteUserUpload = () => {
@@ -28,15 +28,11 @@ const useDeleteUserUpload = () => {
 		try {
 			await Promise.all(promises);
 			queryClient.invalidateQueries({
-                queryKey: [
-                    'get-user-uploads',
-                    userId,
-                    activeProjectId,
-                ]
-            });
+				queryKey: ['get-user-uploads', userId, activeProjectId],
+			});
 			queryClient.invalidateQueries({
-                queryKey: [QKUploadStorageUsage]
-            });
+				queryKey: [QKUploadStorageUsage],
+			});
 
 			toast.success('Document deleted');
 		} catch (error) {

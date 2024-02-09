@@ -12,11 +12,11 @@ import { Clipboard } from 'lucide-react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const Cancelled = () => {
 	const copyToClipboard = () => {
-		navigator.clipboard.writeText('ISAAC50'); //T-75 decide what type of content we want to copy
+		navigator.clipboard.writeText('ISAAC50');
 		toast.success('Discount code copied');
 	};
 

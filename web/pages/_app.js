@@ -20,11 +20,6 @@ const TooltipProvider = dynamic(
 	},
 );
 
-// const Toaster = dynamic(
-// 	() => import('react-hot-toast').then(module => module.Toaster),
-// 	{ ssr: false },
-// );
-
 function MyApp({ Component, pageProps }) {
 	const [isMounted, setIsMounted] = useState(false);
 	const INTERCOM_APP_ID = 'gzq1mrxe';
