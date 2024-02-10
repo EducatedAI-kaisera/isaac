@@ -1,4 +1,4 @@
-_README.md is a work-in-progress.
+\_README.md is a work-in-progress.
 
 <p align="center">
 
@@ -27,6 +27,10 @@ _README.md is a work-in-progress.
 
 Isaac is an AI-native, open-source research workspace that focuses on enhancing the scientific research experience by offering tools for writing, reference management, and literature discovery. It presents an IDE-like interface, streamlining the process of drafting research papers, organizing bibliographic information, and accessing a wide array of academic sources. The platform is designed to centralize these key aspects of research, making it easier for researchers to manage their writing process, keep track of references, and find relevant literature efficiently. Isaac aims to reduce the time and effort typically spent on these tasks, allowing researchers to focus more on the core aspects of their studies. This approach intends to bring a more systematic and organized methodology to scientific research, catering specifically to the needs of researchers looking for a comprehensive and integrated research workspace.
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=aietal/isaac&type=Date)](https://star-history.com/#aietal/isaac&Date)
+
 ## Prerequisites
 
 - Python 3.x
@@ -43,7 +47,8 @@ python ./setup.py
 
 > Don't forget to add the OpenAI and Stripe keys to the environment variables in `api/.env` and `web/.env` to unlock related features.
 
-## Installation using Docker 
+## Installation using Docker
+
 1. Install the Supabase CLI following the instructions [here](https://supabase.com/docs/guides/cli/getting-started)
 
 2. Setup Supabase locally and migrate database schema by running the following command
@@ -72,7 +77,7 @@ git clone https://github.com/aietal/isaac.git
 
 7. Add the other required environment variables to `api/.env.example`, `web/.env.example` and `web/Dockerfile`
 
-8. Remove the "_local" suffix from the Dockerfile inside of the `web` directory.
+8. Remove the "\_local" suffix from the Dockerfile inside of the `web` directory.
 
 9. Start the `isaac-web` and `isaac-api` containers with compose and remove `-d` flag to see logs if needed
 
