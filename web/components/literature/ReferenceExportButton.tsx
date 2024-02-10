@@ -1,109 +1,79 @@
 import { Button } from '@components/ui/button';
 import { FileDown } from 'lucide-react';
-import { list } from 'postcss';
 import React from 'react';
 import { toast } from 'sonner';
 
-const ReferenceExportButton = () => {
-	return (
-		<Button size="xs" variant="ghost" onClick={() => downloadAsBibTex(list)}>
-			<FileDown size={16} strokeWidth={1.4} className="mr-1" />
-			Export BibTeX
-		</Button>
-	);
-};
+const ReferenceExportButton = ({ referenceList, projectName }) => (
+	<Button
+		size="xs"
+		variant="ghost"
+		onClick={() => downloadAsBibTex({ referenceList, projectName })}
+	>
+		<FileDown size={16} strokeWidth={1.4} className="mr-1" />
+		Export BibTeX
+	</Button>
+);
 
 export default ReferenceExportButton;
 
-function referenceLiteratureToBibTeX(reference) {
-	const authors = reference.authors
-		.map(author => `${author.lastName}, ${author.firstName}`)
-		.join(' and ');
-	const title = reference.title;
-	const year = reference.year;
-	const doi = reference.doi;
-	const id = reference.id;
+const formatAuthor = author => `${author.lastName}, ${author.firstName}`;
 
-	let bibTeXEntry = `@article{${id},\n`;
-	bibTeXEntry += `  author = {${authors}},\n`;
-	bibTeXEntry += `  title = {${title}},\n`;
-	bibTeXEntry += `  year = {${year}},\n`;
-	bibTeXEntry += `  doi = {${doi}},\n`;
-	bibTeXEntry += `}\n`;
-
-	return bibTeXEntry;
+const referenceLiteratureToBibTeX = ({ authors, title, year, doi, id }) => {
+	const formattedAuthors = authors.map(formatAuthor).join(' and ');
+	return `@article{${id},
+  author = {${formattedAuthors}},
+  title = {${title}},
+  year = {${year}},
+  doi = {${doi}},
 }
+`;
+};
 
-const downloadAsBibTex = referenceList => {
-	let bibTextEntries = '';
-
-	if (referenceList.length === 0) {
+const downloadAsBibTex = ({ referenceList, projectName }) => {
+	if (!referenceList.length) {
 		toast.error(
 			'No references found to generate BibTeX. Please upload or create references before exporting to BibTeX.',
 		);
 		return;
 	}
 
-	for (let i = 0; i < referenceList.length; i++) {
-		const currentRef = referenceList[i];
-
-		if ('authors' in currentRef) {
-			// It's a ReferenceLiterature
-			const bibTeXEntry = referenceLiteratureToBibTeX(currentRef);
-			bibTextEntries += bibTeXEntry;
-		} else if ('citation' in currentRef && currentRef.citation !== null) {
-			// It's an UploadedFile with citation
-			const { name, metadata } = currentRef.citation;
-			const authors = [{ lastName: name }];
-			const title = name;
-			const year = metadata.year;
-			const doi = currentRef.doi;
-			const id = currentRef.id;
-
-			const bibTeXEntry = referenceLiteratureToBibTeX({
-				authors,
-				title,
-				year,
-				doi,
-				id,
-			});
-			bibTextEntries += bibTeXEntry;
-		} else if (currentRef.custom_citation) {
-			// It's an UploadedFile with "custom_citation"
-			const { title, year, authors } = currentRef.custom_citation;
-			const authorString = authors?.join(' and ');
-			const doi = currentRef.doi;
-			const id = currentRef.id;
-
-			const bibTeXEntry =
-				`@article{${id},\n` +
-				`  author = {${authorString}},\n` +
-				`  title = {${title}},\n` +
-				`  year = {${year}},\n` +
-				`  doi = {${doi}},\n` +
-				`}\n`;
-
-			bibTextEntries += bibTeXEntry;
-		}
-
-		// Add a newline between entries (optional, adjust as needed)
-		if (i < referenceList.length - 1) {
-			bibTextEntries += '\n';
-		}
-	}
+	const bibTextEntries = referenceList
+		.map(ref => {
+			if (ref.authors) {
+				return referenceLiteratureToBibTeX(ref);
+			} else if (ref.citation && ref.citation !== null) {
+				const { name, metadata } = ref.citation;
+				return referenceLiteratureToBibTeX({
+					authors: [{ lastName: name }],
+					title: name,
+					year: metadata.year,
+					doi: ref.doi,
+					id: ref.id,
+				});
+			} else if (ref.custom_citation) {
+				const { title, year, authors } = ref.custom_citation;
+				return `@article{${ref.id},
+  author = {${authors?.join(' and ')}},
+  title = {${title}},
+  year = {${year}},
+  doi = {${ref.doi}},
+}
+`;
+			}
+			return '';
+		})
+		.join('\n');
 
 	const element = document.createElement('a');
 	element.setAttribute(
 		'href',
-		'data:application/x-bibtex;charset=utf-8,' +
-			encodeURIComponent(bibTextEntries),
+		`data:application/x-bibtex;charset=utf-8,${encodeURIComponent(
+			bibTextEntries,
+		)}`,
 	);
-	element.setAttribute('download', 'isaac-references.bib');
-
+	element.setAttribute('download', `${projectName}_references.bib`);
 	element.style.display = 'none';
 	document.body.appendChild(element);
-
 	element.click();
-
 	document.body.removeChild(element);
 };
