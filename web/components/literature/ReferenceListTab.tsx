@@ -75,7 +75,7 @@ const ReferenceListTab = ({ active }: Props) => {
 				<AddReferenceDropdown displayAsButtons />
 				<ReferenceExportButton
 					referenceList={mergedItem}
-					projectName={'alio'}
+					projectName={'isaac'}
 				/>
 			</div>
 

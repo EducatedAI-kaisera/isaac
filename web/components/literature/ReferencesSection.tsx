@@ -75,7 +75,7 @@ const References = () => {
 					<AddReferenceDropdown />
 					<ReferenceExportButton
 						referenceList={mergedItem}
-						projectName={'alio'}
+						projectName={'isaac'}
 					/>
 				</div>
 			</div>
