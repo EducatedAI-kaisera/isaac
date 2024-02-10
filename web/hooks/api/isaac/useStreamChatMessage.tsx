@@ -31,7 +31,7 @@ const useStreamChatMessage = () => {
 	}) => {
 		const payload = JSON.stringify({
 			messages,
-			max_tokens: 2000,
+			max_tokens: 4000,
 			userId: user?.id,
 			projectId,
 			uploadId,
