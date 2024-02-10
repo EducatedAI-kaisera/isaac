@@ -45,7 +45,6 @@ const EditorPage = () => {
 		s => s.setCreateProjectPopoverOpen,
 	);
 	const [renderedProjects, setRenderedProjects] = useState(null);
-	console.log(renderedProjects);
 	useHandleToastQuery();
 
 	if (isError) toast.error('Error loading projects');

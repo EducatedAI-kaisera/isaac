@@ -73,7 +73,10 @@ const ReferenceListTab = ({ active }: Props) => {
 			</div>
 			<div className="flex justify-between">
 				<AddReferenceDropdown displayAsButtons />
-				<ReferenceExportButton />
+				<ReferenceExportButton
+					referenceList={mergedItem}
+					projectName={'isaac'}
+				/>
 			</div>
 
 			<>

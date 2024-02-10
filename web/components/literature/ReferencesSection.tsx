@@ -9,7 +9,7 @@ import useReferenceListOperation, {
 } from '@hooks/api/useReferenceListOperation';
 import { TabType, UniqueTabSources } from '@hooks/useDocumentTabs';
 import { Maximize2 } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 import AddReferenceDropdown from './AddReferenceDropdown';
 import ReferenceExportButton from './ReferenceExportButton';
 import ReferenceSearchInput from './ReferenceSearchInput';
@@ -73,7 +73,10 @@ const References = () => {
 				/>
 				<div className="flex flex-wrap w-full gap-x-2">
 					<AddReferenceDropdown />
-					<ReferenceExportButton />
+					<ReferenceExportButton
+						referenceList={mergedItem}
+						projectName={'isaac'}
+					/>
 				</div>
 			</div>
 
