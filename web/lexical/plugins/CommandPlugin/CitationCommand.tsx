@@ -90,7 +90,7 @@ export function CitationCommand({ open, setOpen, onSelectCallback }: Props) {
 					editor.focus();
 				}}
 			>
-				<CommandInput placeholder="Search citation..." />
+				<CommandInput placeholder="Search sources..." />
 				<CommandList>
 					<CommandEmpty>No results found.</CommandEmpty>
 					<CommandGroup heading="From Reference">
@@ -126,7 +126,7 @@ export function CitationCommand({ open, setOpen, onSelectCallback }: Props) {
 							);
 						})}
 					</CommandGroup>
-					<CommandGroup heading="From Uploaded Documents">
+					<CommandGroup heading="From uploaded documents">
 						{userUploadsRef.current?.map((r, i) => (
 							<CommandItem
 								key={r.id}

@@ -58,10 +58,11 @@ const ImportZoteroModal = () => {
 					title: i.data.title,
 					year: i.data.date ? new Date(i.data.date).getFullYear() : undefined,
 					doi: i.data.DOI,
-					authors: i.data.creators?.map(author => ({
-						name: `${author.firstName} ${author.lastName}`,
-						authorId: '',
-					})),
+					authors:
+						i.data.creators?.map(author => ({
+							name: `${author.firstName} ${author.lastName}`,
+							authorId: '',
+						})) || [],
 					type,
 					sourceId: i.key,
 					source: ReferenceSource.ZOTERO,

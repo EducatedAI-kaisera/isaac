@@ -80,10 +80,11 @@ const ImportMendeleyModal = () => {
 					title: i.title,
 					year: i.year,
 					doi: i.identifiers.doi,
-					authors: i.authors.map(author => ({
-						name: `${author.first_name} ${author.last_name}`,
-						authorId: '',
-					})),
+					authors:
+						i.authors?.map(author => ({
+							name: `${author.first_name} ${author.last_name}`,
+							authorId: '',
+						})) || [],
 					type,
 					sourceId: i.id,
 					source: ReferenceSource.MENDELEY,
