@@ -16,10 +16,10 @@ const ReferenceExportButton = ({ referenceList, projectName }) => (
 
 export default ReferenceExportButton;
 
-const formatAuthor = author => `${author.lastName}, ${author.firstName}`;
+const formatAuthor = author => `${author.name}`;
 
 const referenceLiteratureToBibTeX = ({ authors, title, year, doi, id }) => {
-	const formattedAuthors = authors.map(formatAuthor).join(' and ');
+	const formattedAuthors = authors.map(formatAuthor).join(' AND ');
 	return `@article{${id},
   author = {${formattedAuthors}},
   title = {${title}},
