@@ -13,13 +13,14 @@ import { Copy, CopyCheck } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-export function ReferralDialog({ referralId }) {
+interface ReferralDialogProps {
+	referralId: string;
+	location: 'settings' | 'header';
+}
+
+export function ReferralDialog({ referralId, location }: ReferralDialogProps) {
 	const [copied, setCopied] = useState(false);
-	const referralLink = `${
-		process.env.NODE_ENV === 'development'
-			? 'http://localhost:3000'
-			: 'https://isaaceditor.com'
-	}/?ref=${referralId}`;
+	const referralLink = `${process.env.NEXT_PUBLIC_APP_URL}/?ref=${referralId}`;
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(referralLink).then(
 			() => {
@@ -31,17 +32,28 @@ export function ReferralDialog({ referralId }) {
 			},
 		);
 	};
+
+	const renderButtonBasedOnLocation = () => {
+		if (location === 'settings') {
+			return <Button size="sm">Get Isaac Pro for free</Button>;
+		} else if (location === 'header') {
+			return (
+				<Button size="xs" variant="outline">
+					Isaac Pro for free
+				</Button>
+			);
+		}
+	};
+
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<Button size="sm">Invite your friends</Button>
-			</DialogTrigger>
+			<DialogTrigger asChild>{renderButtonBasedOnLocation()}</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
 					<DialogTitle>Invite your friends</DialogTitle>
 					<DialogDescription>
-						For every friend you invite, you get one month of free access to
-						Isaac Pro!
+						One month of Isaac Pro for free for every friend who signs up using
+						your link!
 					</DialogDescription>
 				</DialogHeader>
 
@@ -50,11 +62,11 @@ export function ReferralDialog({ referralId }) {
 				</div>
 
 				<DialogFooter>
-					<Button onClick={copyToClipboard}>
+					<Button onClick={copyToClipboard} size="sm">
 						{copied ? (
-							<CopyCheck className="h-4 w-4 mr-1" />
+							<CopyCheck className="h-4 w-4 mr-2" />
 						) : (
-							<Copy className="h-4 w-4 mr-1" />
+							<Copy className="h-4 w-4 mr-2" />
 						)}
 						{copied ? ' Copied' : ' Copy'}
 					</Button>
