@@ -136,7 +136,7 @@ export default function Signup() {
 					<form onSubmit={signUpWithEmail}>
 						<div className="flex flex-col gap-4 min-w-[320px] md:min-w-[500px]">
 							<div>
-								<Label className="text-[#0f172a]" htmlFor="email">
+								<Label className="text-foreground" htmlFor="email">
 									Email
 								</Label>
 								<LandingInput
@@ -152,7 +152,7 @@ export default function Signup() {
 								/>
 							</div>
 							<div>
-								<Label className="text-[#0f172a]" htmlFor="password">
+								<Label className="text-foreground" htmlFor="password">
 									Password
 								</Label>
 								<LandingInput
@@ -166,11 +166,11 @@ export default function Signup() {
 									onChange={e => setPassword(e.target.value)}
 									required
 								/>
-								<Label className="text-[#0f172a]" htmlFor="repeatPassword">
+								<Label className="text-foreground" htmlFor="repeatPassword">
 									Repeat Password
 								</Label>
 								<LandingInput
-									id="reapeatPassword"
+									id="repeatPassword"
 									placeholder="Repeat your password"
 									type="password"
 									autoCapitalize="none"
@@ -180,6 +180,7 @@ export default function Signup() {
 							</div>
 							<LandingButton
 								type="submit"
+								size="sm"
 								disabled={isLoading}
 								className="mt-4 w-full"
 							>
@@ -196,13 +197,14 @@ export default function Signup() {
 							<span className="w-full border-t border-gray-300" />
 						</div>
 						<div className="relative flex justify-center text-xs uppercase">
-							<span className="bg-white px-2 text-[#747476]">
+							<span className="bg-background sm:bg-white px-2 text-[#747476]">
 								Or continue with
 							</span>
 						</div>
 					</div>
 					<LandingButton
 						variant="outline"
+						size="sm"
 						type="button"
 						disabled={isLoading}
 						onClick={signUpWithGoogle}
@@ -211,6 +213,9 @@ export default function Signup() {
 						<Icons.google className="mr-2 h-4 w-4" />
 						Google
 					</LandingButton>
+					<div className="text-xs text-center text-muted-foreground">
+						By signing up, you agree to receive emails from us.
+					</div>
 				</div>
 			</AuthLayout>
 		</>
