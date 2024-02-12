@@ -7,7 +7,8 @@ import { supabase } from '@utils/supabase';
 import clsx from 'clsx';
 import { Clipboard, ClipboardCheck, StickyNote } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Remarkable } from 'remarkable';
+import Markdown from 'react-markdown';
+import rehypeHighlight from 'rehype-highlight';
 import { ChatRoles } from 'types/chat';
 
 type Props = {
@@ -31,9 +32,6 @@ const MessageV2 = ({
 	const [linkedNote, setLinkedNote] = useState(linkedNoteId);
 
 	const { user } = useUser();
-
-	const md = new Remarkable();
-	const markdownContent = md.render(content);
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(content); //T-75 decide what type of content we want to copy
@@ -88,7 +86,7 @@ const MessageV2 = ({
 						/>
 					)}
 				</p>
-				<div>
+				<div className="prose prose-sm max-w-xl leading-8">
 					{isHandling && !content && (
 						<div className="flex justify-center gap-1 pt-3">
 							<span className="w-2 h-2 rounded-full bg-isaac/50 animate-bounce"></span>
@@ -96,10 +94,7 @@ const MessageV2 = ({
 							<span className="w-2 h-2 rounded-full bg-isaac/50 animate-bounce delay-200"></span>
 						</div>
 					)}
-					<div
-						className={minimized ? 'leading-6' : 'leading-8'}
-						dangerouslySetInnerHTML={{ __html: markdownContent }}
-					/>
+					<Markdown rehypePlugins={[rehypeHighlight]}>{content}</Markdown>
 				</div>
 			</div>
 
