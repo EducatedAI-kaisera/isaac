@@ -9,7 +9,7 @@ import {
 	DialogTrigger,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import { Copy, CopyCheck } from 'lucide-react';
+import { Copy, CopyCheck, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -38,8 +38,8 @@ export function ReferralDialog({ referralId, location }: ReferralDialogProps) {
 			return <Button size="sm">Get Isaac Pro for free</Button>;
 		} else if (location === 'header') {
 			return (
-				<Button size="xs" variant="outline">
-					Isaac Pro for free
+				<Button size="xs" variant="link" className="text-isaac mr-1">
+					<Zap className="h-3 w-3 mr-1" /> Isaac Pro for free
 				</Button>
 			);
 		}
@@ -48,7 +48,7 @@ export function ReferralDialog({ referralId, location }: ReferralDialogProps) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>{renderButtonBasedOnLocation()}</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[555px]">
 				<DialogHeader>
 					<DialogTitle>Invite your friends</DialogTitle>
 					<DialogDescription>
