@@ -138,8 +138,7 @@ export async function POST(req: Request) {
 			// Forward the data from the completion request to the client
 			if (
 				controller &&
-				chunk.choices[0]?.delta?.content &&
-				chunk.choices[0].delta.content.trim() !== ''
+				chunk.choices[0]?.delta?.content
 			) {
 				controller.enqueue(
 					encoder.encode(
