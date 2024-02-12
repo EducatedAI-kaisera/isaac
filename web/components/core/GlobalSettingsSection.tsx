@@ -101,7 +101,10 @@ const GlobalSettingsSection = () => {
 							<p className="text-sm font-medium mb-2">Account settings</p>
 
 							<div className="flex h-full flex-col justify-between mt-4">
-								<ReferralDialog referralId={user.referral_id} />
+								<ReferralDialog
+									referralId={user.referral_id}
+									location="settings"
+								/>
 								<Button
 									size="sm"
 									className="mt-2"
