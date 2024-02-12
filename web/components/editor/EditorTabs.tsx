@@ -9,7 +9,6 @@ import {
 import useChatSessions from '@context/chatSessions.store';
 import { useLiteratureReferenceStore } from '@context/literatureReference.store';
 import { Panel, useUIStore } from '@context/ui.store';
-import useGetProjectWithDocuments from '@hooks/api/useGetProjectWithDocuments';
 import useDocumentTabs, { TabType } from '@hooks/useDocumentTabs';
 import { commandKey } from '@lexical/utils/meta';
 import { useHover } from '@mantine/hooks';
@@ -19,9 +18,7 @@ import {
 	Book,
 	Bookmark,
 	BookUp,
-	ChevronRight,
 	FileText,
-	FolderOpen,
 	MessageSquare,
 	Search,
 	X,
@@ -45,7 +42,9 @@ const EditorTabs = () => {
 
 	return (
 		<div className="flex">
-			{currentProjectTabs?.length > 0 && <EditorToolbar activeTabType={activeTab?.type} />}
+			{currentProjectTabs?.length > 0 && (
+				<EditorToolbar activeTabType={activeTab?.type} />
+			)}
 
 			<div className="inline-flex items-center overflow-x-auto scrollbar-hide">
 				<SortableDDContainer
