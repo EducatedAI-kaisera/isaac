@@ -13,6 +13,7 @@ import { CreditCard, LogOut } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { toast } from 'sonner';
+import { ReferralDialog } from './ReferralDialog';
 
 const GlobalSettingsSection = () => {
 	const { user, logout, userIsLoading } = useUser();
@@ -100,6 +101,7 @@ const GlobalSettingsSection = () => {
 							<p className="text-sm font-medium mb-2">Account settings</p>
 
 							<div className="flex h-full flex-col justify-between mt-4">
+								<ReferralDialog referralId={user.referral_id} />
 								<Button
 									size="sm"
 									className="mt-2"
