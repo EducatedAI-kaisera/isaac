@@ -114,6 +114,7 @@ const GlobalSettingsSection = () => {
 									<CreditCard className="mr-2 h-4 w-4" />
 									Manage Billing
 								</Button>
+
 								<Button
 									variant="ghost"
 									size="sm"

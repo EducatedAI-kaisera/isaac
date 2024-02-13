@@ -37,7 +37,11 @@ export function ReferralDialog({ referralId, location }: ReferralDialogProps) {
 
 	const renderButtonBasedOnLocation = () => {
 		if (location === 'settings') {
-			return <Button size="sm">Get Isaac Pro for free</Button>;
+			return (
+				<Button className="text-isaac mt-4" variant="link" size="sm">
+					<Zap className="h-3 w-3 mr-1" /> Isaac Pro for free
+				</Button>
+			);
 		} else if (location === 'header') {
 			return (
 				<Button size="xs" variant="link" className="text-isaac mr-1">
