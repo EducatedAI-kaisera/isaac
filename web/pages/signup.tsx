@@ -11,6 +11,7 @@ import { Label } from '@components/ui/label';
 import { useRouter } from 'next/router';
 
 import mixpanel from 'mixpanel-browser';
+import { toast } from 'sonner';
 import { useUser } from '../context/user';
 import { supabase } from '../utils/supabase';
 
@@ -25,17 +26,48 @@ export default function Signup() {
 		e.preventDefault();
 		setIsLoading(true);
 		mixpanel.track('Sign Up', { provider: 'email' });
-		const { error } = await supabase.auth.signUp({
-			email: email,
-			password: password,
-		});
 
-		if (error) {
-			alert('error signing up');
-			setIsLoading(false);
-		} else {
+		try {
+			const { data, error } = await supabase.auth.signUp({
+				email: email,
+				password: password,
+			});
+
+			if (error) {
+				throw error;
+			}
+
+			// Check for referrer ID in local storage
+			const referrerId = localStorage.getItem('isaac-referrer-id');
+			if (referrerId) {
+				// Adjust according to your actual data structure
+				const userId = data.user.id;
+				// Call your API route to handle the referral logic
+				const response = await fetch('/api/referrals', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						referrerId: referrerId,
+						referredId: userId,
+					}),
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to record referral');
+				}
+
+				// Clear the referrer ID from local storage
+				localStorage.removeItem('isaac-referrer-id');
+			}
+
 			// Redirect user to Dashboard
 			router.push(`/editor`);
+		} catch (error) {
+			toast.error(error.message);
+			console.error('Error during sign up:', error);
+		} finally {
 			setIsLoading(false);
 		}
 	}

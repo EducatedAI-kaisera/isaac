@@ -23,6 +23,7 @@ export type Profile = {
 	has_seen_community_banner: boolean;
 	custom_instructions: CustomInstructions | null;
 	editor_language: string;
+	referral_id: string | null;
 };
 
 const Context = createContext<{

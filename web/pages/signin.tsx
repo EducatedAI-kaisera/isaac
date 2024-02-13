@@ -12,6 +12,7 @@ import { LandingInput } from '@components/ui/input-landing';
 import { Label } from '@components/ui/label';
 
 import mixpanel from 'mixpanel-browser';
+import { toast } from 'sonner';
 import { useUser } from '../context/user';
 
 export default function Signin() {
@@ -29,7 +30,7 @@ export default function Signin() {
 		mixpanel.track('Sign In', { provider: 'google' });
 
 		if (error) {
-			alert('error signing in');
+			toast.error(error.message);
 		}
 	}
 

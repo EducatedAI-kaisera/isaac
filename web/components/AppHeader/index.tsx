@@ -1,21 +1,31 @@
 import EditorSettingsMenu from '@components/AppHeader/EditorSettingsMenu';
 
 import { ToggleLeftPanel } from '@components/AppHeader/LayoutTogglerButtons';
+import { ReferralDialog } from '@components/core/ReferralDialog';
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from '@components/ui/popover';
+import { useUser } from '@context/user';
 import clsx from 'clsx';
 import { headerHeight } from 'data/style.data';
 import { FileCog } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import React, { useMemo } from 'react';
 
 const HeaderCommand = dynamic(() => import('./HeaderCommand'), {
 	ssr: false,
 });
 
 const AppHeader = () => {
+	const { user } = useUser();
+	const referralId = user?.referral_id ?? '';
+
+	const referralDialog = useMemo(
+		() => <ReferralDialog location="header" referralId={referralId} />,
+		[referralId],
+	);
 	return (
 		<div
 			className={clsx(
@@ -28,6 +38,7 @@ const AppHeader = () => {
 			</div>
 
 			<div className="hidden md:inline-flex items-center z-20">
+				{referralDialog}
 				<EditorSettingsMenu />
 			</div>
 			<div className="md:hidden z-20">
@@ -44,6 +55,7 @@ const AppHeader = () => {
 					</PopoverContent>
 				</Popover>
 			</div>
+
 			<div className="absolute flex justify-center w-screen z-10">
 				<HeaderCommand />
 			</div>
@@ -51,4 +63,4 @@ const AppHeader = () => {
 	);
 };
 
-export default AppHeader;
+export default React.memo(AppHeader);

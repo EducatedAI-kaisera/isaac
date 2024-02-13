@@ -29,7 +29,6 @@ import {
 import { useIntercom } from 'react-use-intercom';
 
 import { useUser } from '@context/user';
-import { useRouter } from 'next/router';
 
 import AIModelMenu from '@components/core/AIModelToggle';
 import { Icons } from '@components/landing/icons';

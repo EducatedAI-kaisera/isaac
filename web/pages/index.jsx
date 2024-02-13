@@ -9,6 +9,8 @@ import { Pricing } from '@components/landing/Pricing';
 import { Reviews } from '@components/landing/Reviews';
 import { SecondaryFeatures } from '@components/landing/SecondaryFeatures';
 import { supabase } from '@utils/supabase';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export async function getStaticProps() {
 	const { error, count } = await supabase
@@ -24,6 +26,15 @@ export async function getStaticProps() {
 }
 
 export default function Home({ userCount }) {
+	const searchParams = useSearchParams();
+
+	useEffect(() => {
+		const referrerlId = searchParams.get('ref');
+		if (referrerlId) {
+			localStorage.setItem('isaac-referrer-id', referrerlId);
+		}
+	});
+
 	return (
 		<>
 			<Head>
@@ -33,10 +44,7 @@ export default function Home({ userCount }) {
 					content="Isaac Editor - AI-first Text Editor For Academic Writing"
 					key="title"
 				/>
-				{/* TODO: Need to Put more description here
-            Please follow the guidelines
-            https://developer.chrome.com/docs/lighthouse/seo/meta-description/?utm_source=lighthouse&utm_medium=lr#meta-description-best-practices
-        */}
+
 				<meta
 					name="description"
 					content="Isaac Editor - AI-first Text Editor For Academic Writing"
