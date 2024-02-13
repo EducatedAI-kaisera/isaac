@@ -22,7 +22,9 @@ export function ReferralDialog({ referralId, location }: ReferralDialogProps) {
 	const [copied, setCopied] = useState(false);
 	const referralLink = `${process.env.NEXT_PUBLIC_APP_URL}/?ref=${referralId}`;
 	const copyToClipboard = () => {
-		navigator.clipboard.writeText(referralLink).then(
+		const message =
+			"Hey, there's this great AI app Isaac that I've been using for my research. You should try it out: ";
+		navigator.clipboard.writeText(message + referralLink).then(
 			() => {
 				setCopied(true);
 				setTimeout(() => setCopied(false), 2000);
