@@ -22,74 +22,52 @@ export default function Signup() {
 	const router = useRouter();
 	const { user, loginWithGoogle } = useUser();
 
-	// async function signUpWithEmail(e) {
-	// 	e.preventDefault();
-	// 	setIsLoading(true);
-	// 	mixpanel.track('Sign Up', { provider: 'email' });
-	// 	const { data, error } = await supabase.auth.signUp({
-	// 		email: email,
-	// 		password: password,
-	// 	});
-
-	// 	if (error) {
-	// 		toast.error(error.message);
-	// 		setIsLoading(false);
-	// 	} else {
-	// 		// Redirect user to Dashboard
-	// 		router.push(`/editor`);
-	// 		setIsLoading(false);
-	// 	}
-	// }
-
 	async function signUpWithEmail(e) {
 		e.preventDefault();
 		setIsLoading(true);
 		mixpanel.track('Sign Up', { provider: 'email' });
-		const { data, error } = await supabase.auth.signUp({
-			email: email,
-			password: password,
-		});
 
-		if (error) {
-			toast.error(error.message);
-			setIsLoading(false);
-		} else {
+		try {
+			const { data, error } = await supabase.auth.signUp({
+				email: email,
+				password: password,
+			});
+
+			if (error) {
+				throw error;
+			}
+
 			// Check for referrer ID in local storage
 			const referrerId = localStorage.getItem('isaac-referrer-id');
 			if (referrerId) {
-				// Assuming the user's ID is needed and available in `data.user.id`
 				// Adjust according to your actual data structure
 				const userId = data.user.id;
-
 				// Call your API route to handle the referral logic
-				fetch('/api/referrals', {
+				const response = await fetch('/api/referrals', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
 						referrerId: referrerId,
-						referredId: userId, // Ensure this matches your API's expected payload
+						referredId: userId,
 					}),
-				})
-					.then(response => {
-						if (!response.ok) {
-							throw new Error('Failed to record referral');
-						}
-						return response.json();
-					})
-					.then(() => {
-						// Optionally clear the referrer ID from local storage
-						localStorage.removeItem('isaac-referrer-id');
-					})
-					.catch(error => {
-						console.error('Error processing referral:', error);
-						// Handle error (e.g., show a notification to the user)
-					});
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to record referral');
+				}
+
+				// Clear the referrer ID from local storage
+				localStorage.removeItem('isaac-referrer-id');
 			}
 
 			// Redirect user to Dashboard
 			router.push(`/editor`);
+		} catch (error) {
+			toast.error(error.message);
+			console.error('Error during sign up:', error);
+		} finally {
 			setIsLoading(false);
 		}
 	}
