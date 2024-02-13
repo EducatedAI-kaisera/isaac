@@ -39,13 +39,13 @@ export function ReferralDialog({ referralId, location }: ReferralDialogProps) {
 		if (location === 'settings') {
 			return (
 				<Button className="text-isaac mt-4" variant="link" size="sm">
-					<Zap className="h-3 w-3 mr-1" /> Isaac Pro for free
+					<Zap className="h-3 w-3 mr-1" /> Invite friends
 				</Button>
 			);
 		} else if (location === 'header') {
 			return (
 				<Button size="xs" variant="link" className="text-isaac mr-1">
-					<Zap className="h-3 w-3 mr-1" /> Isaac Pro for free
+					<Zap className="h-3 w-3 mr-1" /> Invite friends
 				</Button>
 			);
 		}
@@ -58,8 +58,7 @@ export function ReferralDialog({ referralId, location }: ReferralDialogProps) {
 				<DialogHeader>
 					<DialogTitle>Invite your friends</DialogTitle>
 					<DialogDescription>
-						One month of Isaac Pro for free for every friend who signs up using
-						your link!
+						Share Isaac with your friends and get rewarded!
 					</DialogDescription>
 				</DialogHeader>
 
