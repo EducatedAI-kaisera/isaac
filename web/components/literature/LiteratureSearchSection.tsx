@@ -157,7 +157,7 @@ const LiteratureSearchSection = () => {
 					<LiteratureCardSkeleton />
 				</div>
 			)}
-			{literatureSearchResult?.literature?.length && (
+			{literatureSearchResult?.literature?.length ? (
 				<>
 					<LiteratureList
 						keyword={literatureSearchPayload.keyword}
@@ -175,6 +175,13 @@ const LiteratureSearchSection = () => {
 						}
 					/>
 				</>
+			) : (
+				<div className="flex flex-col h-full text-center p-4">
+					<p className="text-muted-foreground text-xs mb-2">
+						To begin your literature search, input relevant keywords related to
+						your research project in the search bar above.
+					</p>
+				</div>
 			)}
 		</div>
 	);
