@@ -48,7 +48,7 @@ export const CreateNewProjectModal = memo(() => {
 			open={createProjectPopoverOpen}
 			onOpenChange={setCreateProjectPopoverOpen}
 		>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="max-w-xs sm:max-w-[425px]">
 				<form className="flex flex-col gap-4" onSubmit={createProject}>
 					<DialogHeader>
 						<DialogTitle>Create new project</DialogTitle>

@@ -145,7 +145,7 @@ const EditorPage = () => {
 						<div className={projectGridClasses}>{renderedProjects}</div>
 					</div>
 				) : (
-					<div className="flex flex-col items-center justify-center h-screen text-center overflow-hidden">
+					<div className="flex flex-col items-center h-full max-h-[80vh] justify-center text-center overflow-hidden">
 						<div className="inline-flex items-center mb-4">
 							<Logomark className="w-12 h-12" />
 							<p className="text-xl md:text-2xl font-bold tracking-tighter text-foreground">
@@ -154,7 +154,7 @@ const EditorPage = () => {
 						</div>
 						<Button
 							size="lg"
-							className="z-10 bg-isaac hover:bg-white hover:text-isaac mt-6"
+							className="z-10 bg-isaac hover:bg-isaac/75 mt-6"
 							onClick={() => setCreateNewProjectModalOpen(true)}
 						>
 							<FolderPlus className="mr-2 " strokeWidth={1.2} size={20} />

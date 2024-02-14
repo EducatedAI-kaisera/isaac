@@ -9,12 +9,13 @@ import {
 	ReferenceSection,
 	useLiteratureReferenceStore,
 } from '@context/literatureReference.store';
+import { Panel, useUIStore } from '@context/ui.store';
 import { useUser } from '@context/user';
 import useUploadDocument from '@hooks/api/useUploadDocument';
 import { useGetUserIntegration } from '@hooks/api/useUserIntegration.get';
 import useGetEditorRouter from '@hooks/useGetEditorRouter';
 import { getMendeleyUserAuthorizationUrl } from '@resources/integration/mendeley';
-import { BookmarkPlus, FileUp, FolderInput } from 'lucide-react';
+import { BookmarkPlus, FileUp, FolderInput, Search } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -25,8 +26,8 @@ type Props = {
 const AddReferenceDropdown = ({ displayAsButtons }: Props) => {
 	const { data: userIntegration, isError } = useGetUserIntegration();
 	const { projectId } = useGetEditorRouter();
-	// const { isOpen: tutorialMode, setCurrentStep } = useTour();
 	const { user } = useUser();
+	const openPanel = useUIStore(s => s.openPanel);
 
 	const showRAGDisabledToast = () => {
 		toast.info(
@@ -134,6 +135,10 @@ const AddReferenceDropdown = ({ displayAsButtons }: Props) => {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent side="bottom" align="start">
+				<DropdownMenuItem onClick={() => openPanel(Panel.LITERATURE_SEARCH)}>
+					<Search size={18} strokeWidth={1.6} className="mr-2" />
+					Search literature
+				</DropdownMenuItem>
 				<DropdownMenuItem className="relative" onClick={showRAGDisabledToast}>
 					<FileUp size={18} strokeWidth={1.6} className="mr-2" />
 					Upload document

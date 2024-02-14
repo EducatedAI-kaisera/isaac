@@ -80,7 +80,7 @@ const MessageV2 = React.memo(
 							/>
 						)}
 					</p>
-					<div className="prose prose-sm max-w-xl leading-8">
+					<div className="prose prose-sm max-w-4xl leading-8">
 						{isHandling && !content && (
 							<div className="flex justify-center gap-1 pt-3">
 								<span className="w-2 h-2 rounded-full bg-isaac/50 animate-bounce"></span>
