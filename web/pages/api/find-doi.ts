@@ -25,5 +25,15 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 		res.status(500).json({ error: data.error });
 	}
 
-	res.status(200).json({ literature: ( ( data.paperId ) ? [data] : [] ) });
+	if (data.error) {
+		// Check if the error is due to a missing paper
+		if (data.error === `Paper with id DOI:${doi} not found`) {
+				res.status(404).json({ error: data.error });
+		} else {
+				res.status(500).json({ error: data.error });
+		}
+} else {
+		res.status(200).json({ literature: ( ( data.paperId ) ? [data] : [] ) });
+}
+}
 }
