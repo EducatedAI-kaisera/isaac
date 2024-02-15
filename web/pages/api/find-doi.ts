@@ -35,5 +35,4 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 } else {
 		res.status(200).json({ literature: ( ( data.paperId ) ? [data] : [] ) });
 }
-}
-}
+};
