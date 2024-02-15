@@ -23,10 +23,11 @@ const getLiterature = async ({
 	const yearRange = `${startYear}-${endYear}`;
 
 	// check if the keyword is a DOI
-	const doiRegex = new RegExp(/10.\d{4,9}\/[-._;()/:A-Z0-9]+/i);
+	const doiRegex = /10.\d{4,9}\/[-._;()/:A-Z0-9]+/i;
 	const isDoi = doiRegex.test(keyword);
 
-	const requestBody = isDoi ? { doi: keyword } : { search_query: keyword.replace(/ /g, '+'), year_range: yearRange };
+	const sanitizedKeyword = keyword.replace(/ /g, '+');
+	const requestBody = isDoi ? { doi: keyword } : { search_query: sanitizedKeyword, year_range: yearRange };
 	const apiPath = isDoi ? '/api/find-doi' : '/api/litsearch';
 
 	const response = await fetch(apiPath, {
@@ -39,7 +40,7 @@ const getLiterature = async ({
 	const data = await response.json();
 
 	if (data.error) {
-		if (data.error === `Paper with id DOI:${keyword.replace(/ /g, '+')} not found`) {
+		if (data.error === `Paper with id DOI:${sanitizedKeyword} not found`) {
 		toast.error("The doi you entered doesn't exist");
 		} else {
 			toast.error(data.error);
