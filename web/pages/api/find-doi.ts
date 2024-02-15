@@ -21,5 +21,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
 	const data = await response.json();
 
+	if (data.error) {
+		res.status(500).json({ error: data.error });
+	}
+
 	res.status(200).json({ literature: [data] || [] });
 }

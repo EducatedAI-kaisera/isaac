@@ -2,6 +2,7 @@ import { UniqueTabSources } from '@hooks/useDocumentTabs';
 import { useQuery } from '@tanstack/react-query';
 import { currentYear, earliestLiteratureYear } from 'data/meta';
 import { SemanticScholarReference } from 'types/literatureReference.type';
+import { toast } from 'sonner';
 
 export type GetLiteraturePayload = {
 	startYear?: number;
@@ -36,6 +37,14 @@ const getLiterature = async ({
 		body: JSON.stringify(requestBody),
 	});
 	const data = await response.json();
+
+	if (data.error) {
+		if (data.error === `Paper with id DOI:${keyword.replace(/ /g, '+')} not found`) {
+		toast.error("The doi you entered doesn't exist");
+		} else {
+			toast.error(data.error);
+		}
+	}
 
 	return data as LiteratureResponse;
 };
