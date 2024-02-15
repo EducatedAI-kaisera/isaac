@@ -164,7 +164,11 @@ const EditorLayout = ({ children }: Props) => {
 										{/* Editor */}
 										<Allotment.Pane
 											visible={
-												!(isBelowMd && uiStore.activePanel !== undefined)
+												!(
+													isBelowMd &&
+													uiStore.activePanel !== undefined &&
+													hasProjects
+												)
 											}
 											className={clsx(
 												'flex flex-col w-full h-full bg-white dark:bg-black',

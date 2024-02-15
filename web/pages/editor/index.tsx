@@ -145,28 +145,30 @@ const EditorPage = () => {
 						<div className={projectGridClasses}>{renderedProjects}</div>
 					</div>
 				) : (
-					<div className="flex h-screen flex-col items-center mx-auto justify-center text-center">
-						<div className="inline-flex items-center text-center mb-4 fixed top-96 ">
+					<div className="flex flex-col items-center h-full max-h-[80vh] justify-center text-center overflow-hidden">
+						<div className="inline-flex items-center mb-4">
 							<Logomark className="w-12 h-12" />
-							<p className="text-2xl font-bold tracking-tighter text-foreground">
+							<p className="text-xl md:text-2xl font-bold tracking-tighter text-foreground">
 								Isaac
 							</p>
 						</div>
 						<Button
 							size="lg"
-							className="z-10 bg-isaac hover:bg-white hover:text-isaac mt-6"
+							className="z-10 bg-isaac hover:bg-isaac/75 mt-6"
 							onClick={() => setCreateNewProjectModalOpen(true)}
 						>
 							<FolderPlus className="mr-2 " strokeWidth={1.2} size={20} />
 							Create your first project
 						</Button>
 						<div className="mt-4">
-							<p className="text-sm text-foreground mt-3">
+							<p className="text-xs md:text-sm text-foreground mt-3">
 								A project in Isaac is a workspace for your documents,
 								references, and notes. Get started now!
 							</p>
 						</div>
-						<Ripple />
+						<div className="hidden sm:block">
+							<Ripple />
+						</div>
 					</div>
 				)}
 			</EditorLayout>

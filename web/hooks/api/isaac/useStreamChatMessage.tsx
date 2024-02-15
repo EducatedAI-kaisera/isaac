@@ -52,6 +52,7 @@ const useStreamChatMessage = () => {
 
 			// Start Streaming
 			source.addEventListener('message', async function (e) {
+				console.log(e.data);
 				const uint8Array = base64ToUint8Array(e.data);
 				const eventMessage = new TextDecoder('utf-8').decode(uint8Array);
 				if (eventMessage === '[DONE]') {

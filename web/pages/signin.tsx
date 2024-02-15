@@ -12,6 +12,7 @@ import { LandingInput } from '@components/ui/input-landing';
 import { Label } from '@components/ui/label';
 
 import mixpanel from 'mixpanel-browser';
+import { toast } from 'sonner';
 import { useUser } from '../context/user';
 
 export default function Signin() {
@@ -29,7 +30,7 @@ export default function Signin() {
 		mixpanel.track('Sign In', { provider: 'google' });
 
 		if (error) {
-			alert('error signing in');
+			toast.error(error.message);
 		}
 	}
 
@@ -68,7 +69,7 @@ export default function Signin() {
 						Don’t have an account?{' '}
 						<Link
 							href="/signup"
-							className="underline underline-offset-4 hover:text-[#0c0d1d]"
+							className="underline underline-offset-4 hover:text-foreground"
 						>
 							Sign up
 						</Link>{' '}
@@ -80,7 +81,7 @@ export default function Signin() {
 					<form onSubmit={signInWithEmail}>
 						<div className="flex flex-col gap-4 min-w-[320px] md:min-w-[500px]">
 							<div>
-								<Label className="text-[#0f172a]" htmlFor="email">
+								<Label className="text-foreground" htmlFor="email">
 									Email
 								</Label>
 								<LandingInput
@@ -96,13 +97,13 @@ export default function Signin() {
 							</div>
 							<div>
 								<div className="flex items-center justify-between mb-1">
-									<Label className="text-[#0f172a]" htmlFor="password">
+									<Label className="text-foreground" htmlFor="password">
 										Password
 									</Label>
 									<div className="text-sm">
 										<Link
 											href="/forgot-password"
-											className="text-[#747476] hover:text-[#0c0d1d]"
+											className="text-muted-foreground hover:text-foreground"
 										>
 											Forgot password?
 										</Link>
@@ -139,7 +140,7 @@ export default function Signin() {
 							<span className="w-full border-t border-gray-300" />
 						</div>
 						<div className="relative flex justify-center text-xs uppercase">
-							<span className="bg-white px-2 text-[#747476]">
+							<span className="bg-background sm:bg-white px-2 text-[#747476]">
 								Or continue with
 							</span>
 						</div>

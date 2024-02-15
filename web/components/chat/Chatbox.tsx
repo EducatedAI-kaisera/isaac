@@ -32,8 +32,8 @@ const ChatBoxV2 = ({ sessionId, minimized }: ChatBoxProps) => {
 			className={clsx(
 				'z-0 w-full pt-2 overflow-y-scroll pb-6 scrollbar-hide flex flex-col',
 				minimized
-					? 'h-[calc(100vh-220px)] gap-1 px-4 '
-					: 'h-[calc(100vh-230px)]  gap-6 pr-8',
+					? 'h-[calc(100vh-300px)] sm:h-[calc(100vh-220px)] gap-1 px-4 '
+					: 'h-[calc(100vh-230px)] gap-6 pr-8',
 			)}
 		>
 			{sessionId === UniqueTabSources.NEW_CHAT && (
