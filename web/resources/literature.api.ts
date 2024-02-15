@@ -2,6 +2,7 @@ import { UniqueTabSources } from '@hooks/useDocumentTabs';
 import { useQuery } from '@tanstack/react-query';
 import { currentYear, earliestLiteratureYear } from 'data/meta';
 import { SemanticScholarReference } from 'types/literatureReference.type';
+import { toast } from 'sonner';
 
 export type GetLiteraturePayload = {
 	startYear?: number;
@@ -21,17 +22,30 @@ const getLiterature = async ({
 }: GetLiteraturePayload) => {
 	const yearRange = `${startYear}-${endYear}`;
 
-	const response = await fetch('/api/litsearch', {
+	// check if the keyword is a DOI
+	const doiRegex = /10.\d{4,9}\/[-._;()/:A-Z0-9]+/i;
+	const isDoi = doiRegex.test(keyword);
+
+	const sanitizedKeyword = keyword.replace(/ /g, '+');
+	const requestBody = isDoi ? { doi: keyword } : { search_query: sanitizedKeyword, year_range: yearRange };
+	const apiPath = isDoi ? '/api/find-doi' : '/api/litsearch';
+
+	const response = await fetch(apiPath, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({
-			search_query: keyword.replace(/ /g, '+'),
-			year_range: yearRange,
-		}),
+		body: JSON.stringify(requestBody),
 	});
 	const data = await response.json();
+
+	if (data.error) {
+		if (data.error === `Paper with id DOI:${sanitizedKeyword} not found`) {
+		toast.error("The doi you entered doesn't exist");
+		} else {
+			toast.error(data.error);
+		}
+	}
 
 	return data as LiteratureResponse;
 };
