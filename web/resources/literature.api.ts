@@ -21,15 +21,19 @@ const getLiterature = async ({
 }: GetLiteraturePayload) => {
 	const yearRange = `${startYear}-${endYear}`;
 
-	const response = await fetch('/api/litsearch', {
+	// check if the keyword is a DOI
+	const doiRegex = new RegExp(/10.\d{4,9}\/[-._;()/:A-Z0-9]+/i);
+	const isDoi = doiRegex.test(keyword);
+
+	const requestBody = isDoi ? { doi: keyword } : { search_query: keyword.replace(/ /g, '+'), year_range: yearRange };
+	const apiPath = isDoi ? '/api/find-doi' : '/api/litsearch';
+
+	const response = await fetch(apiPath, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({
-			search_query: keyword.replace(/ /g, '+'),
-			year_range: yearRange,
-		}),
+		body: JSON.stringify(requestBody),
 	});
 	const data = await response.json();
 
